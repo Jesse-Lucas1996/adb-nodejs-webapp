@@ -1,10 +1,9 @@
-import adb from '@devicefarmer/adbkit'
 import { doWork } from './connect'
-
+import { test } from './api/express-server'
 ;(async () => {
   try {
-    const client = adb.createClient()
-    await doWork(client)
+    test()
+    await doWork()
     console.log('Kind of done')
   } catch (e) {
     console.error('Kind of error')
