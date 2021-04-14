@@ -1,11 +1,9 @@
-import express from 'express'
-
-const app = express()
+import app from './create-server'
 const port = 3000
 
 export function test() {
-  app.get('/', (_req, res) => {
-    res.send('Hello World!')
+  app.get('/emergency', (_req, res) => {
+    res.send('HELP AN EMERGENCY')
   })
 
   app.listen(port, () => {
