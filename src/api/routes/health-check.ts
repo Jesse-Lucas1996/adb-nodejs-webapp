@@ -2,13 +2,13 @@ import express from 'express'
 const router = express.Router({})
 
 router.get('/', async (_, res) => {
-  const healthcheck = {
+  const healthCheck = {
     uptime: process.uptime(),
     message: 'OK',
     timestamp: Date.now(),
   }
 
-  res.send(healthcheck)
+  res.send(healthCheck)
 })
 
 export default router

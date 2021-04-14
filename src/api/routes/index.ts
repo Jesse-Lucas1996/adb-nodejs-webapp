@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import healthcheckRouter from './health-check'
+import healthCheckRouter from './health-check'
 import emergencyRouter from './emergency'
 import { asyncHandler } from '../middleware/async'
 
 const router = Router()
 
-router.use('/healthcheck', healthcheckRouter)
+router.use('/healthCheck', healthCheckRouter)
 router.use('/emergency', asyncHandler(emergencyRouter))
 
 export default router
