@@ -1,11 +1,7 @@
-import { doWork } from './connect'
-import { test } from './api/express-server'
-;(async () => {
-  try {
-    test()
-    await doWork()
-    console.log('Kind of done')
-  } catch (e) {
-    console.error('Kind of error')
-  }
-})()
+import app from './api/create-server'
+
+const port = 3000
+
+app.listen(port, () => {
+  console.log('listening at ', port)
+})
