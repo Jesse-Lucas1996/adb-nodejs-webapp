@@ -1,7 +1,6 @@
 import express from 'express'
-//import { errorMiddleware, logMiddleware } from './middleware'
 import baseRouter from './routes'
-var cors = require('cors')
+import cors from 'cors'
 
 const app = express()
 
