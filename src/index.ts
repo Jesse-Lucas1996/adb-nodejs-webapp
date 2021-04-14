@@ -1,5 +1,6 @@
 import adb from '@devicefarmer/adbkit'
 import { doWork } from './connect'
+import { test } from './express-server'
 ;(async () => {
   try {
     const client = adb.createClient()
@@ -9,3 +10,4 @@ import { doWork } from './connect'
     console.error('Kind of error')
   }
 })()
+test()
