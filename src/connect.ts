@@ -1,7 +1,8 @@
-import adb, { Client, Device } from '@devicefarmer/adbkit'
+import adb, { Device } from '@devicefarmer/adbkit'
 import bluebird from 'bluebird'
 
-export async function doWork(client: Client) {
+export async function doWork() {
+  const client = adb.createClient()
   const devices = await client.listDevices()
   client.connect('10.100.104.198', 5555)
   const res = bluebird.map(devices, (device: Device) => {
