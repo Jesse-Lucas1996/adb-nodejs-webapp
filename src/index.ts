@@ -1,6 +1,5 @@
 import adb from '@devicefarmer/adbkit'
 import { doWork } from './connect'
-
 ;(async () => {
   try {
     const client = adb.createClient()
