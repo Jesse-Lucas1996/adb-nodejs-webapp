@@ -9,22 +9,19 @@ router.post('/', async (req, res) => {
   const body = req.body as EmergencyBody
   switch (body.cmd) {
     case 'sendAll':
-      res.status(404).send('Not implemented yet')
-      break
+      return res.status(404).send('Not implemented yet')
 
     case 'sendTo':
       const ips = body.target
       for (const ip of ips) {
         await doWork(ip)
       }
-      res.status(200).send('ok')
-      break
+      return res.status(200).send('ok')
 
     default:
-      res.status(404).send('Wrong command')
-      break
+      return res.status(404).send('Wrong command')
   }
-  res.status(404).send('Wrong request')
+  return res.status(404).send('Wrong request')
 })
 
 type EmergencyBody =
