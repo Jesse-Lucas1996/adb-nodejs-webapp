@@ -6,7 +6,7 @@ import { createApiKeyMiddleware } from '../middleware/authMiddleware'
 
 const router = Router()
 
-router.use('/healthCheck', healthCheckRouter)
+router.use('/healthCheck', healthcheckRouter)
 router.use(
   '/emergency',
   createApiKeyMiddleware('API_KEY_HERE'),
