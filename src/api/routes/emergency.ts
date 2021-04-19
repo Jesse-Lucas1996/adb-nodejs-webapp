@@ -14,7 +14,8 @@ router.post('/', async (req, res) => {
     case 'sendTo':
       const ips = body.target
       for (const ip of ips) {
-        await doWork(ip, 'sendEmergency')
+        // await doWork(ip, 'sendEmergency')
+        doWork(ip, 'uptime')
       }
       return res.status(200).send('ok')
 
@@ -24,7 +25,7 @@ router.post('/', async (req, res) => {
     case 'reset':
       const ips2 = body.target
       for (const ip of ips2) {
-        await doWork(ip, 'reset')
+        doWork(ip, 'reset')
       }
       return res.status(200).send('ok')
 
