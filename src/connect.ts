@@ -1,20 +1,44 @@
 import adb, { Device } from '@devicefarmer/adbkit'
 import bluebird from 'bluebird'
 
-export async function doWork(ip: string) {
+export async function doWork(ip: string, cmd: Command) {
   const client = adb.createClient()
-  client.connect(ip)
-  const devices = await client.listDevices()
-  const res = bluebird.map(devices, (device: Device) => {
+  const wtf = await client.connect(ip)
+  wtf
+
+  const t = await client.connection()
+  t
+
+  const devices = client.listDevices()
+  const res = bluebird.map(devices, async (device: Device) => {
     const d = client.getDevice(device.id)
-    d.shell('input keyevent KEYCODE_WAKEUP')
-    d.shell(
-      'am start -n com.emergencyreactnativeapp/com.emergencyreactnativeapp.MainActivity'
-    )
-      .then(adb.util.readAll)
-      .then(function (output) {
-        console.log('[%s] %s', device.id, output.toString().trim())
-      })
+    const commands = adbCommandsLookup[cmd]
+    for (const command of commands) {
+      d.shell(command)
+        .then(adb.util.readAll)
+        .then(function (output) {
+          console.log('[%s] %s', device.id, output.toString().trim())
+        })
+    }
   })
+
   return res
 }
+
+const emergencyCommands = [
+  'input keyevent 224',
+  'am start -n com.emergencyreactnativeapp/com.emergencyreactnativeapp.MainActivity',
+  'service call audio 7 i32 3 i32 10 i32 i',
+]
+const resetCommands = ['wipe data']
+
+type AdbCommands = {
+  [K in Command]: string[]
+}
+
+const adbCommandsLookup: AdbCommands = {
+  sendEmergency: emergencyCommands,
+  reset: resetCommands,
+}
+
+type Command = 'sendEmergency' | 'reset'
