@@ -1,9 +1,9 @@
-import { adbConnector } from './adb'
+import { pool } from './adb'
 import app from './api/create-server'
 
 const port = 3000
 
-adbConnector.start()
+pool.start()
 
 app.listen(port, () => {
   console.log('listening at ', port)

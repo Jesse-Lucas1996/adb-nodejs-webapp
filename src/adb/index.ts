@@ -1,6 +1,6 @@
-import { createAdbConnector } from './connector'
+import { createConnectionPool } from './connector'
 import { config } from '../../config'
 
-const adbConnector = createAdbConnector(config.ips)
+const pool = createConnectionPool(config.ips)
 
-export { adbConnector }
+export { pool }

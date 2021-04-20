@@ -2,9 +2,6 @@ import express from 'express'
 import { doWork } from '../../connect'
 const router = express.Router()
 
-// router.get('/', async (_req, res) => {
-//   res.send(doWork('not implemented'))
-// })
 router.post('/', async (req, res) => {
   const body = req.body as EmergencyBody
   switch (body.cmd) {

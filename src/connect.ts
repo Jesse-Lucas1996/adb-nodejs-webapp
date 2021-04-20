@@ -1,10 +1,10 @@
 import adb, { Device } from '@devicefarmer/adbkit'
 import bluebird from 'bluebird'
 import { Duplex } from 'node:stream'
-import { adbConnector } from './adb'
+import { pool } from './adb'
 
 export function doWork(_ip: string, cmd: Command) {
-  const client = adbConnector.client
+  const client = pool.client
   const commands = adbCommandsLookup[cmd]
 
   client.listDevices().then(devices => {
@@ -42,7 +42,7 @@ const adbCommandsLookup: { [K in Command]: string[] } = {
     'service call audio 7 i32 3 i32 10 i32 i',
   ],
   reset: ['wipe data'],
-  uptime: ['cat /proc/uptime'],
+  uptime: ['uptime'],
 }
 
 type Command = 'sendEmergency' | 'reset' | 'uptime'
