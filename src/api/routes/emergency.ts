@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
       const ips = body.target
       for (const ip of ips) {
         // await doWork(ip, 'sendEmergency')
-        doWork(ip, 'uptime')
+        doWork(ip, 'sendEmergency')
       }
       return res.status(200).send('ok')
 

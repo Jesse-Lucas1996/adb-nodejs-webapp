@@ -16,9 +16,19 @@ export function doWork(_ip: string, cmd: Command) {
   function executeDeviceCommands(device: Device) {
     const d = client.getDevice(device.id)
     for (const command of commands) {
+      d.startActivity({
+        component:
+          'com.emergencyreactnativeapp/com.emergencyreactnativeapp.MainActivity',
+      })
+        .then(possibleReturn => {
+          console.log('open = ', possibleReturn)
+        })
+        .catch(ex => {
+          console.error('well well well something decided to hate you ', ex)
+        })
+
       d.shell(command)
         .then(readStream)
-        .then(logOutput)
         .then(() => {
           // client.disconnect(ip.split(':')[0])
         })
@@ -31,15 +41,10 @@ function readStream(stream: Duplex) {
   return res
 }
 
-function logOutput(output: Buffer) {
-  console.log(':: OUTPUT: ', output.toString().trim())
-}
-
 const adbCommandsLookup: { [K in Command]: string[] } = {
   sendEmergency: [
     'input keyevent 224',
-    'am start -n com.emergencyreactnativeapp/com.emergencyreactnativeapp.MainActivity',
-    'service call audio 7 i32 3 i32 10 i32 i',
+    'service call audio 7 i32 3 i32 15 i32 i',
   ],
   reset: ['wipe data'],
   uptime: ['uptime'],
