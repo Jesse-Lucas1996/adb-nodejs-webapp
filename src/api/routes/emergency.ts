@@ -5,12 +5,13 @@ import { v4 as uuid } from 'uuid'
 import { pool } from '../../adb'
 
 const router = express.Router()
-
 router.post('/', async (req, res) => {
   const body = req.body as EmergencyBody
   switch (body.cmd) {
     case 'sendAll':
-      return res.status(404).send('Not implemented yet')
+     
+    return res.status(200).send('not implemented')
+
 
     case 'sendTo': {
       const ips = body.target,
@@ -33,12 +34,13 @@ router.post('/', async (req, res) => {
     default:
       return res.status(404).send('Wrong command')
   }
-  return res.status(404).send('Wrong request')
 })
+
 
 type EmergencyBody =
   | {
       cmd: 'sendAll'
+ 
     }
   | {
       cmd: 'sendTo'

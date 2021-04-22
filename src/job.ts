@@ -11,13 +11,18 @@ export function registerJob(job: Job) {
   jobsDb.set(job.id, job)
 }
 
-export function jobs() {
-  const j = {}
-  for (const key of jobsDb.keys()) {
-    j[key] = jobsDb.get(key)
+export function getJobs(id?:string) {
+  const jobs = {}
+  if (id) {
+    jobs[id] = jobsDb.get(id)?.status()
+  } else {
+    for (const key of jobsDb.keys()) {
+      jobs[key] = jobsDb.get(key)?.status()
+    }
   }
-  return j
+  return jobs
 }
+
 
 export function createJob(id: string, ips: string[], task: Task): Job {
   let isRunning = false
@@ -28,7 +33,9 @@ export function createJob(id: string, ips: string[], task: Task): Job {
     jobStatus[ip] = {
       success: false,
     }
+  
   }
+
 
   function start(client: Client) {
     if (isRunning) {
@@ -80,7 +87,7 @@ export function createJob(id: string, ips: string[], task: Task): Job {
   }
 
   function status() {
-    return { ...jobStatus }
+    return { status: {...jobStatus}, hasFinished }
   }
 
   return { id, start, status }
