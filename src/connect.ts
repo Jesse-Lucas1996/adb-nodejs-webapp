@@ -2,8 +2,9 @@ import adb, { Device } from '@devicefarmer/adbkit'
 import bluebird from 'bluebird'
 import { Duplex } from 'node:stream'
 import { pool } from './adb'
+import { TaskType } from './types'
 
-export function doWork(_ip: string, cmd: Command) {
+export function doWork(_ip: string, cmd: TaskType) {
   const client = pool.client
   const commands = adbCommandsLookup[cmd]
 
@@ -24,7 +25,7 @@ export function doWork(_ip: string, cmd: Command) {
           console.log('open = ', possibleReturn)
         })
         .catch(ex => {
-          console.error('well well well something decided to hate you ', ex)
+          console.error('well well something decided to hate you ', ex)
         })
 
       d.shell(command)
@@ -41,7 +42,7 @@ function readStream(stream: Duplex) {
   return res
 }
 
-const adbCommandsLookup: { [K in Command]: string[] } = {
+const adbCommandsLookup: { [K in TaskType]: string[] } = {
   sendEmergency: [
     'input keyevent 224',
     'service call audio 7 i32 3 i32 15 i32 i',
@@ -49,5 +50,3 @@ const adbCommandsLookup: { [K in Command]: string[] } = {
   reset: ['wipe data'],
   uptime: ['uptime'],
 }
-
-type Command = 'sendEmergency' | 'reset' | 'uptime'

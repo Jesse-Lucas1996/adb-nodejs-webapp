@@ -26,6 +26,7 @@
     "@types/express": "^4.17.11",
     "@types/node": "^14.14.37",
     "@types/node-forge": "^0.9.7",
+    "@types/uuid": "^8.3.0",
     "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
     "tsc": "^1.20150623.0",
@@ -35,6 +36,7 @@
     "@devicefarmer/adbkit": "^3.2.0",
     "bluebird": "^3.7.2",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "uuid": "^8.3.2"
   }
 }

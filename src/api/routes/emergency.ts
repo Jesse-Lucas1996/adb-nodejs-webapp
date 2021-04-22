@@ -1,5 +1,9 @@
 import express from 'express'
-import { doWork } from '../../connect'
+import { createJob, registerJob } from '../../job'
+import { createTask } from '../../task'
+import { v4 as uuid } from 'uuid'
+import { pool } from '../../adb'
+
 const router = express.Router()
 
 router.post('/', async (req, res) => {
@@ -8,23 +12,23 @@ router.post('/', async (req, res) => {
     case 'sendAll':
       return res.status(404).send('Not implemented yet')
 
-    case 'sendTo':
-      const ips = body.target
-      for (const ip of ips) {
-        // await doWork(ip, 'sendEmergency')
-        doWork(ip, 'sendEmergency')
-      }
-      return res.status(200).send('ok')
+    case 'sendTo': {
+      const ips = body.target,
+        task = createTask('sendEmergency'),
+        jobId = uuid(),
+        job = createJob(jobId, ips, task)
 
-    case 'resetAll':
-      return res.status(200).send('ok')
+      registerJob(job)
+      job.start(pool.client)
+      return res.status(200).send({ jobId })
+    }
+
+    case 'resetAll': {
+      return res.status(404).send('Not implemented yet')
+    }
 
     case 'reset':
-      const ips2 = body.target
-      for (const ip of ips2) {
-        doWork(ip, 'reset')
-      }
-      return res.status(200).send('ok')
+      return res.status(404).send('Not implemented yet')
 
     default:
       return res.status(404).send('Wrong command')
