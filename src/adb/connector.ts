@@ -45,7 +45,7 @@ export function createConnectionPool(ips: string[]) {
         discoveredIps.add(d.id.split(':')[0])
       })
     )
-
+    
     for (const ip of ipDb.keys()) {
       const state = discoveredIps.has(ip) ? 'connected' : 'disconnected'
       ipDb.set(ip, { state })

@@ -1,26 +1,23 @@
 import { Router } from 'express'
+import { createApiKeyMiddleware } from '../middleware/authMiddleware'
+import { asyncHandler } from '../middleware/async'
 import healthcheckRouter from './health-check'
 import emergencyRouter from './emergency'
-import { asyncHandler } from '../middleware/async'
-import { createApiKeyMiddleware } from '../middleware/authMiddleware'
 import statusRouter from './uptime'
 import disconnectRouter from './disconnect'
 import poolRouter from './pool'
+import jobsRouter from './jobs'
 
 const router = Router()
+const apiKeyMiddleware = createApiKeyMiddleware('API_KEY_HERE')
 
 router.use('/healthCheck', healthcheckRouter)
-router.use(
-  '/emergency',
-  createApiKeyMiddleware('API_KEY_HERE'),
-  asyncHandler(emergencyRouter)
-)
-router.use('/uptime', createApiKeyMiddleware('API_KEY_HERE'), statusRouter)
-router.use(
-  '/pool',
-  createApiKeyMiddleware('API_KEY_HERE'),
-  poolRouter,
-  disconnectRouter
-)
+
+router.use(apiKeyMiddleware)
+
+router.use('/emergency', asyncHandler(emergencyRouter))
+router.use('/uptime', asyncHandler(statusRouter))
+router.use('/pool', asyncHandler(poolRouter), asyncHandler(disconnectRouter))
+router.use('/jobs', asyncHandler(jobsRouter))
 
 export default router
