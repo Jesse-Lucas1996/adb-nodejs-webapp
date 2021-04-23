@@ -23,7 +23,6 @@ export function getJobs(id?:string) {
   return jobs
 }
 
-
 export function createJob(id: string, ips: string[], task: Task): Job {
   let isRunning = false
   let hasFinished = false
@@ -35,7 +34,6 @@ export function createJob(id: string, ips: string[], task: Task): Job {
     }
   
   }
-
 
   function start(client: Client) {
     if (isRunning) {
