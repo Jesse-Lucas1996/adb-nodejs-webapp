@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
   const body = req.body as EmergencyBody
   switch (body.cmd) {
     case 'sendAll':
-    return res.status(200).send('not implemented')
+    return res.status(404).send('not implemented')
 
     case 'sendTo': {
       const ips = body.target,
