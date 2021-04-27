@@ -1,13 +1,15 @@
 html
-    body
-        h1 Hello World!
-        p Nothing to see here #{username}
-        table
+style 
+    include style.css
+body
+    h1 Hello World!
+    p Nothing to see here #{username}
+    table
+        tr 
+            th IP address 
+            th Status 
+        each key in Object.keys(mockData)
             tr 
-                th IP address 
-                th Status 
-            each key in Object.keys(mockData)
-                tr 
-                    td= key
-                    td= mockData[key].state
-                    
+                td= key
+                td= mockData[key].state
+                
