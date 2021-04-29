@@ -63,9 +63,8 @@ export function createConnectionPool(ips: string[]) {
   }
 
   function getStatus() {
-    const deviceObjects = {}
+    const deviceObjects = {} as { [K in string]: { state: string} }
     ipDb.forEach((state, ip) => (deviceObjects[ip] = state))
-    console.log('this is an object: ', deviceObjects)
     return deviceObjects
   }
 
