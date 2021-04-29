@@ -1,15 +1,16 @@
 html
 style 
-    include style.css
-body
-    h1 Hello World!
-    p Nothing to see here #{username}
-    table
-        tr 
-            th IP address 
-            th Status 
-        each key in Object.keys(mockData)
-            tr 
-                td= key
-                td= mockData[key].state
+    include style.scss
+div(class='body-content')
+    p(class='paragraph') Hello World!
+
+    p(class='paragraph') Nothing to see here 
+    table(class='iptable')
+        td(class='ips')
+            th(class='status') IP address 
+            th(class='status') Status 
+        each key in Object.keys(status)
+            td(class='ips') 
+                th(class='ipaddress')= key
+                th(class='ipaddress')= status[key].state
                 
