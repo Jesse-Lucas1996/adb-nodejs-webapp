@@ -1,10 +1,9 @@
+import { IPRange } from "../types"
+
 export function fromRange({
   from,
   to,
-}: {
-  from: string
-  to: string
-}): string[] {
+}: IPRange): string[] {
   if (!(isValidIp(from) && isValidIp(to))) {
     throw new Error(`From ${from} or to ${to} is not a valid IP address`)
   }

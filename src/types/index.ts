@@ -26,3 +26,8 @@ export type JobStatus = {
     message?: string
   }
 }
+
+export type IPRange = {
+  from: string
+  to: string
+}
