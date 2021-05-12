@@ -31,3 +31,8 @@ export type IPRange = {
   from: string
   to: string
 }
+
+export type IPNetwork = {
+  ip: string
+  mask: string
+}

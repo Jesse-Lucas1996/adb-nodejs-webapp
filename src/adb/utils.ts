@@ -1,4 +1,4 @@
-import { IPRange } from "../types"
+import { IPRange, IPNetwork } from "../types"
 
 export function fromRange({
   from,
@@ -49,10 +49,7 @@ export function fromRange({
 export function fromNetmask({
   ip,
   mask,
-}: {
-  ip: string
-  mask: string
-}): string[] {
+}: IPNetwork): string[] {
   if (!(isValidIp(ip) && isValidNetmask(mask))) {
     throw new Error(`${ip} is not a valid IP or ${mask} is not a valid netmask`)
   }
