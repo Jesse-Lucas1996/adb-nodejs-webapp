@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp -r src/website/routes/views build/src/website/routes/views",
     "start": "tsc && node build/src/index.js",
     "test": "mocha -t 20000 --reporter spec --exit 'build/**/*.spec.js'",
     "testonly": "mocha -t 20000 --exit 'build/**/*.spec.js'",
@@ -46,6 +46,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mocha": "^8.3.2",
+    "nodemon": "^2.0.7",
     "pug": "^3.0.2",
     "uuid": "^8.3.2"
   }

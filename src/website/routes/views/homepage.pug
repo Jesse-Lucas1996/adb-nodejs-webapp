@@ -1,0 +1,17 @@
+html
+  head
+style 
+  include style.scss
+body
+  include navbar.pug
+  h1(class='titleheader') Hello! these are the devices below!
+  p(class='paragraph') Devices that we can see 
+  table(class='table')
+    tr(class='tr')
+      th(class='item') IP address 
+      th(class='item') Status 
+    each key in Object.keys(status)
+      tr(class='tr') 
+        th(class='item')= key
+        th(class='item')= status[key].state
+

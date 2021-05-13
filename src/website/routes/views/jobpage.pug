@@ -1,0 +1,31 @@
+html
+  head 
+style 
+  include style.scss
+body
+    include navbar.pug
+div(class='body-content')
+  h1(class='head-top') Welcome to the jobs page! 
+  p(class='paragraph') These are the recent jobs below!!
+div(class='content')
+  each job in jobs
+    div
+      ul(class='column') JobID #{job.jobId} 
+      ul(class='column')=job.hasFinished
+    table(class='table')
+      tr(class='tr')
+        th(class='item') ip 
+        th(class='item') success 
+        th(class='item') message 
+        th(class='item') output 
+    each jobDetails in job.details
+      tr 
+        th=jobDetails.ip
+        th=jobDetails.success
+        th=jobDetails.message
+        th=jobDetails.output
+
+
+
+
+

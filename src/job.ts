@@ -1,4 +1,4 @@
-import { Job, JobStatus, Task } from './types'
+import { Job, Jobs, JobStatus, Task } from './types'
 import adb, { Client } from '@devicefarmer/adbkit'
 import bluebird from 'bluebird'
 
@@ -11,8 +11,8 @@ export function registerJob(job: Job) {
   jobsDb.set(job.id, job)
 }
 
-export function getJobs(id?:string) {
-  const jobs = {}
+export function getJobs(id?: string) {
+  const jobs = {} as Jobs
   if (id) {
     jobs[id] = jobsDb.get(id)?.status()
   } else {
@@ -20,6 +20,7 @@ export function getJobs(id?:string) {
       jobs[key] = jobsDb.get(key)?.status()
     }
   }
+
   return jobs
 }
 
@@ -32,7 +33,6 @@ export function createJob(id: string, ips: string[], task: Task): Job {
     jobStatus[ip] = {
       success: false,
     }
-  
   }
 
   function start(client: Client) {
@@ -85,7 +85,7 @@ export function createJob(id: string, ips: string[], task: Task): Job {
   }
 
   function status() {
-    return { status: {...jobStatus}, hasFinished }
+    return { status: { ...jobStatus }, hasFinished }
   }
 
   return { id, start, status }
