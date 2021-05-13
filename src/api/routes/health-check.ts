@@ -1,14 +1,11 @@
 import express from 'express'
+import { systemHealthCheck } from '../../healthcheck'
 const router = express.Router({})
 
-router.get('/', async (_, res) => {
-  const healthCheck = {
-    uptime: process.uptime(),
-    message: 'OK',
-    timestamp: Date.now(),
-  }
+router.get('/', async (_req, res) => {
+  const healthCheck = systemHealthCheck()
 
-  res.send(healthCheck)
+  return res.send({ healthCheck })
 })
 
 export default router

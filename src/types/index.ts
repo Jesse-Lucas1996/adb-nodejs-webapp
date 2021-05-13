@@ -16,7 +16,11 @@ export type Task = UnitOfWork[]
 export type Job = {
   id: string
   start: (client: Client) => void
-  status: () => {status: JobStatus, hasFinished: boolean}
+  status: () => { status: JobStatus; hasFinished: boolean }
+}
+
+export type Jobs = {
+  [K in string]?: { status: JobStatus; hasFinished: boolean }
 }
 
 export type JobStatus = {
