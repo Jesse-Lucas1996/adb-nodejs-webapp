@@ -1,5 +1,5 @@
 import { systemHealthCheck } from '../../healthcheck'
-import api from '../../create-server'
+import { api } from '.././utils'
 import express from 'express'
 
 const router = express.Router({})
