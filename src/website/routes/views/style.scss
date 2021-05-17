@@ -48,3 +48,13 @@ $border: 1px solid black;
   height: 90%;
   width: 90%;
 }
+
+.userpass,
+.username,
+.password {
+  justify-content: center;
+  text-align: center;
+  font-family: sans-serif;
+  margin: auto;
+  display: table;
+}

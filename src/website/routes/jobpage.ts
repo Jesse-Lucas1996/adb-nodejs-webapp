@@ -1,6 +1,6 @@
 import express from 'express'
 import { Jobs } from '../../types'
-import api from '../../create-server'
+import { api } from '.././utils'
 const router = express.Router({})
 
 router.get('/', async (_req, res) => {

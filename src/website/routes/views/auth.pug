@@ -1,0 +1,14 @@
+html 
+  style
+    include style.scss 
+
+body 
+    div(id='userpass')    
+        form(method='POST', action='/', id='userpass')
+            div 
+                label(for='username') Username 
+                input(type='text' id='username', placeholder='username', name='username', value='', required)
+            div
+                label(for='password') Password 
+                input(type='password', id='password', placeholder='password', name='password', value='', required)
+            button.btn.btn-primary(type='submit' value='connecting') Log in
