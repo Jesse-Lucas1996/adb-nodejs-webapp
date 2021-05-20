@@ -3,7 +3,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { createIpScannerSettingsRepo } from './index'
 
-describe('IpScanner testing', () => {
+describe.only('IpScanner testing', () => {
   // Testing valid ip
 
   const settings = {
