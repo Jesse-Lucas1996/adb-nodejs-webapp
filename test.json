@@ -1,3 +1,6 @@
 {
-	"IpScanners": {}
+	"IpScanners": {},
+	"admin": "password1",
+	"username": "admin",
+	"password": "password1"
 }

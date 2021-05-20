@@ -1,4 +1,5 @@
 .DS_Store
+user-credentials.db
 # Logs
 logs
 *.log
