@@ -9,7 +9,7 @@ router.get('/', async (_req, res) => {
   res.render('auth.pug')
 })
 
-router.post('/', function (req, res) {
+router.post('/', async (req, res) => {
   const { username, password } = req.body
 
   if (!repo.userDb.validateCredentials(username, password).isValid) {

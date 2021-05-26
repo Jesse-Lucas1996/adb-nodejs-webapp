@@ -1,7 +1,8 @@
 import Database from 'simplest.db'
 import { IPNetwork, IPRange } from '../types'
 import crypto from 'crypto'
-type IpScannerSettings = {
+
+export type IpScannerSettings = {
   addresses: string[]
   ranges: IPRange[]
   networks: IPNetwork[]
@@ -73,6 +74,6 @@ export function createUserCredentialsRepo(path?: string) {
 }
 
 export const repo = {
-  ipSettings: createIpScannerSettingsRepo(),
   userDb: createUserCredentialsRepo(),
+  ipScannerSettings: createIpScannerSettingsRepo(),
 }
