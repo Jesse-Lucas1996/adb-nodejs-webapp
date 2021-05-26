@@ -1,14 +1,16 @@
-html 
-  style
-    include style.scss 
+html
+    title Login
+    style
+        include style.scss 
 
-body 
-    div(id='userpass')    
-        form(method='POST', action='/', id='userpass')
-            div 
-                label(for='username') Username 
-                input(type='text' id='username', placeholder='username', name='username', value='', required)
-            div
-                label(for='password') Password 
-                input(type='password', id='password', placeholder='password', name='password', value='', required)
-            button.btn.btn-primary(type='submit' value='connecting') Log in
+    body(class='background')
+        div(class='userpass')
+            form(class='formLogin' method='POST', action='/auth')
+                h1(class='title-header') Login
+                div(class='loginDiv') 
+                    label(class='paragraph') Username: 
+                    input(class='inputLogin' type='text' id='username', placeholder='Username', name='username', value='', required)
+                div(class='loginLabel')
+                    label(class='paragraph' for='password') Password: 
+                    input(class='inputLogin' type='password', id='password', placeholder='Password', name='password', value='', required)
+                button.btn.btn-primary(class='loginButton' type='submit' value='connecting') Log in

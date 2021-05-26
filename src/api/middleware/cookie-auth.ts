@@ -5,7 +5,7 @@ export function createCookieAuth(username: string): RequestHandler {
     if (req.signedCookies.user === username) {
       return next()
     } else {
-      return res.status(403).send()
+      return res.redirect('/auth')
     }
   }
 }

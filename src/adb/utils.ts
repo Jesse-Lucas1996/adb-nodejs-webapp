@@ -1,9 +1,6 @@
-import { IPRange, IPNetwork } from "../types"
+import { IPRange, IPNetwork } from '../types'
 
-export function fromRange({
-  from,
-  to,
-}: IPRange): string[] {
+export function fromRange({ from, to }: IPRange): string[] {
   if (!(isValidIp(from) && isValidIp(to))) {
     throw new Error(`From ${from} or to ${to} is not a valid IP address`)
   }
@@ -46,10 +43,7 @@ export function fromRange({
   return result
 }
 
-export function fromNetmask({
-  ip,
-  mask,
-}: IPNetwork): string[] {
+export function fromNetmask({ ip, mask }: IPNetwork): string[] {
   if (!(isValidIp(ip) && isValidNetmask(mask))) {
     throw new Error(`${ip} is not a valid IP or ${mask} is not a valid netmask`)
   }
@@ -91,13 +85,15 @@ function tryParseInt(input: string) {
 }
 
 export function isValidIp(ip: string) {
-  const regex = /^(([01]?\d\d?|2[0-4]\d|25[0-5]).){3}([01]?\d\d?|2[0-4]\d|25[0-5])$/
+  const regex =
+    /^(([01]?\d\d?|2[0-4]\d|25[0-5]).){3}([01]?\d\d?|2[0-4]\d|25[0-5])$/
 
   return regex.test(ip)
 }
 
 export function isValidNetmask(mask: string) {
-  const regex = /^((128|192|224|240|248|252|254)\.0\.0\.0)|(255\.(((0|128|192|224|240|248|252|254)\.0\.0)|(255\.(((0|128|192|224|240|248|252|254)\.0)|255\.(0|128|192|224|240|248|252|254)))))$/
+  const regex =
+    /^((128|192|224|240|248|252|254)\.0\.0\.0)|(255\.(((0|128|192|224|240|248|252|254)\.0\.0)|(255\.(((0|128|192|224|240|248|252|254)\.0)|255\.(0|128|192|224|240|248|252|254)))))$/
 
   return regex.test(mask)
 }

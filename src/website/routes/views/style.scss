@@ -1,25 +1,22 @@
-$border: 1px solid black;
-.titleheader {
-  font-family: sans-serif;
-  display: flexbox;
-  text-align: center;
-  align-content: center;
-  background-color: white;
+.title-header {
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 .head-top {
   font-family: sans-serif;
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  align-content: center;
-  color: black;
+  justify-content: center;
 }
 .paragraph {
   font-family: sans-serif;
-  display: flex;
   color: black;
-  text-align: center;
-  left: auto;
+  display: flex;
+  margin-bottom: 10px;
 }
 .table,
 .column,
@@ -38,8 +35,25 @@ $border: 1px solid black;
   display: inline-flexbox;
 }
 .navbar {
-  display: grid;
-  font-family: sans-serif;
+  display: flex;
+  flex-direction: row;
+  background-color: #0f52ba;
+  border-radius: 10px;
+}
+
+.a-navbar {
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  background-color: #0f52ba;
+  color: white;
+  border: 2px solid transparent;
+}
+
+.a-navbar:hover {
+  border: 2px solid #0f52ba;
+  background-color: white;
+  color: black;
 }
 
 .emergencybutton {
@@ -49,12 +63,125 @@ $border: 1px solid black;
   width: 90%;
 }
 
-.userpass,
-.username,
-.password {
+.formLogin {
+  padding-left: 60px;
+  padding-right: 60px;
+  border: 1px solid #ccc;
+  height: 400px;
+  width: 300px;
+  border-radius: 5px;
+  box-shadow: 0 0 9px black;
+  background-color: white;
+}
+
+.loginDiv {
+  margin-top: 40px;
+}
+
+.loginLabel {
+  margin-top: 20px;
+}
+
+.scannerDiv {
+  display: flex;
+  flex-direction: row;
   justify-content: center;
-  text-align: center;
-  font-family: sans-serif;
-  margin: auto;
-  display: table;
+}
+
+.scannerColumns {
+  margin-right: 150px;
+}
+
+.scannerSave {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.scannerButtons {
+  background-color: #24a0ed;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 100px;
+  height: 40px;
+}
+
+.delete-button {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+}
+
+.inputDiv {
+  display: flex;
+}
+
+.inputField {
+  transition: box-shadow 0.3s;
+  margin-bottom: 10px;
+  width: 300px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  padding: 12px 20px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.background {
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+
+.error {
+  font-family: Arial, Helvetica, sans-serif;
+  color: red;
+}
+
+.inputLogin {
+  transition: box-shadow 0.3s;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  padding: 12px 20px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inputField:hover,
+.inputLogin:hover {
+  box-shadow: 0 0 5px #888888;
+}
+
+.addDiv {
+  padding-bottom: 10px;
+}
+
+.scannerButtons:hover,
+.loginButton:hover {
+  background-color: white;
+  border: 2px solid #24a0ed;
+  color: black;
+  font-weight: 500;
+}
+
+.loginButton {
+  background-color: #24a0ed;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  width: 100%;
+  height: 40px;
+  margin-top: 20px;
+}
+
+.userpass {
+  display: flex;
+  margin-top: 15%;
+  justify-content: center;
 }
