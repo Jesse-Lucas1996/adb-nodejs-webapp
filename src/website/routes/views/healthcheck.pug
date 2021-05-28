@@ -2,13 +2,17 @@ html
   title Health Check
   style 
     include style.scss
-include navbar.pug
-div(class='body-content')
-    h1(class='head-top') Welcome to the health check page
-    p(class='paragraph') The health check is displayed below!    
-    each check in healthcheck
-        ul(class='health-page') uptime: #{check.uptime}
-        ul(class='health-page') message: #{check.message} 
-        ul(class='health-page') time stamp: #{check.timestamp}
-            
-                    
+  head
+    include navbar.pug
+  body(class='background-health-check')
+      h1(class='title') Health Check
+      table(class='table')
+        tr(class='thead')
+          th(class='table-titles') Uptime
+          th(class='table-titles') Status
+          th(class='table-titles') Time
+        each check in healthcheck
+          tr
+            th(class='table-items') #{check.uptime}
+            th(class='table-items') #{check.message}
+            th(class='table-items') #{check.timestamp}

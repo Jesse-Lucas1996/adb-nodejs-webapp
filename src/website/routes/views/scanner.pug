@@ -6,40 +6,40 @@ html
         include scanner.js
     head
         include navbar.pug
-    body
-      h1(class='title-header') ADB Candidates Scanner
-      form(action="/scanner" method="POST") 
-        div(class='scannerDiv')
-            div(class='scannerColumns' id='IPS')
-                h2(class='head-top') IPS
-                div(class='addDiv')
-                    button( class='scannerButtons' type="button" onclick="addTextbox('IPS', 'ipAddresses', 'x.x.x.x')") Add
+    body(class='background-scanner')
+      h1(class='title') Scanner Settings
+      form(class='background-form ' action="/scanner" method="POST") 
+        div(class='scanner-div')
+            div(class='scanner-columns' id='IPS')
+                h2(class='head-top') IP Addresses
+                div(class='add-div')
+                    button( class='scanner-buttons' type="button" onclick="addTextbox('IPS', 'ipAddresses', 'x.x.x.x')") Add
                 each ip in scannerSettings.addresses
-                    div(class='inputDiv' id='IPSDiv')
-                        input(value= ip placeholder='x.x.x.x' class='inputField' type='text' name='ipAddresses[]')
-                        button(class='scannerButtons' onclick="deleteTextbox('IPSDiv')") Delete
+                    div(class='input-div' id='ips-div')
+                        input(value= ip placeholder='x.x.x.x' class='input-field' type='text' name='ipAddresses[]')
+                        button(class='scanner-buttons' onclick="deleteTextbox('ips-div')") Delete
                 each invalidIp in invalidData && invalidData.invalidIps ? invalidData.invalidIps : []
                     p(class='error')= invalidIp
-            div(class='scannerColumns' id='Ranges')
-                h2(class='head-top') Ranges
-                div(class='addDiv')
-                    button( class='scannerButtons' type="button" onclick="addTextbox('Ranges', 'ipRanges', 'x.x.x.x-x.x.x.x')") Add
+            div(class='scanner-columns' id='Ranges')
+                h2(class='head-top') IP Ranges
+                div(class='add-div')
+                    button( class='scanner-buttons' type="button" onclick="addTextbox('Ranges', 'ipRanges', 'x.x.x.x-x.x.x.x')") Add
                 each range in scannerSettings.ranges
-                    div(class='inputDiv' id='rangesDiv')
-                        input(value= range placeholder='x.x.x.x-x.x.x.x' class='inputField' type='text' name='ipRanges[]')
-                        button(class='scannerButtons' onclick="deleteTextbox('rangesDiv')") Delete
+                    div(class='input-div' id='ranges-div')
+                        input(value= range placeholder='x.x.x.x-x.x.x.x' class='input-field' type='text' name='ipRanges[]')
+                        button(class='scanner-buttons' onclick="deleteTextbox('ranges-div')") Delete
                 each invalidRange in invalidData && invalidData.invalidRanges ? invalidData.invalidRanges : []
                     p(class='error')= invalidRange
-            div(class='scannerColumns' id='Netmask')
-                h2(class='head-top') Netmask
-                div(class='addDiv')
-                    button(class='scannerButtons' type="button" onclick="addTextbox('Netmask', 'ipNetmasks', 'x.x.x.x/x')") Add
+            div(class='scanner-columns' id='Netmask')
+                h2(class='head-top') IP Netmask
+                div(class='add-div')
+                    button(class='scanner-buttons' type="button" onclick="addTextbox('Netmask', 'ipNetmasks', 'x.x.x.x/x')") Add
                 each network in scannerSettings.networks
-                    div(class='inputDiv' id='netmaskDiv')
-                        input(value= network placeholder='x.x.x.x/x' class='inputField' type='text' name='ipNetmasks[]')
-                        button(class='scannerButtons' onclick="deleteTextbox('netmaskDiv')") Delete
+                    div(class='input-div' id='netmask-div')
+                        input(value= network placeholder='x.x.x.x/x' class='input-field' type='text' name='ipNetmasks[]')
+                        button(class='scanner-buttons' onclick="deleteTextbox('netmask-div')") Delete
                 each invalidMask in invalidData && invalidData.invalidNetmasks ? invalidData.invalidNetmasks : []
                     p(class='error')= invalidMask
-        div(class='scannerSave')
-            button(class='scannerButtons') Save
+        div(class='scanner-save')
+            button(class='scanner-buttons') Save
             

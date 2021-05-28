@@ -107,8 +107,6 @@ router.post('/', async (req, res) => {
   })
 })
 
-export default router
-
 function toScannerSettingsDto(settings: IpScannerSettings) {
   return {
     addresses: settings.addresses,
@@ -128,3 +126,5 @@ function isFromLowerThanTo(from: string, to: string) {
   }
   return true
 }
+
+export default router

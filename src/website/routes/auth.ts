@@ -21,6 +21,6 @@ router.post('/', async (req, res) => {
     maxAge: 864000,
     httpOnly: true,
   })
-  return res.status(200).redirect('/homepage')
+  return res.status(200).redirect('/')
 })
 export default router
