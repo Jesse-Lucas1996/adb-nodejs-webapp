@@ -2,16 +2,16 @@ html
   title Home
   style 
     include style.scss
-body
-  include navbar.pug
-  h1(class='title-header') Hello! these are the devices below!
-  p(class='paragraph') Devices that we can see 
-  table(class='table')
-    tr(class='tr')
-      th(class='item') IP address 
-      th(class='item') Status 
-    each key in Object.keys(status)
-      tr(class='tr') 
-        th(class='item')= key
-        th(class='item')= status[key].state
+  head
+    include navbar.pug
+  body(class='background')
+    h1(class='title') Devices
+    table(class='table')
+      tr(class='thead')
+        th(class='table-titles') IP address 
+        th(class='table-titles') Status 
+      each key in Object.keys(status)
+        tr(class='table-tr') 
+          th(class='table-items')= key
+          th(class='table-items')= status[key].state
 

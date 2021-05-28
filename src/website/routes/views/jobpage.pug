@@ -2,28 +2,26 @@ html
   title Jobs
   style 
     include style.scss
-body
+  head
     include navbar.pug
-div(class='body-content')
-  h1(class='head-top') Welcome to the jobs page! 
-  p(class='paragraph') These are the recent jobs below!!
-div(class='content')
-  each job in jobs
-    div
-      ul(class='column') JobID #{job.jobId} 
-      ul(class='column')=job.hasFinished
-    table(class='table')
-      tr(class='tr')
-        th(class='item') ip 
-        th(class='item') success 
-        th(class='item') message 
-        th(class='item') output 
-    each jobDetails in job.details
-      tr 
-        th=jobDetails.ip
-        th=jobDetails.success
-        th=jobDetails.message
-        th=jobDetails.output
+  body(class='background-jobs')
+    h1(class='head-top') Jobs
+      each job in jobs
+        table(class='table')
+          tr(class='thead')
+            th(class='table-titles') IP Address 
+            th(class='table-titles') Success 
+            th(class='table-titles') Status 
+            th(class='table-titles') Output
+            th(class='table-titles') Completed
+        each jobDetails in job.details
+          tr
+            th(class='table-items')=job.jobId
+            th(class='table-items')=jobDetails.ip
+            th(class='table-items')=jobDetails.success
+            th(class='table-items')=jobDetails.message
+            th(class='table-items')=jobDetails.output
+            th(class='table-items')=job.hasFinished
 
 
 

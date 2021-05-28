@@ -3,14 +3,14 @@ html
     style
         include style.scss 
 
-    body(class='background')
+    body(class='background-login')
         div(class='userpass')
-            form(class='formLogin' method='POST', action='/auth')
+            form(class='form-login' method='POST', action='/auth')
                 h1(class='title-header') Login
-                div(class='loginDiv') 
+                div(class='login-div') 
                     label(class='paragraph') Username: 
-                    input(class='inputLogin' type='text' id='username', placeholder='Username', name='username', value='', required)
-                div(class='loginLabel')
+                    input(class='input-login' type='text' id='username', placeholder='Username', name='username', value='', required)
+                div(class='login-label')
                     label(class='paragraph' for='password') Password: 
-                    input(class='inputLogin' type='password', id='password', placeholder='Password', name='password', value='', required)
-                button.btn.btn-primary(class='loginButton' type='submit' value='connecting') Log in
+                    input(class='input-login' type='password', id='password', placeholder='Password', name='password', value='', required)
+                button(class='login-button' type='submit' value='connecting') Log in
