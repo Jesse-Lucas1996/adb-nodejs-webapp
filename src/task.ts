@@ -5,10 +5,9 @@ export function createTask(type: TaskType): Task {
     sendEmergency: [
       { cmd: 'input keyevent 224' },
       {
-        cmd:
-          'am start -n com.emergencyreactnativeapp/com.emergencyreactnativeapp.MainActivity',
+        cmd: 'am start -n com.emergencyreactnativeapp/com.emergencyreactnativeapp.MainActivity',
       },
-      { cmd: 'service call audio 7 i32 3 i32 20 i32 i' },
+      { cmd: 'service call audio 7 i32 3 i32 0 i32 i' },
     ],
     reset: [{ cmd: 'wipe data' }],
     uptime: [
