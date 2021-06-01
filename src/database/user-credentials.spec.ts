@@ -1,7 +1,7 @@
-import { createUserCredentialsRepo } from './index'
 import { expect } from 'chai'
 import * as fs from 'fs'
 import path from 'path'
+import { createUserCredentialsRepo } from './user-credentials'
 
 describe('User credentials repo', () => {
   const repo = createUserCredentialsRepo(

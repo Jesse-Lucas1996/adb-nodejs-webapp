@@ -10,6 +10,7 @@ import { asyncHandler } from '../../api/middleware'
 import passwordRouter from './password'
 import emergencyRouter from './emergency'
 import jobDetailsRouter from './job-details'
+import candidateScannerRouter from './candidate-scanner'
 
 const router = Router()
 const cookieAuth = createCookieAuth('admin')
@@ -26,5 +27,6 @@ router.use('/healthcheckpage', asyncHandler(healthCheckRouter))
 router.use('/scanner', asyncHandler(scannerSettingsRouter))
 router.use('/emergency', asyncHandler(emergencyRouter))
 router.use('/logs', asyncHandler(logsRouter))
+router.use('/candidates', asyncHandler(candidateScannerRouter))
 
 export default router
