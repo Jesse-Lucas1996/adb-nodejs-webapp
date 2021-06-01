@@ -1,7 +1,10 @@
 import adb from '@devicefarmer/adbkit'
+import { createLogger } from '../logger'
 
 const CYCLE_TIMEOUT_MSEC = 10000
 const PORT = 5555
+
+const logger = createLogger('connection-pool')
 
 export function createConnectionPool(ips: string[]) {
   const ipDb = new Map<string, { state: string }>()
@@ -17,13 +20,13 @@ export function createConnectionPool(ips: string[]) {
   function start() {
     shouldRun = true
     startOnce()
-    console.log('Connector started')
+    logger.info('Connection pool has started')
   }
   const discoveredIps = new Set<string>()
 
   function startOnce() {
     if (isRunning) {
-      return console.warn('An active cycle is still running. Ignoring.')
+      return logger.warning('An active cycle is still running. Ignoring.')
     }
     isRunning = true
 
@@ -31,11 +34,8 @@ export function createConnectionPool(ips: string[]) {
       client
         .connect(`${ip}:${PORT}`)
         .catch(ex =>
-          console.warn(
-            'Failed to connect to ',
-            ip,
-            'Details',
-            JSON.stringify(ex)
+          logger.error(
+            `Failed to connect to ${ip} Details: ${JSON.stringify(ex)}`
           )
         )
     }
@@ -45,7 +45,7 @@ export function createConnectionPool(ips: string[]) {
         discoveredIps.add(d.id.split(':')[0])
       })
     )
-    
+
     for (const ip of ipDb.keys()) {
       const state = discoveredIps.has(ip) ? 'connected' : 'disconnected'
       ipDb.set(ip, { state })
@@ -63,7 +63,7 @@ export function createConnectionPool(ips: string[]) {
   }
 
   function getStatus() {
-    const deviceObjects = {} as { [K in string]: { state: string} }
+    const deviceObjects = {} as { [K in string]: { state: string } }
     ipDb.forEach((state, ip) => (deviceObjects[ip] = state))
     return deviceObjects
   }
@@ -74,15 +74,14 @@ export function createConnectionPool(ips: string[]) {
       client
         .disconnect(`${ip}:${PORT}`)
         .catch(ex =>
-          console.warn(
-            'Disconnection error for device',
-            ip,
-            'Details',
-            JSON.stringify(ex)
+          logger.error(
+            `Disconnection error for device ${ip} Details: ${JSON.stringify(
+              ex
+            )}`
           )
         )
     }
-    console.log('everything disconnected')
+    logger.info('Connection pool has stopped')
   }
 
   return { start, stop, client, getStatus }
