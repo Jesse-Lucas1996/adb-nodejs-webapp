@@ -1,0 +1,20 @@
+html
+  title Logs
+  style 
+    include style.scss
+  head
+    include navbar.pug
+  body(class='background')
+    h1(class='title') System Logs
+    table(class='table')
+      tr(class='thead')
+        th(class='table-titles') Name
+        th(class='table-titles') Level
+        th(class='table-titles') Time 
+        th(class='table-titles') Message 
+      each log in logs
+        tr(class='table-tr') 
+          th(class='table-items')= log.name
+          th(class='table-items')= log.level
+          th(class='table-items')= log.timestamp
+          th(class='table-items')= log.message

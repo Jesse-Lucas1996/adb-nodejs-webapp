@@ -4,6 +4,7 @@ import jobPageRouter from './jobpage'
 import homePageRouter from './homepage'
 import authRouter from './auth'
 import scannerSettingsRouter from './scanner-settings'
+import logsRouter from './logs'
 import { createCookieAuth } from '../../api/middleware/cookie-auth'
 import { asyncHandler } from '../../api/middleware'
 import passwordRouter from './password'
@@ -24,4 +25,6 @@ router.use('/:jobId', asyncHandler(jobDetailsRouter))
 router.use('/healthcheckpage', asyncHandler(healthCheckRouter))
 router.use('/scanner', asyncHandler(scannerSettingsRouter))
 router.use('/emergency', asyncHandler(emergencyRouter))
+router.use('/logs', asyncHandler(logsRouter))
+
 export default router

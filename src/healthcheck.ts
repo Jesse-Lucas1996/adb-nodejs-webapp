@@ -1,7 +1,8 @@
 export function systemHealthCheck() {
+  const date = new Date()
   return {
     uptime: process.uptime(),
     message: 'OK',
-    timestamp: Date.now().toLocaleString(),
+    timestamp: date.toISOString(),
   }
 }
