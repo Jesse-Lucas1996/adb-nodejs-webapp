@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import * as fs from 'fs'
 import * as path from 'path'
-import { createLogsRepo, LogEntry } from './index'
+import { LogEntry, createLogsRepo } from './logs'
 
-describe('logsSettings test', () => {
+describe('Logs repo test', () => {
   const entry: LogEntry = {
     name: 'adb',
     level: 'error',

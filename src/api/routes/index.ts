@@ -8,7 +8,7 @@ import disconnectRouter from './disconnect'
 import poolRouter from './pool'
 import jobsRouter from './jobs'
 import logsRouter from './logs'
-
+import candidateScannerRouter from './candidate-scanner'
 
 const router = Router()
 const apiKeyMiddleware = createApiKeyMiddleware('API_KEY_HERE')
@@ -22,6 +22,6 @@ router.use('/uptime', asyncHandler(statusRouter))
 router.use('/pool', asyncHandler(poolRouter), asyncHandler(disconnectRouter))
 router.use('/jobs', asyncHandler(jobsRouter))
 router.use('/logs', asyncHandler(logsRouter))
-
+router.use('/candidates', asyncHandler(candidateScannerRouter))
 
 export default router

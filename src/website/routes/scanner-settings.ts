@@ -1,6 +1,7 @@
 import express from 'express'
 import { isValidIp, isValidNetmask } from '../../adb/utils'
-import { IpScannerSettings, repo } from '../../database'
+import { repo } from '../../database'
+import { IpScannerSettings } from '../../database/ip-scanner-settings'
 import { IPNetwork, IPRange } from '../../types'
 const router = express.Router({})
 
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
   const validIps = []
   const invalidIps: InvalidIP[] = []
 
-  for (const ip of data.ipAddresses) {
+  for (const ip of data?.ipAddresses ?? []) {
     const isValid = isValidIp(ip)
     if (isValid) {
       validIps.push(ip)
@@ -48,7 +49,7 @@ router.post('/', async (req, res) => {
   const validRanges: IPRange[] = []
   const invalidRanges: InvalidIPRange[] = []
 
-  for (const range of data.ipRanges) {
+  for (const range of data?.ipRanges ?? []) {
     const [from, to] = range.split('-')
 
     if (!(isValidIp(from) && isValidIp(to))) {
@@ -71,7 +72,7 @@ router.post('/', async (req, res) => {
   const validNetmasks: IPNetwork[] = []
   const invalidNetmasks: InvalidNetmask[] = []
 
-  for (const netmask of data.ipNetmasks) {
+  for (const netmask of data?.ipNetmasks ?? []) {
     const [ip, mask] = netmask.split('/')
 
     if (!(isValidIp(ip) && isValidNetmask(mask))) {

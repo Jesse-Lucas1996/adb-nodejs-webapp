@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import * as fs from 'fs'
 import * as path from 'path'
-import { createIpScannerSettingsRepo } from './index'
+import { createIpScannerSettingsRepo } from './ip-scanner-settings'
 
-describe('IpScanner testing', () => {
+describe('IP Scanner Settings repo testing', () => {
   // Testing valid ip
 
   const settings = {

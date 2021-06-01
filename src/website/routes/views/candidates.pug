@@ -1,0 +1,10 @@
+html
+  title Candidates
+  style 
+    include style.scss
+  head
+    include navbar.pug
+  body(class='background')
+    h1(class='title') Candidates
+    each candidate in candidates
+      div(class='table-items')= candidate
