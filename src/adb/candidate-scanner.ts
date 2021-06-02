@@ -4,6 +4,7 @@ import { createConnection } from 'net'
 import { repo } from '../database'
 
 const CYCLE_TIMEOUT_MSEC = 60 * 1000
+const TCP_PROBE_TIMEOUT_MSEC = 1 * 1000
 const PORT = 5555
 
 const logger = createLogger('candidate-scanner')
@@ -78,13 +79,10 @@ export function createCandidateScanner() {
         }
       } catch (ex) {
         logger.error(`Could not connect to ${ip}`)
-      } finally {
-        if (i === uniqueIps.length - 1) {
-          repo.ipScannerCandidates.update([...ipCandidates])
-        }
       }
     }
 
+    repo.ipScannerCandidates.update([...ipCandidates])
     isRunning = false
 
     if (shouldRun) {
@@ -104,7 +102,11 @@ export function createCandidateScanner() {
 
 async function probeTcp(host: string, port: number) {
   return new Promise<boolean>((resolve, reject) => {
-    const client = createConnection({ host, port })
+    const client = createConnection({
+      host,
+      port,
+      timeout: TCP_PROBE_TIMEOUT_MSEC,
+    })
     client.on('connect', (err: any) => {
       client.end()
       client.destroy()
