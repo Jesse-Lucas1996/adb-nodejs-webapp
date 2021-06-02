@@ -15,15 +15,20 @@ export function createIpScannerSettingsRepo(path?: string) {
     cacheType: 0,
   })
 
-  const update = (settings: IpScannerSettings) =>
-    db.set('0', settings) as IpScannerSettings
+  const index = '0'
 
-  const get = (): IpScannerSettings =>
-    db.get('0') ?? {
+  if (!db.get(index)) {
+    db.set(index, {
       addresses: [],
       ranges: [],
       networks: [],
-    }
+    })
+  }
+
+  const update = (settings: IpScannerSettings): IpScannerSettings =>
+    db.set(index, settings)
+
+  const get = (): IpScannerSettings => db.get(index)
 
   return {
     update,

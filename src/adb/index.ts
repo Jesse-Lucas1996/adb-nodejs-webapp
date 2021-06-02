@@ -1,8 +1,7 @@
-import { createConnectionPool } from './connector'
-import { config } from '../../config'
+import { createConnectionPool } from './connection-pool'
 import { createCandidateScanner } from './candidate-scanner'
 
 const candidateScanner = createCandidateScanner()
-const pool = createConnectionPool(config.ips)
+const pool = createConnectionPool()
 
 export { pool, candidateScanner }

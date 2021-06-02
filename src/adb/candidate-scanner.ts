@@ -3,7 +3,7 @@ import { fromNetmask, fromRange } from './utils'
 import { createConnection } from 'net'
 import { repo } from '../database'
 
-const CYCLE_TIMEOUT_MSEC = 10000
+const CYCLE_TIMEOUT_MSEC = 60 * 1000
 const PORT = 5555
 
 const logger = createLogger('candidate-scanner')
@@ -65,6 +65,12 @@ export function createCandidateScanner() {
 
     for (let i = 0; i < uniqueIps.length; i++) {
       const ip = uniqueIps[i]
+
+      // Explicitly added IPs to be always added to candidate list regardless
+      if (ips.includes(ip)) {
+        ipCandidates.add(ip)
+      }
+
       try {
         const success = await probeTcp(ip, PORT)
         if (success) {

@@ -8,9 +8,15 @@ export function createIpScannerCandidatesRepo(path?: string) {
     cacheType: 0,
   })
 
-  const update = (candidates: string[]) => db.set('0', candidates)
+  const index = '0'
 
-  const get = (): string[] => db.get('0') ?? []
+  if (!db.get(index)) {
+    db.set(index, [])
+  }
+
+  const update = (candidates: string[]): string[] => db.set(index, candidates)
+
+  const get = (): string[] => db.get(index)
 
   return {
     update,
