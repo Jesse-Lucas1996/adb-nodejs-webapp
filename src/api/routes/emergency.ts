@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
   const body = req.body as EmergencyBody
   switch (body.cmd) {
     case 'sendAll':
-    return res.status(404).send('not implemented')
+      return res.status(404).send('not implemented')
 
     case 'sendTo': {
       const ips = body.target,
@@ -17,6 +17,7 @@ router.post('/', async (req, res) => {
         jobId = uuid(),
         job = createJob(jobId, ips, task)
 
+      // TODO: Make register part of create job
       registerJob(job)
       job.start(pool.client)
       return res.status(200).send({ jobId })
@@ -34,11 +35,9 @@ router.post('/', async (req, res) => {
   }
 })
 
-
 type EmergencyBody =
   | {
       cmd: 'sendAll'
- 
     }
   | {
       cmd: 'sendTo'
