@@ -7,24 +7,26 @@ const PORT = 5555
 
 const logger = createLogger('connection-pool')
 
+type DeviceState = {
+  state: 'online' | 'offline'
+  connection?: string
+}
+
+type DeviceSerial = string
+
 export function createConnectionPool() {
   let ips: string[] = []
 
-  const ipDb = new Map<string, { state: string }>()
-  for (const ip of ips) {
-    ipDb.set(ip, { state: 'disconnected' })
-  }
+  const deviceState = new Map<DeviceSerial, DeviceState>()
 
   const client = adb.createClient()
   client.trackDevices().then(tracker => {
-    tracker.on('add', (device: Device) => {
-      console.log('::: ON ADD event listener. device: ', device.id)
-    })
-    tracker.on('remove', (device: Device) => {
-      console.log('::: ON REMOVE event listener. device: ', device.id)
-    })
-    tracker.on('end', (data: any) => {
-      console.log('::: ON END event listener. WTF what: ', data)
+    tracker.on('remove', async (device: Device) => {
+      for (const [serial, { connection }] of [...deviceState]) {
+        if (connection === device.id) {
+          deviceState.set(serial, { state: 'offline' })
+        }
+      }
     })
   })
 
@@ -36,7 +38,6 @@ export function createConnectionPool() {
     startOnce()
     logger.info('Pool has started')
   }
-  const discoveredIps = new Set<string>()
 
   async function startCycle() {
     if (isRunning) {
@@ -44,35 +45,31 @@ export function createConnectionPool() {
     }
     isRunning = true
 
+    const deviceAssests = repo.deviceAssets.get()
+    for (const asset of deviceAssests) {
+      if (!deviceState.has(asset.serial)) {
+        deviceState.set(asset.serial, { state: 'offline' })
+      }
+    }
+
     ips = repo.ipScannerCandidates.get()
 
     for (const ip of ips) {
       try {
-        const connectionString = await client.connect(`${ip}:${PORT}`)
-        const deviceClient = client.getDevice(connectionString)
-        const serial = await getSerialNumber(deviceClient)
+        const connectionString = await client.connect(`${ip}:${PORT}`),
+          deviceClient = client.getDevice(connectionString),
+          serial = await getSerialNumber(deviceClient)
 
-        console.log(serial)
-
-        console.log(deviceClient)
+        deviceState.set(serial, {
+          state: 'online',
+          connection: connectionString,
+        })
       } catch (ex) {
         logger.error(
           `Failed to connect to ${ip} Details: ${JSON.stringify(ex)}`
         )
       }
     }
-
-    const devices = await client.listDevices()
-    for (const device of devices) {
-      discoveredIps.add(device.id.split(':')[0])
-    }
-
-    for (const ip of ipDb.keys()) {
-      const state = discoveredIps.has(ip) ? 'connected' : 'disconnected'
-      ipDb.set(ip, { state })
-    }
-
-    discoveredIps.clear()
 
     isRunning = false
 
@@ -87,10 +84,19 @@ export function createConnectionPool() {
     Promise.resolve(startCycle())
   }
 
-  function getStatus() {
-    const deviceObjects = {} as { [K in string]: { state: string } }
-    ipDb.forEach((state, ip) => (deviceObjects[ip] = state))
-    return deviceObjects
+  function getState() {
+    const deviceStateDto = {} as {
+      [K in DeviceSerial]: DeviceState & { name: string }
+    }
+
+    // This is a bad approach and must be re-done when we have a real DB =)
+    const deviceAssets = repo.deviceAssets.get()
+
+    for (const [serial, state] of [...deviceState]) {
+      const asset = deviceAssets.find(a => a.serial === serial)
+      deviceStateDto[serial] = { ...state, name: asset?.name ?? '' }
+    }
+    return deviceStateDto
   }
 
   async function stopCycle() {
@@ -111,15 +117,15 @@ export function createConnectionPool() {
     Promise.resolve(stopCycle())
   }
 
-  return { start, stop, client, getStatus }
+  return { start, stop, client, getState }
 }
 
-async function executeShellCommand(dc: DeviceClient, cmd: string) {
-  const stream = await dc.shell(cmd)
+async function executeShellCommand(client: DeviceClient, cmd: string) {
+  const stream = await client.shell(cmd)
   const buffer = await adb.util.readAll(stream)
   return buffer.toString().trim()
 }
 
-async function getSerialNumber(dc: DeviceClient) {
-  return executeShellCommand(dc, 'getprop ro.boot.serialno')
+export async function getSerialNumber(client: DeviceClient) {
+  return executeShellCommand(client, 'getprop ro.boot.serialno')
 }

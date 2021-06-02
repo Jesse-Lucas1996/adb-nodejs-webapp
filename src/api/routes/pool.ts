@@ -4,7 +4,7 @@ import { pool } from '../../adb/index'
 const router = express.Router()
 
 router.get('/status', async (_req, res) => {
-  const status = pool.getStatus()
+  const status = pool.getState()
   res.status(200).send({ status })
 })
 
