@@ -127,6 +127,68 @@
   color: white;
 }
 
+.log-div {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.a-div {
+  display: flex;
+  justify-content: center;
+  width: 16%;
+  margin-bottom: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.a-child-div {
+  overflow-x: auto;
+}
+
+.log-input-div {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-direction: column;
+}
+
+.log-label {
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.log-button {
+  background-color: #24a0ed;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 300px;
+  height: 40px;
+  font-weight: 500;
+}
+
+.log-a {
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-right: 5px;
+  text-decoration: none;
+}
+
+.next-prev-button {
+  background-color: #24a0ed;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 145px;
+  height: 40px;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
 .emergency-button {
   color: red;
   border-radius: 10px;
@@ -262,6 +324,8 @@
 }
 
 .login-button:hover,
+.log-button:hover,
+.next-prev-button:hover,
 .scanner-buttons:hover {
   background-color: white;
   border: 2px solid #24a0ed;

@@ -5,25 +5,12 @@ html
   head
     include navbar.pug
   body(class='background-jobs')
-    h1(class='head-top') Jobs
+    h1(class='title') Jobs
+    table(class='table')
+      tr(class='thead')
+        th(class='table-titles') Job ID 
+        th(class='table-titles') Completed
       each job in jobs
-        table(class='table')
-          tr(class='thead')
-            th(class='table-titles') IP Address 
-            th(class='table-titles') Success 
-            th(class='table-titles') Status 
-            th(class='table-titles') Output
-            th(class='table-titles') Completed
-        each jobDetails in job.details
-          tr
-            th(class='table-items')=job.jobId
-            th(class='table-items')=jobDetails.ip
-            th(class='table-items')=jobDetails.success
-            th(class='table-items')=jobDetails.message
-            th(class='table-items')=jobDetails.output
-            th(class='table-items')=job.hasFinished
-
-
-
-
-
+        tr(class='table-tr')
+          th(class='table-items')=job.jobId
+          th(class='table-items')=job.hasFinished
