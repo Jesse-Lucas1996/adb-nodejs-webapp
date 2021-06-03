@@ -1,9 +1,11 @@
 import Database from 'simplest.db'
 import { LogLevel } from '../logger/types'
 
-type LogsFilter = {
+export type LogsFilter = {
   page: number
   size: number
+  name?: string
+  level?: string
 }
 
 export type LogEntry = {
@@ -31,13 +33,19 @@ export function createLogsRepo(path?: string) {
       return { logs: db.values }
     }
 
-    const length = db.keys.length
+    const values = db.values as LogEntry[]
+
+    const filtered = values
+      .filter(fpe => (filter.name ? fpe.name === filter.name : true))
+      .filter(spe => (filter.level ? spe.level === filter.level : true))
+
+    const length = filtered.length
     const pages = Math.ceil(length / filter.size)
 
     const from = (filter.page - 1) * filter.size
     const to = filter.page * filter.size
 
-    const logs = db.values.slice(from, to)
+    const logs = filtered.slice(from, to)
 
     return {
       logs,
@@ -45,8 +53,17 @@ export function createLogsRepo(path?: string) {
     }
   }
 
+  const getNames = (): string[] => {
+    const set = new Set<string>()
+    for (const { name } of db.values as LogEntry[]) {
+      set.add(name)
+    }
+    return [...set]
+  }
+
   return {
     append,
     get,
+    getNames,
   }
 }

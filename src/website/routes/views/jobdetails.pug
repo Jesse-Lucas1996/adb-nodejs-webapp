@@ -17,12 +17,12 @@ html
             th(class='item') success 
             th(class='item') message 
             th(class='item') output 
-        each jobDetails in job.details
-          tr 
-            th=jobDetails.ip
-            th=jobDetails.success
-            th=jobDetails.message
-            th=jobDetails.output
+          each jobDetails in job.details
+            tr 
+              th=jobDetails.ip
+              th=jobDetails.success
+              th=jobDetails.message
+              th=jobDetails.output
   
 
 

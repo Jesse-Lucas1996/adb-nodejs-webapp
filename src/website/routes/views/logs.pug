@@ -6,6 +6,41 @@ html
     include navbar.pug
   body(class='background')
     h1(class='title') System Logs
+    div(class='log-div')
+      form(action='/logs' method='GET')
+        label(class='log-label') Page Size:
+        div(class='log-div')
+          select(class='input-field' type='text' id='size' name='size')
+            option(value='' disabled selected hidden)='Select Page Size'
+            option(value=5 selected= size===5)=5
+            option(value=10 selected= size===10)=10
+            option(value=20 selected= size===20)=20
+            option(value=30 selected= size===30)=30
+            option(value=40 selected= size===40)=40
+            option(value=50)=50
+            option(value=100 selected= size===100)=100
+        label(class='log-label') Filter by Name:
+        div(class='log-div')
+          select(class='input-field' type='text' id='name' name='name')
+            option(value='' disabled selected hidden)='Select Name'
+            option(value='' selected= name==='')='None'
+            option(value='connection-pool' selected= name==='connection-pool')='connection-pool'
+            option(value='application' selected= name==='application')='application'
+            option(value='candidate-scanner' selected= name==='candidate-scanner')='candidate-scanner'
+        label(class='log-label') Filter by Level:
+        div(class='log-div')
+          select(class='input-field' type='text' id='level' name='level')
+            option(value='' disabled selected hidden)='Select Level'
+            option(value='' selected= level==='')='None'
+            option(value='info' selected= level==='info')='info'
+            option(value='error' selected= level==='error')='error'
+            option(value='warn' selected= level==='warn')='warn'
+            option(value='debug' selected= level==='debug')='debug'
+        button(class='log-button' type='submit' ) Submit
+    div(class='a-div')
+      div(class='a-child-div')
+        each pageNum in pagesRange
+          a(href=`/logs?page=${pageNum}&size=${size}&name=${name}&level=${level}` class='log-a')= pageNum
     table(class='table')
       tr(class='thead')
         th(class='table-titles') Name
