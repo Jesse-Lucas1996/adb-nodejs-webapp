@@ -1,92 +1,108 @@
-import { Job, Jobs, JobStatus, Task } from './types'
-import adb, { Client } from '@devicefarmer/adbkit'
-import bluebird from 'bluebird'
+import { JobConnectionPool, Jobs, JobStatus, Job, Task } from './types'
+import { repo } from './database'
+import { executeShellCommand } from './adb/connection-pool'
+import { createLogger } from './logger'
 
-const jobsDb = new Map<string, Job>()
+type JobId = string
+const jobsDb = new Map<JobId, Job>()
 
-export function registerJob(job: Job) {
+const logger = createLogger('jobs')
+
+function registerJob(job: Job) {
   if (jobsDb.has(job.id)) {
     throw new Error(`Job ${job.id} has been already registered`)
   }
   jobsDb.set(job.id, job)
 }
 
-export function getJobs(id?: string) {
-  const jobs = {} as Jobs
-  if (id) {
-    jobs[id] = jobsDb.get(id)?.status()
-  } else {
-    for (const key of jobsDb.keys()) {
-      jobs[key] = jobsDb.get(key)?.status()
+export function getJob(id: string):
+  | {
+      status: JobStatus
+      hasFinished: boolean
     }
-  }
+  | undefined {
+  return jobsDb.get(id)?.status()
+}
 
+export function getJobs(): Jobs {
+  const jobs = {} as Jobs
+  for (const key of jobsDb.keys()) {
+    jobs[key] = jobsDb.get(key)?.status()
+  }
   return jobs
 }
 
-export function createJob(id: string, ips: string[], task: Task): Job {
+export function createJob(jobId: string, task: Task, serials?: string[]) {
   let isRunning = false
   let hasFinished = false
   const jobStatus: JobStatus = {}
 
-  for (const ip of ips) {
-    jobStatus[ip] = {
+  const targetSerials = serials ?? repo.deviceAssets.get().map(a => a.serial)
+  for (const serial of targetSerials) {
+    jobStatus[serial] = {
       success: false,
     }
   }
 
-  function start(client: Client) {
+  function start(pool: JobConnectionPool) {
+    Promise.resolve(runJob(pool))
+  }
+
+  async function runJob(pool: JobConnectionPool) {
     if (isRunning) {
-      throw new Error(`Job ${id} is already running`)
+      throw new Error(`Job ${jobId} is already running`)
     }
     if (hasFinished) {
-      throw new Error(`Job ${id} has already finished`)
+      throw new Error(`Job ${jobId} has already finished`)
     }
     isRunning = true
 
-    client.listDevices().then(devices => {
-      bluebird.map(devices, device => {
-        if (!Object.keys(jobStatus).includes(device.id)) {
-          return
+    for (const serial of Object.keys(jobStatus)) {
+      try {
+        const client = pool.getDeviceClient(serial)
+        if (!client) {
+          logger.warning(
+            `JobId: ${jobId} skipped device: ${serial} as it's offline`
+          )
+          continue
         }
-        const d = client.getDevice(device.id)
+
         for (const { cmd, validate } of task) {
-          d.shell(cmd)
-            .then(adb.util.readAll)
-            .then(buffer => {
-              const output = buffer.toString().trim()
-              if (validate) {
-                const { error, message } = validate(output)
-                jobStatus[device.id] = {
-                  ...jobStatus[device.id],
-                  success: !error,
-                  output,
-                  message,
-                }
-              } else {
-                jobStatus[device.id] = {
-                  ...jobStatus[device.id],
-                  success: true,
-                  output,
-                }
-              }
-            })
-            .catch(ex => {
-              jobStatus[device.id] = {
-                ...jobStatus[device.id],
-                success: false,
-                message: JSON.stringify(ex?.message ?? ex),
-              }
-            })
+          const output = await executeShellCommand(client, cmd)
+
+          if (validate) {
+            const { error, message } = validate(output)
+            jobStatus[serial] = {
+              ...jobStatus[serial],
+              success: !error,
+              output,
+              message,
+            }
+          } else {
+            jobStatus[serial] = {
+              ...jobStatus[serial],
+              success: true,
+              output,
+            }
+          }
         }
-        hasFinished = true
-      })
-    })
+      } catch (ex) {
+        jobStatus[serial] = {
+          ...jobStatus[serial],
+          success: false,
+          message: JSON.stringify(ex?.message ?? ex),
+        }
+      }
+    }
+    hasFinished = true
   }
 
   function status() {
     return { status: { ...jobStatus }, hasFinished }
   }
 
-  return { id, start, status }
+  const job = { id: jobId, start, status }
+  registerJob(job)
+
+  return job
 }

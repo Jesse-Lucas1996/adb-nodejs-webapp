@@ -1,11 +1,15 @@
 import express from 'express'
-import { getJobs as jobsStatus } from '../../job'
+import { getJob } from '../../job'
 const router = express.Router()
 
 router.get('/:jobId', async (req, res) => {
   const jobId = req.params['jobId']
 
-  const status = jobsStatus(jobId)
+  const status = getJob(jobId)
+  if (!status) {
+    return res.status(404).send()
+  }
+
   const jobsDto = []
   for (const jobId of Object.keys(status)) {
     const job = status[jobId]
@@ -28,7 +32,7 @@ router.get('/:jobId', async (req, res) => {
 
     jobsDto.push(jobDto)
   }
-  res.render('jobdetails.pug', { jobs: jobsDto })
+  return res.render('jobdetails.pug', { jobs: jobsDto })
 })
 
 export default router

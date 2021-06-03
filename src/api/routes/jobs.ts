@@ -1,16 +1,17 @@
 import express from 'express'
-import { getJobs as jobsStatus } from '../../job'
+import { getJob, getJobs } from '../../job'
 
 const router = express.Router()
 
-router.get('/:jobId',  async (req, res) => {
+router.get('/:jobId', async (req, res) => {
   const jobId = req.params['jobId']
-  return res.status(200).send({ jobs: jobsStatus(jobId) })
+  return res.status(200).send({ jobs: getJob(jobId) })
 })
 
-router.get('/',  async (_req, res) => {
+router.get('/', async (_req, res) => {
+  const status = getJobs()
 
-  return res.status(200).send({ jobs: jobsStatus() })
+  return res.status(200).send({ jobs: status })
 })
 
 export default router

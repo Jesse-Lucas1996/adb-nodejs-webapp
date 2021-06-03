@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createApiKeyMiddleware } from '../middleware/authMiddleware'
+import { createApiKeyMiddleware } from '../middleware/auth-middleware'
 import { asyncHandler } from '../middleware/async'
 import healthcheckRouter from './health-check'
 import emergencyRouter from './emergency'

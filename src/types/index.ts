@@ -1,10 +1,11 @@
-import { Client } from '@devicefarmer/adbkit'
+import { ConnectionPool } from '../adb/connection-pool'
 
 export type TaskType = 'sendEmergency' | 'reset' | 'uptime'
 
-export type CommandValidator = (
-  cmdOutput: string
-) => { error: boolean; message?: string }
+export type CommandValidator = (cmdOutput: string) => {
+  error: boolean
+  message?: string
+}
 
 export type UnitOfWork = {
   cmd: string
@@ -13,9 +14,11 @@ export type UnitOfWork = {
 
 export type Task = UnitOfWork[]
 
+export type JobConnectionPool = Omit<ConnectionPool, 'start' | 'stop'>
+
 export type Job = {
   id: string
-  start: (client: Client) => void
+  start: (pool: JobConnectionPool) => void
   status: () => { status: JobStatus; hasFinished: boolean }
 }
 

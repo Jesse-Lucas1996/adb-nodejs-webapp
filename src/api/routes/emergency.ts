@@ -1,5 +1,5 @@
 import express from 'express'
-import { createJob, registerJob } from '../../job'
+import { createJob } from '../../job'
 import { createTask } from '../../task'
 import { v4 as uuid } from 'uuid'
 import { pool } from '../../adb'
@@ -7,32 +7,15 @@ import { pool } from '../../adb'
 const router = express.Router()
 router.post('/', async (req, res) => {
   const body = req.body as EmergencyBody
-  switch (body.cmd) {
-    case 'sendAll':
-      return res.status(404).send('not implemented')
 
-    case 'sendTo': {
-      const ips = body.target,
-        task = createTask('sendEmergency'),
-        jobId = uuid(),
-        job = createJob(jobId, ips, task)
+  const serials = body.cmd === 'sendTo' ? body.target : undefined,
+    task = createTask('sendEmergency'),
+    jobId = uuid(),
+    job = createJob(jobId, task, serials)
 
-      // TODO: Make register part of create job
-      registerJob(job)
-      job.start(pool.client)
-      return res.status(200).send({ jobId })
-    }
+  job.start(pool)
 
-    case 'resetAll': {
-      return res.status(404).send('Not implemented yet')
-    }
-
-    case 'reset':
-      return res.status(404).send('Not implemented yet')
-
-    default:
-      return res.status(404).send('Wrong command')
-  }
+  return res.status(200).send({ jobId })
 })
 
 type EmergencyBody =
@@ -41,14 +24,6 @@ type EmergencyBody =
     }
   | {
       cmd: 'sendTo'
-      target: string[]
-    }
-  | {
-      cmd: 'resetAll'
-      targets: string[]
-    }
-  | {
-      cmd: 'reset'
       target: string[]
     }
 
