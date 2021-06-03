@@ -1,4 +1,4 @@
 export * from './error'
 export * from './async'
-export * from './authMiddleware'
+export * from './auth-middleware'
 export * from './cookie-auth'

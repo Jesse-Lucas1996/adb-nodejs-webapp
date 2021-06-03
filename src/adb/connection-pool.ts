@@ -1,4 +1,4 @@
-import adb, { Device, DeviceClient } from '@devicefarmer/adbkit'
+import adb, { Client, Device, DeviceClient } from '@devicefarmer/adbkit'
 import { repo } from '../database'
 import { createLogger } from '../logger'
 
@@ -14,7 +14,7 @@ type DeviceState = {
 
 type DeviceSerial = string
 
-export function createConnectionPool() {
+export function createConnectionPool(): ConnectionPool {
   let ips: string[] = []
 
   const deviceState = new Map<DeviceSerial, DeviceState>()
@@ -117,10 +117,26 @@ export function createConnectionPool() {
     Promise.resolve(stopCycle())
   }
 
-  return { start, stop, client, getState }
+  function getDeviceClient(serial: string) {
+    const device = deviceState.get(serial)
+    if (!device || !device.connection) {
+      return undefined
+    }
+    return client.getDevice(device.connection)
+  }
+
+  return { start, stop, client, getState, getDeviceClient }
 }
 
-async function executeShellCommand(client: DeviceClient, cmd: string) {
+export type ConnectionPool = {
+  start: () => void
+  stop: () => void
+  client: Client
+  getState: () => { [K in DeviceSerial]: DeviceState & { name: string } }
+  getDeviceClient: (serial: string) => DeviceClient | undefined
+}
+
+export async function executeShellCommand(client: DeviceClient, cmd: string) {
   const stream = await client.shell(cmd)
   const buffer = await adb.util.readAll(stream)
   return buffer.toString().trim()
