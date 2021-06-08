@@ -1,34 +1,31 @@
 import express from 'express'
-import { createJob } from '../../job'
-import { createTask } from '../../task'
-import { v4 as uuid } from 'uuid'
-import { pool } from '../../adb'
-import { repo } from '../../database'
+import { emergency } from '../../services'
 
 const router = express.Router()
+
+router.get('/', async (_req, res) => {
+  const { isActive } = emergency.status()
+  return res.status(200).send({ isActive })
+})
+
 router.post('/', async (req, res) => {
   const body = req.body as EmergencyBody
 
-  const serials =
-      body.cmd === 'sendTo'
-        ? body.target
-        : (await repo.assets.get()).map(a => a.serial),
-    task = createTask('sendEmergency'),
-    jobId = uuid(),
-    job = createJob(jobId, task, serials, 'emergency')
+  if (
+    !(body.hasOwnProperty('setActive') && typeof body.setActive === 'boolean')
+  ) {
+    return res.status(400).send()
+  }
 
-  job.start(pool)
+  const execute = body.setActive ? emergency.start : emergency.stop
+  execute()
+  const { isActive } = emergency.status()
 
-  return res.status(200).send({ jobId })
+  return res.status(200).send({ isActive })
 })
 
-type EmergencyBody =
-  | {
-      cmd: 'sendAll'
-    }
-  | {
-      cmd: 'sendTo'
-      target: string[]
-    }
+type EmergencyBody = {
+  setActive: boolean
+}
 
 export default router

@@ -1,8 +1,18 @@
-html 
+html
+  title Emergency
   style 
     include style.scss
-  div
-    form(method='POST', action='/emergency')
-      button(type="submit", class="emergency-button")
+  head
+    include navbar.pug
+  body(class='background')
+    div(class='emergency-container')
+      h1(class='title') Emergency is #{isActive ? 'active' : 'not active'}      
+      form(method='POST', action='/emergency')
+        div(class='emergency-switch')
+          label(for='stop') Stop
+          input(type='radio', id='stop', name='set', value='stop')
+          label(for='start') Start
+          input(type='radio', id='start', name='set', value='start')
+        button(type='submit') Sumbit
 
 

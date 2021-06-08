@@ -1,17 +1,25 @@
 import express from 'express'
 import { api } from '.././utils'
-const router = express.Router({})
+const router = express.Router()
 
 router.get('/', async (_req, res) => {
-  res.render('emergency.pug')
+  const resp = await api.get<{ isActive: boolean }>('/emergency'),
+    isActive = resp.data?.isActive
+
+  return res.render('emergency.pug', { isActive })
 })
 
-router.post('/', async (_req, res) => {
-  const data = { cmd: 'sendAll' },
-    resp = await api.post('/emergency', data),
-    jobId = resp.data.jobId
+router.post('/', async (req, res) => {
+  const body = req.body as { set: 'start' | 'stop' }
+  if (!body.hasOwnProperty('set')) {
+    return res.redirect('/emergency')
+  }
 
-  return res.redirect(`/jobs/${jobId}`)
+  const setActive = body.set === 'start',
+    resp = await api.post<{ isActive: boolean }>('/emergency', { setActive }),
+    isActive = resp.data?.isActive
+
+  return res.render('emergency.pug', { isActive })
 })
 
 export default router
