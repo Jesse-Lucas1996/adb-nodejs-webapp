@@ -9,7 +9,7 @@ const logger = createLogger('application')
 candidateScanner.start()
 pool.start()
 
-app.set('views', path.join(__dirname, './website/routes/views'))
+app.set('views', path.join(__dirname, './website/views'))
 app.set('view engine', 'pug')
 app.listen(port, () => {
   logger.info(`listening at ${host}:${port}`)
