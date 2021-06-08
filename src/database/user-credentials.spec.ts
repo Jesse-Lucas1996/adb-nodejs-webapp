@@ -8,33 +8,31 @@ describe('User credentials repo', () => {
     path.join(__dirname, 'user-credentials-test.db')
   )
 
-  const defaultPassword = 'PixelSamsungNetflixACoolBossAHunkOfAMan'
+  const defaultPassword = 'CloudTV1'
 
-  it('Ensures that default admin/password is created if database is empty', () => {
-    const actual = repo.validateCredentials('admin', defaultPassword)
-    console.log(defaultPassword)
+  it('Ensures that default admin/password is created if database is empty', async () => {
+    const actual = await repo.validate('admin', defaultPassword)
     expect(actual.isValid).to.be.equal(true)
   })
 
-  it('Ensures that invalid username cannot be validated with default database', () => {
-    const actual = repo.validateCredentials('admina', defaultPassword)
+  it('Ensures that invalid username cannot be validated with default database', async () => {
+    const actual = await repo.validate('admina', defaultPassword)
     expect(actual.isValid).to.be.equal(false)
   })
 
-  it('Ensures that invalid password cannot be validated with default database', () => {
-    const actual = repo.validateCredentials('admin', `${defaultPassword}0`)
+  it('Ensures that invalid password cannot be validated with default database', async () => {
+    const actual = await repo.validate('admin', `${defaultPassword}0`)
     expect(actual.isValid).to.be.equal(false)
   })
 
-  it('Ensures password can be updated', () => {
+  it('Ensures password can be updated', async () => {
     const newPassword = 'rollthedice'
-    repo.updateCredentials(newPassword)
+    await repo.update(newPassword)
 
-    const actual = repo.validateCredentials('admin', newPassword)
+    const actual = await repo.validate('admin', newPassword)
     expect(actual.isValid).to.be.equal(true)
   })
   after(async () => {
-    console.log('unlinking')
     fs.unlinkSync(path.join(__dirname, 'user-credentials-test.db'))
   })
 })

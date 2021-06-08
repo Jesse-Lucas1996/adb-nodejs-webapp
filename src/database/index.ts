@@ -1,13 +1,13 @@
 import { createDeviceAssetsRepo } from './device-assets'
-import { createIpScannerCandidatesRepo } from './ip-scanner-candidates'
-import { createIpScannerSettingsRepo } from './ip-scanner-settings'
+import { createConnectionCandidatesRepo } from './connection-candidates'
+import { createScannerSettingsRepo as createScannerSettingsRepo } from './scanner-settings'
 import { createLogsRepo } from './logs'
 import { createUserCredentialsRepo } from './user-credentials'
 
 export const repo = {
-  userDb: createUserCredentialsRepo(),
+  credentials: createUserCredentialsRepo(),
+  assets: createDeviceAssetsRepo(),
+  connectionCandidates: createConnectionCandidatesRepo(),
+  scannerSettings: createScannerSettingsRepo(),
   logs: createLogsRepo(),
-  ipScannerSettings: createIpScannerSettingsRepo(),
-  ipScannerCandidates: createIpScannerCandidatesRepo(),
-  deviceAssets: createDeviceAssetsRepo(),
 }

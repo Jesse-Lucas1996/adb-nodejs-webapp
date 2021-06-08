@@ -30,7 +30,7 @@ export function createCandidateScanner() {
     isRunning = true
 
     const ipCandidates = new Set<string>()
-    const ipSettings = repo.ipScannerSettings.get()
+    const ipSettings = await repo.scannerSettings.get()
 
     const ips = ipSettings.addresses
     const ipsFromRanges = ipSettings.ranges.reduce((acc, curr) => {
@@ -82,7 +82,7 @@ export function createCandidateScanner() {
       }
     }
 
-    repo.ipScannerCandidates.update([...ipCandidates])
+    await repo.connectionCandidates.update([...ipCandidates])
     isRunning = false
 
     if (shouldRun) {

@@ -45,14 +45,14 @@ export function createConnectionPool(): ConnectionPool {
     }
     isRunning = true
 
-    const deviceAssests = repo.deviceAssets.get()
+    const deviceAssests = await repo.assets.get()
     for (const asset of deviceAssests) {
       if (!deviceState.has(asset.serial)) {
         deviceState.set(asset.serial, { state: 'offline' })
       }
     }
 
-    ips = repo.ipScannerCandidates.get()
+    ips = await repo.connectionCandidates.get()
 
     for (const ip of ips) {
       try {
@@ -84,13 +84,12 @@ export function createConnectionPool(): ConnectionPool {
     Promise.resolve(startCycle())
   }
 
-  function getState() {
+  async function getState() {
     const deviceStateDto = {} as {
       [K in DeviceSerial]: DeviceState & { name: string }
     }
 
-    // This is a bad approach and must be re-done when we have a real DB =)
-    const deviceAssets = repo.deviceAssets.get()
+    const deviceAssets = await repo.assets.get()
 
     for (const [serial, state] of [...deviceState]) {
       const asset = deviceAssets.find(a => a.serial === serial)
@@ -132,7 +131,9 @@ export type ConnectionPool = {
   start: () => void
   stop: () => void
   client: Client
-  getState: () => { [K in DeviceSerial]: DeviceState & { name: string } }
+  getState: () => Promise<
+    { [K in DeviceSerial]: DeviceState & { name: string } }
+  >
   getDeviceClient: (serial: string) => DeviceClient | undefined
 }
 

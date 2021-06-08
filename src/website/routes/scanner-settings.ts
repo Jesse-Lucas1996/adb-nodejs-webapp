@@ -1,7 +1,7 @@
 import express from 'express'
 import { isValidIp, isValidNetmask } from '../../adb/utils'
 import { repo } from '../../database'
-import { IpScannerSettings } from '../../database/ip-scanner-settings'
+import { ScannerSettings } from '../../database/scanner-settings'
 import { IPNetwork, IPRange } from '../../types'
 const router = express.Router({})
 
@@ -19,7 +19,7 @@ type InvalidNetmask = IPNetwork & {
 }
 
 router.get('/', async (_req, res) => {
-  const savedSettings = repo.ipScannerSettings.get()
+  const savedSettings = await repo.scannerSettings.get()
   const savedSettingsDto = toScannerSettingsDto(savedSettings)
 
   res.render('scanner.pug', {
@@ -87,13 +87,13 @@ router.post('/', async (req, res) => {
     validNetmasks.push({ ip, mask })
   }
 
-  const settings: IpScannerSettings = {
+  const settings: ScannerSettings = {
     addresses: validIps,
     networks: validNetmasks,
     ranges: validRanges,
   }
 
-  const savedSettings = repo.ipScannerSettings.update(settings)
+  const savedSettings = await repo.scannerSettings.update(settings)
   const savedSettingsDto = toScannerSettingsDto(savedSettings)
 
   return res.render('scanner.pug', {
@@ -108,7 +108,7 @@ router.post('/', async (req, res) => {
   })
 })
 
-function toScannerSettingsDto(settings: IpScannerSettings) {
+function toScannerSettingsDto(settings: ScannerSettings) {
   return {
     addresses: settings.addresses,
     networks: settings.networks.map(n => `${n.ip}/${n.mask}`),
