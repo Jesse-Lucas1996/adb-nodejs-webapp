@@ -1,6 +1,6 @@
 import { ConnectionPool } from '../adb/connection-pool'
 
-export type TaskType = 'sendEmergency' | 'reset' | 'uptime'
+export type TaskType = 'sendEmergency' | 'stopEmergency' | 'reset' | 'uptime'
 
 export type CommandValidator = (cmdOutput: string) => {
   error: boolean

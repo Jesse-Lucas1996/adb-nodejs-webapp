@@ -9,6 +9,7 @@ export function createTask(type: TaskType): Task {
       },
       { cmd: 'service call audio 7 i32 3 i32 0 i32 i' },
     ],
+    stopEmergency: [{ cmd: 'am force-stop com.emergencyreactnativeapp' }],
     reset: [{ cmd: 'wipe data' }],
     uptime: [
       {
