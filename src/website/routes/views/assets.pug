@@ -1,0 +1,28 @@
+html
+    title Assets
+    style 
+        include style.scss
+    script 
+        include assets.js
+    head
+        include navbar.pug
+    body(class='background-assets')
+      h1(class='title') Adding Assets
+      form(class='background-form ' action="/assets" method="POST") 
+        div(class='asset-div')
+            div(class='assets-columns' id='assets')
+                h2(class='head-top') Serials and Names
+                div(id='container', class='add-div')
+                    button(id='add-btn', class='asset-buttons', type='button') Add
+                    div(id='entries')
+                        each asset in assets
+                            div(class='input-div')
+                                div
+                                    label(class='label') Serial
+                                    input(value=asset.serial, id='serial-div' class='input-field' type='text' name='serial[]')
+                                div
+                                    label(class='label') Name
+                                    input(value=asset.name, id='name-div' class='input-field' type='text' name='name[]')  
+                                button(class='delete-btn', type='button') Delete               
+        div(class='asset-save')
+            button(class='asset-buttons', type='submit') Save
