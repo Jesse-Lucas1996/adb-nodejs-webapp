@@ -1,5 +1,4 @@
 import { JobConnectionPool, Jobs, JobStatus, Job, Task } from './types'
-import { repo } from './database'
 import { executeShellCommand } from './adb/connection-pool'
 import { createLogger } from './logger'
 
@@ -32,12 +31,18 @@ export function getJobs(): Jobs {
   return jobs
 }
 
-export function createJob(jobId: string, task: Task, serials?: string[]) {
+export function createJob(
+  jobId: string,
+  task: Task,
+  serials: string[],
+  name: string
+) {
   let isRunning = false
   let hasFinished = false
   const jobStatus: JobStatus = {}
+  const timestamp = new Date().toISOString()
 
-  const targetSerials = serials ?? repo.deviceAssets.get().map(a => a.serial)
+  const targetSerials = serials
   for (const serial of targetSerials) {
     jobStatus[serial] = {
       success: false,
@@ -94,14 +99,14 @@ export function createJob(jobId: string, task: Task, serials?: string[]) {
         }
       }
     }
-    hasFinished = true
+    hasFinished = new Date().toISOString() as unknown as boolean
   }
 
   function status() {
-    return { status: { ...jobStatus }, hasFinished }
+    return { name, timestamp, status: { ...jobStatus }, hasFinished }
   }
 
-  const job = { id: jobId, start, status }
+  const job = { id: jobId, start, status, name, timestamp }
   registerJob(job)
 
   return job

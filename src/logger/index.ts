@@ -1,30 +1,29 @@
 import { repo } from '../database'
 import { LogEntry, LogLevel } from './types'
 
-
 export function createLogger(name: string) {
   const error = (msg: any) => {
     const entry = toLogEntry(name, 'error', msg)
     console.error(toConsoleEntry(entry))
-    repo.logs.append(entry)
+    Promise.resolve(repo.logs.append(entry))
   }
 
   const info = (msg: any) => {
     const entry = toLogEntry(name, 'info', msg)
     console.info(toConsoleEntry(entry))
-    repo.logs.append(entry)
+    Promise.resolve(repo.logs.append(entry))
   }
 
   const debug = (msg: any) => {
     const entry = toLogEntry(name, 'debug', msg)
     console.debug(toConsoleEntry(entry))
-    repo.logs.append(entry)
+    Promise.resolve(repo.logs.append(entry))
   }
 
   const warning = (msg: any) => {
     const entry = toLogEntry(name, 'warning', msg)
     console.warn(toConsoleEntry(entry))
-    repo.logs.append(entry)
+    Promise.resolve(repo.logs.append(entry))
   }
 
   return { error, info, debug, warning }

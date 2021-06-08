@@ -42,7 +42,6 @@
   "dependencies": {
     "@devicefarmer/adbkit": "^3.2.0",
     "axios": "^0.21.1",
-    "better-sqlite3": "^7.4.0",
     "bluebird": "^3.7.2",
     "chai": "^4.3.4",
     "cookie-parser": "^1.4.5",
@@ -50,11 +49,11 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "mocha": "^8.3.2",
+    "nedb-promises": "^4.1.5",
     "nodemon": "^2.0.7",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pug": "^3.0.2",
-    "simplest.db": "^1.0.1-2",
     "uuid": "^8.3.2"
   }
 }

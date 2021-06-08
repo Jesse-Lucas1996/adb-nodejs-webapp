@@ -1,48 +1,72 @@
-import Database from 'simplest.db'
+import NeDB from 'nedb-promises'
 import crypto from 'crypto'
 
-export function createUserCredentialsRepo(path?: string) {
-  const db = new Database({
-    path: path ?? './user-credentials.db',
-    type: 'SQLite',
-    check: true,
-    cacheType: 0,
-  })
+type StoredCredentials = {
+  username: string
+  hash: string
+}
 
-  let defaultHashedPassword = crypto
+export function createUserCredentialsRepo(path?: string) {
+  const datastore = NeDB.create(path ?? './user-credentials.db')
+  const defaultUsername = 'admin'
+  const defaultHash = crypto
     .createHash('sha256')
-    .update('PixelSamsungNetflixACoolBossAHunkOfAMan')
+    .update('CloudTV1')
     .digest('hex')
 
-  if (!db.keys.includes('admin')) {
-    db.set('admin', defaultHashedPassword)
+  const update = async (password: string) => {
+    const hash = crypto.createHash('sha256').update(password).digest('hex')
+    await datastore.update<StoredCredentials>(
+      {
+        username: defaultUsername,
+      },
+      {
+        username: defaultUsername,
+        hash,
+      },
+      {
+        upsert: true,
+      }
+    )
   }
 
-  const updateCredentials = (password: string) =>
-    db.set('admin', crypto.createHash('sha256').update(password).digest('hex'))
+  const validate = async (username: string, password: string) => {
+    const credentials = await datastore.findOne<StoredCredentials>({
+      username,
+    })
 
-  const validateCredentials = (username: string, password: string) => {
-    if (!db.keys.includes(username)) {
+    if (!credentials && username === defaultUsername) {
+      return defaultHash ===
+        crypto.createHash('sha256').update(password).digest('hex')
+        ? {
+            isValid: true,
+          }
+        : {
+            isValid: false,
+            reason: 'Invalid credentials',
+          }
+    }
+
+    if (!credentials) {
       return {
         isValid: false,
-        reason: 'Unknown user',
+        reason: 'User does not exist',
       }
     }
-    if (
-      db.get(username) ===
+
+    return credentials.hash ===
       crypto.createHash('sha256').update(password).digest('hex')
-    ) {
-      return {
-        isValid: true,
-      }
-    }
-    return {
-      isValid: false,
-      reason: 'Invalid credentials',
-    }
+      ? {
+          isValid: true,
+        }
+      : {
+          isValid: false,
+          reason: 'Invalid credentials',
+        }
   }
+
   return {
-    updateCredentials,
-    validateCredentials,
+    update,
+    validate,
   }
 }

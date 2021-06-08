@@ -40,7 +40,7 @@ html
     div(class='a-div')
       div(class='a-child-div')
         each pageNum in pagesRange
-          a(href=`/logs?page=${pageNum}&size=${size}&name=${name}&level=${level}` class='log-a')= pageNum
+          a(href=`/logs?page=${pageNum}&size=${size}&name=${name}&level=${level}`, class='log-a')= pageNum
     table(class='table')
       tr(class='thead')
         th(class='table-titles') Name

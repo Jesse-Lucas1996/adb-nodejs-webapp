@@ -1,5 +1,5 @@
 import express from 'express'
-import { LogEntry, LogLevel } from '../../logger/types'
+import { LogEntry } from '../../logger/types'
 import { api } from '../utils'
 
 const router = express.Router()
@@ -9,26 +9,29 @@ router.get('/', async (req, res) => {
     page?: number
     size?: number
     name?: string
-    level?: LogLevel
+    level?: string
   }
 
   const resp = await api.get(
-    `/logs?page=${query.page ?? 1}&size=${query.size ?? 50}&name=${
-      query.name ?? ''
-    }&level=${query.level ?? ''}`
+    `/logs?page=${query.page}&size=${query.size}&name=${query.name}&level=${query.level}`
   )
 
-  const { logs, pages } = resp.data as {
+  const data = resp.data as {
     logs: LogEntry[]
     pages: number
+    page: number
+    size: number
+    name: string
+    level: string
   }
 
   res.render('logs.pug', {
-    logs,
-    name: query.name,
-    level: query.level,
-    size: query.size || 50,
-    pagesRange: makeRange(pages),
+    logs: data.logs,
+    name: data.name,
+    level: data.level,
+    size: data.size,
+    page: data.page,
+    pagesRange: makeRange(data.pages),
   })
 })
 

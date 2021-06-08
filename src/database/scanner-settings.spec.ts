@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import * as fs from 'fs'
 import * as path from 'path'
-import { createIpScannerSettingsRepo } from './ip-scanner-settings'
+import { createScannerSettingsRepo } from './scanner-settings'
 
 describe('IP Scanner Settings repo testing', () => {
   // Testing valid ip
@@ -18,19 +18,17 @@ describe('IP Scanner Settings repo testing', () => {
     ],
   }
 
-  const db = createIpScannerSettingsRepo(path.join(__dirname, 'TEST.db'))
+  const db = createScannerSettingsRepo(path.join(__dirname, 'TEST.db'))
 
-  it('Attempt to make empty db and write to', () => {
-    const actual = db.update(settings)
-    console.log(actual)
-    expect(actual).to.be.equal(settings)
+  it('Attempt to make empty db and write to', async () => {
+    const actual = await db.update(settings)
+    expect(actual).to.be.deep.equal(settings)
   })
-  it('Atttempt to get from current database', () => {
-    const actual = db.get()
+  it('Atttempt to get from current database', async () => {
+    const actual = await db.get()
     expect(actual.addresses).deep.equal(settings.addresses)
   })
   after(async () => {
-    console.log('unlinking')
     fs.unlinkSync(path.join(__dirname, 'TEST.db'))
   })
 })

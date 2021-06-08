@@ -1,9 +1,9 @@
-import Database from 'simplest.db'
+import NeDB from 'nedb-promises'
 import { LogLevel } from '../logger/types'
 
-export type LogsFilter = {
-  page: number
-  size: number
+export type LogFilter = {
+  page?: number
+  size?: number
   name?: string
   level?: string
 }
@@ -15,55 +15,73 @@ export type LogEntry = {
   message: string
 }
 
+type PaginatedLogs = {
+  logs: LogEntry[]
+  pages: number
+  page: number
+  size: number
+}
+
 export function createLogsRepo(path?: string) {
-  const db = new Database({
-    path: path ?? './logs.db',
-    type: 'SQLite',
-    check: true,
-    cacheType: 0,
-  })
+  const datastore = NeDB.create(path ?? './logs.db')
+  const namestore = NeDB.create(path ? `${path}-names.db` : './log-names.db')
 
-  const append = (entry: LogEntry): LogEntry => {
-    const index = db.keys.length
-    return db.set(`${index}`, entry)
-  }
-
-  const get = (filter?: LogsFilter): { logs: LogEntry[]; pages?: number } => {
-    if (!filter) {
-      return { logs: db.values }
-    }
-
-    const values = db.values as LogEntry[]
-
-    const filtered = values
-      .filter(fpe => (filter.name ? fpe.name === filter.name : true))
-      .filter(spe => (filter.level ? spe.level === filter.level : true))
-
-    const length = filtered.length
-    const pages = Math.ceil(length / filter.size)
-
-    const from = (filter.page - 1) * filter.size
-    const to = filter.page * filter.size
-
-    const logs = filtered.slice(from, to)
+  const append = async (entry: LogEntry): Promise<LogEntry> => {
+    const document = await datastore.insert<LogEntry>({
+      name: entry.name,
+      level: entry.level,
+      timestamp: entry.timestamp,
+      message: entry.message,
+    })
+    const { name, level, timestamp, message } = document
+    await namestore.update({ name }, { name }, { upsert: true })
 
     return {
-      logs,
-      pages,
+      name,
+      level,
+      timestamp,
+      message,
     }
   }
 
-  const getNames = (): string[] => {
-    const set = new Set<string>()
-    for (const { name } of db.values as LogEntry[]) {
-      set.add(name)
+  const getPaginated = async (filter?: LogFilter): Promise<PaginatedLogs> => {
+    filter ??= {}
+    const query = {}
+    if (filter?.level) {
+      query['level'] = filter.level
     }
-    return [...set]
+    if (filter?.name) {
+      query['name'] = filter.name
+    }
+
+    const page = +filter.page! ?? 1
+    const size = +filter.size! ?? 50
+
+    const count = await datastore.count(query)
+    const pages = Math.ceil(count / size)
+
+    const documents = await datastore
+      .find<LogEntry>(query, { _id: 0 })
+      .sort({ timestamp: -1 })
+      .skip(page - 1)
+      .limit(size)
+
+    return {
+      logs: documents,
+      pages,
+      page,
+      size,
+    }
+  }
+
+  const names = async (): Promise<string[]> => {
+    const names = await namestore.find<{ name: string }>({})
+    return names.map(n => n.name)
   }
 
   return {
     append,
-    get,
-    getNames,
+    getPaginated,
+    names,
   }
 }

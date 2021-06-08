@@ -12,7 +12,9 @@ router.get('/', async (_req, res) => {
 router.post('/', async (req, res) => {
   const { username, password } = req.body
 
-  if (!repo.userDb.validateCredentials(username, password).isValid) {
+  const authentication = await repo.credentials.validate(username, password)
+
+  if (!authentication.isValid) {
     return res.status(401).send()
   }
 

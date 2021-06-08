@@ -11,18 +11,17 @@ describe('Logs repo test', () => {
     message: '"Hello"',
   }
 
-  const db = createLogsRepo(path.join(__dirname, 'logsTest.db'))
+  const db = createLogsRepo(path.join(__dirname, 'logs-test.db'))
 
-  it('Attempt to make empty db and write to', () => {
-    const actual = db.append(entry)
-    expect(actual).to.be.equal(entry)
+  it('Attempt to make empty db and write to', async () => {
+    const actual = await db.append(entry)
+    expect(actual).to.be.deep.equal(entry)
   })
-  it('Atttempt to get from current database', () => {
-    const actual = db.get()
-    expect(actual).deep.equal({ logs: [entry] })
+  it('Atttempt to get from current database', async () => {
+    const actual = await db.getPaginated()
+    expect(actual.logs).to.be.deep.equal([entry])
   })
   after(async () => {
-    console.log('unlinking')
-    fs.unlinkSync(path.join(__dirname, 'logsTest.db'))
+    fs.unlinkSync(path.join(__dirname, 'logs-test.db'))
   })
 })

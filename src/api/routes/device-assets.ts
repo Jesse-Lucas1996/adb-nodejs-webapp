@@ -5,7 +5,7 @@ import { DeviceAsset } from '../../database/device-assets'
 const router = express.Router()
 
 router.get('/', async (_req, res) => {
-  const assets = repo.deviceAssets.get()
+  const assets = await repo.assets.get()
   res.status(200).send({ assets })
 })
 
@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     }
   }
 
-  const stored = repo.deviceAssets.update(assets)
+  const stored = await repo.assets.update(assets)
   return res.status(201).send({ assets: stored })
 })
 

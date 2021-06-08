@@ -1,27 +1,42 @@
-import Database from 'simplest.db'
+import NeDB from 'nedb-promises'
 
 export type DeviceAsset = {
   serial: string
   name: string
 }
 
+type StoredAssets = {
+  version: string
+  assets: DeviceAsset[]
+}
+
 export function createDeviceAssetsRepo(path?: string) {
-  const db = new Database({
-    path: path ?? './assets.db',
-    type: 'SQLite',
-    check: true,
-    cacheType: 0,
-  })
+  const datastore = NeDB.create(path ?? './assets.db')
+  const version = 'current'
 
-  const index = '0'
-
-  if (!db.get(index)) {
-    db.set(index, [])
+  const update = async (assets: DeviceAsset[]): Promise<DeviceAsset[]> => {
+    const stored = await datastore.update<StoredAssets>(
+      {
+        version,
+      },
+      {
+        version,
+        assets: assets ?? [],
+      },
+      {
+        upsert: true,
+        returnUpdatedDocs: true,
+      }
+    )
+    return stored.assets
   }
 
-  const update = (assets: DeviceAsset[]): DeviceAsset[] => db.set(index, assets)
-
-  const get = (): DeviceAsset[] => db.get(index)
+  const get = async (): Promise<DeviceAsset[]> => {
+    const document = await datastore.findOne<StoredAssets>({
+      version,
+    })
+    return document?.assets ?? []
+  }
 
   return {
     update,
