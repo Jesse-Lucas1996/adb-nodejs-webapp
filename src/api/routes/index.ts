@@ -11,7 +11,6 @@ import jobsRouter from './jobs'
 import logsRouter from './logs'
 import candidateScannerRouter from './candidate-scanner'
 import assetsRouter from './device-assets'
-
 const router = Router()
 const apiKeyMiddleware = createApiKeyMiddleware('API_KEY_HERE')
 

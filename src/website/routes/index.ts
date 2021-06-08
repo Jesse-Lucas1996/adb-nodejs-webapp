@@ -11,6 +11,7 @@ import passwordRouter from './password'
 import emergencyRouter from './emergency'
 import jobDetailsRouter from './job-details'
 import candidateScannerRouter from './candidate-scanner'
+import assetRouter from './asset-page'
 
 const router = Router()
 const cookieAuth = createCookieAuth('admin')
@@ -28,5 +29,6 @@ router.use('/scanner', asyncHandler(scannerSettingsRouter))
 router.use('/emergency', asyncHandler(emergencyRouter))
 router.use('/logs', asyncHandler(logsRouter))
 router.use('/candidates', asyncHandler(candidateScannerRouter))
+router.use('/assets', asyncHandler(assetRouter))
 
 export default router
