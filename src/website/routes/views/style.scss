@@ -1,27 +1,65 @@
 .title-header {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
   display: flex;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
 }
 .head-top {
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   display: flex;
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
   color: white;
 }
+
 .paragraph {
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: black;
   display: flex;
   margin-bottom: 10px;
 }
 
+.paragraph-footer {
+  font-family: 'Roboto', sans-serif;
+  color: #a2a2a2;
+  display: flex;
+  margin-bottom: 5px;
+  flex-direction: column;
+  font-size: 13;
+}
+
+.paragraph-footer-title {
+  font-family: 'Roboto', sans-serif;
+  color: #ccc;
+  display: flex;
+  margin-bottom: 5px;
+  flex-direction: column;
+  left: 0;
+  font-size: 13;
+  font-weight: 700;
+}
+
+.footer-div {
+  margin-left: 20px;
+}
+
+.a-header:hover {
+  opacity: 0.7;
+}
+
+.login-title-header {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  margin-top: 30px;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .title {
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 700;
   color: white;
   display: flex;
@@ -103,7 +141,7 @@
 }
 
 .health-page {
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   display: inline-flexbox;
 }
 .navbar {
@@ -115,7 +153,7 @@
 
 .a-navbar {
   padding: 10px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-decoration: none;
   background-color: transparent;
   color: white;
@@ -156,7 +194,7 @@
 }
 
 .log-label {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: white;
   margin-bottom: 10px;
 }
@@ -173,7 +211,7 @@
 
 .log-a {
   color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin-right: 5px;
   text-decoration: none;
 }
@@ -202,10 +240,9 @@
   padding-left: 60px;
   padding-right: 60px;
   border: 1px solid #ccc;
-  height: 400px;
+  height: 330px;
   width: 300px;
   border-radius: 5px;
-  box-shadow: 0 0 9px black;
   background-color: white;
 }
 
@@ -223,6 +260,21 @@
 
 .login-div {
   margin-top: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-top: 22px;
+  position: fixed;
+  left: 50;
+  width: 250px;
+  height: 55px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
 }
 
 .login-label {
@@ -277,13 +329,47 @@
 }
 
 .background-login {
-  background: linear-gradient(
-    45deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(9, 9, 121, 1) 35%,
-    rgba(0, 212, 255, 1) 100%
-  );
-  height: 70%;
+  background: #fff;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: hidden;
+}
+
+.login-header {
+  background-color: #fff;
+  border-bottom: 1px solid #0081ba;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100px;
+}
+
+.login-header {
+  background-color: #fff;
+  border-bottom: 1px solid #0081ba;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100px;
+}
+
+.login-footer {
+  background-color: #333;
+  border-top: 2px solid #0081ba;
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100px;
 }
 
 .background-password {
@@ -297,7 +383,7 @@
 }
 
 .error {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: red;
   margin-top: 5px;
   font-size: 13px;
@@ -305,12 +391,10 @@
 
 .input-login {
   transition: box-shadow 0.3s;
-  margin-bottom: 10px;
-  margin-right: 5px;
+  margin-left: 10px;
   border: 1px solid #ccc;
   padding: 12px 20px;
   border-radius: 4px;
-  box-sizing: border-box;
   width: 100%;
 }
 
@@ -328,12 +412,12 @@
 .next-prev-button:hover,
 .scanner-buttons:hover {
   background-color: white;
-  border: 2px solid #24a0ed;
-  color: #24a0ed;
+  border: 2px solid #0081ba;
+  color: #0081ba;
 }
 
 .login-button {
-  background-color: #24a0ed;
+  background-color: #0081ba;
   color: white;
   border: none;
   border-radius: 50px;

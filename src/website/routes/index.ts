@@ -9,7 +9,6 @@ import { createCookieAuth } from '../../api/middleware/cookie-auth'
 import { asyncHandler } from '../../api/middleware'
 import passwordRouter from './password'
 import emergencyRouter from './emergency'
-import jobDetailsRouter from './job-details'
 import candidateScannerRouter from './candidate-scanner'
 import assetRouter from './asset-page'
 
@@ -23,7 +22,6 @@ router.use('/password', asyncHandler(passwordRouter))
 router.use('/jobpage', asyncHandler(jobPageRouter))
 router.use('/homepage', asyncHandler(homePageRouter))
 router.use('/jobs', asyncHandler(jobPageRouter))
-router.use('/:jobId', asyncHandler(jobDetailsRouter))
 router.use('/healthcheckpage', asyncHandler(healthCheckRouter))
 router.use('/scanner', asyncHandler(scannerSettingsRouter))
 router.use('/emergency', asyncHandler(emergencyRouter))
