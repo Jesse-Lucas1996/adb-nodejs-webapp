@@ -1,16 +1,30 @@
 html
     title Login
+    head
+        link(href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css')
     style
-        include style.scss 
-
+        include style.scss
+    div.login-header
+        a.a-header(href='/')
+            img.logo(src='/images/corpcloud-logo.png')
+        h1.login-title-header Cloud Hotel Management System
+    div.login-footer
+        div.footer-div
+            p.paragraph-footer-title Support details
+            p.paragraph-footer 1300 409 552 <br> support@corpcloud.com.au
+        div.footer-div
+            p.paragraph-footer-title Build Number
+            p.paragraph-footer Needs to be implemented
+        div.footer-div
+            p.paragraph-footer-title Install ID
+            p.paragraph-footer Needs to be implemented
     body(class='background-login')
-        div(class='userpass')
-            form(class='form-login' method='POST', action='/auth')
-                h1(class='title-header') Login
-                div(class='login-div') 
-                    label(class='paragraph') Username: 
-                    input(class='input-login' type='text' id='username', placeholder='Username', name='username', value='', required)
-                div(class='login-label')
-                    label(class='paragraph' for='password') Password: 
-                    input(class='input-login' type='password', id='password', placeholder='Password', name='password', value='', required)
-                button(class='login-button' type='submit' value='connecting') Log in
+        form(class='form-login' method='POST', action='/auth')
+            h1(class='title-header') Login
+            div(class='login-div') 
+                img.icon(src="/images/user.svg")
+                input(class='input-login' type='text' id='username', placeholder='Username', name='username', value='', required)
+            div(class='login-div')
+                img.icon(src="/images/pass.svg")
+                input(class='input-login' type='password', id='password', placeholder='Password', name='password', value='', required)
+            button(class='login-button' type='submit' value='connecting') Log in

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && cp -r src/website/routes/views build/src/website/routes",
+    "build": "tsc && cp -r src/website/routes/views build/src/website/routes && cp -r src/website/images build/src/website",
     "start": "tsc && node build/src/index.js",
     "test": "mocha -t 20000 --reporter spec --exit 'build/**/*.spec.js'",
     "testonly": "mocha -t 20000 --exit 'build/**/*.spec.js'",
