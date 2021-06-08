@@ -1,7 +1,7 @@
 import express from 'express'
 import { Jobs } from '../../types'
 import { api } from '.././utils'
-import { getJobs as jobsStatus } from '../../job'
+import { getJob } from '../../job'
 
 const router = express.Router({})
 
@@ -37,18 +37,18 @@ router.get('/', async (_req, res) => {
 
 router.get('/:jobId', async (req, res) => {
   const jobId = req.params['jobId']
-
-  const status = jobsStatus(jobId)
+  const status = getJob(jobId)
+  if (!status) {
+    return res.status(404).send()
+  }
   const jobsDto = []
   for (const jobId of Object.keys(status)) {
     const job = status[jobId]
-
     const jobDto = {
       jobId,
       hasFinished: job?.hasFinished,
       details: new Array(),
     }
-
     for (const ip of Object.keys(job?.status ?? {})) {
       const jobIpStatus = {
         ip,
@@ -58,10 +58,9 @@ router.get('/:jobId', async (req, res) => {
       }
       jobDto.details.push(jobIpStatus)
     }
-
     jobsDto.push(jobDto)
   }
-  res.render('jobdetails.pug', { jobs: jobsDto })
+  return res.render('jobdetails.pug', { jobs: jobsDto })
 })
 
 export default router
