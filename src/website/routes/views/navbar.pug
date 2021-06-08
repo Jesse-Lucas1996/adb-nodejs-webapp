@@ -2,8 +2,11 @@ div(class='navbar')
     a(class='a-navbar' href='/') Home              
     a(class='a-navbar' href='/jobpage') Jobs           
     a(class='a-navbar' href='/healthcheckpage') Health Check
-    a(class='a-navbar' href='/scanner') Scanner Settings
-    a(class='a-navbar' href='/logs') System Logs
+    div.dropdown
+      button.dropbtn Settings
+      div(class='dropdown-content')
+        a(href='/scanner') Scanner Settings
+        a(href='/password') Change Password    
+    a(class='a-navbar' href='/logs') System Log
     a(class='a-navbar' href='/candidates') Candidates
-    a(class='a-navbar' href='/password') Create New Password
     a(class='a-navbar' href='/assets') Asset Page
