@@ -7,17 +7,16 @@ import { pool } from '../adb'
 
 const CYCLE_TIMEOUT_MSEC = 10 * 1000
 const logger = createLogger('emergency-service')
+let shouldRun = false
 
 export function createEmergencyService() {
-  let shouldRun = false
-
   function start() {
     if (shouldRun) {
       return
     }
     shouldRun = true
     Promise.resolve(startCycle())
-    logger.info('Emergency has started')
+    logger.info('Service has started')
   }
 
   function stop() {
@@ -26,7 +25,7 @@ export function createEmergencyService() {
     }
     shouldRun = false
     Promise.resolve(stopCycle())
-    logger.info('Emergency has stopped')
+    logger.info('Service has stopped')
   }
 
   function status() {

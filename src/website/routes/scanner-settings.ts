@@ -1,7 +1,7 @@
 import express from 'express'
 import { isValidIp, isValidNetmask } from '../../adb/utils'
 import { repo } from '../../database'
-import { ScannerSettings } from '../../database/scanner-settings'
+import { ScannerSettings } from '../../database/repo/scanner-settings'
 import { IPNetwork, IPRange } from '../../types'
 const router = express.Router({})
 

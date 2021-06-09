@@ -1,6 +1,6 @@
 import express from 'express'
 import { repo } from '../../database'
-import { DeviceAsset } from '../../database/device-assets'
+import { DeviceAsset } from '../../database/repo/device-assets'
 
 type DeviceAssetsBody = {
   serial: string[]

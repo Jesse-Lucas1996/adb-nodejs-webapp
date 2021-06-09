@@ -1,3 +1,7 @@
 import { createEmergencyService } from './emergency'
+import { createScreenStateService } from './screen-state'
 
-export const emergency = createEmergencyService()
+const screenStateService = createScreenStateService()
+const emergencyService = createEmergencyService()
+
+export { screenStateService, emergencyService }

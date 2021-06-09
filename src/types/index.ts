@@ -43,3 +43,5 @@ export type IPNetwork = {
   ip: string
   mask: string
 }
+
+export class DeserializationError extends Error {}
