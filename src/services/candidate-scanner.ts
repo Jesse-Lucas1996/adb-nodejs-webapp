@@ -1,5 +1,5 @@
 import { createLogger } from '../logger'
-import { fromNetmask, fromRange } from './utils'
+import { fromNetmask, fromRange } from '../adb/utils'
 import { createConnection } from 'net'
 import { repo } from '../database'
 
@@ -9,7 +9,7 @@ const PORT = 5555
 
 const logger = createLogger('candidate-scanner')
 
-export function createCandidateScanner() {
+export function createCandidateScannerService() {
   let isRunning = false
   let shouldRun = false
 

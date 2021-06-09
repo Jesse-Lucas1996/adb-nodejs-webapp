@@ -1,15 +1,16 @@
-import { pool, candidateScanner } from './adb'
+import { pool } from './adb'
 import app from './create-server'
 import path from 'path'
 import { createLogger } from './logger'
-import { screenStateService } from './services'
+import { services } from './services'
 
 const [host, port] = ['localhost', 3000]
 const logger = createLogger('application')
 
 pool.start()
-candidateScanner.start()
-screenStateService.start()
+services.candidateScanner.start()
+services.screenState.start()
+services.usageState.start()
 
 app.set('views', path.join(__dirname, './website/views'))
 app.set('view engine', 'pug')
