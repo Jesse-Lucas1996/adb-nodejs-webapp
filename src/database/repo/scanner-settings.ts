@@ -1,5 +1,5 @@
 import NeDB from 'nedb-promises'
-import { IPRange, IPNetwork } from '../types'
+import { IPRange, IPNetwork } from '../../types'
 
 export type ScannerSettings = {
   addresses: string[]

@@ -1,10 +1,10 @@
 import express from 'express'
-import { emergency } from '../../services'
+import { emergencyService } from '../../services'
 
 const router = express.Router()
 
 router.get('/', async (_req, res) => {
-  const { isActive } = emergency.status()
+  const { isActive } = emergencyService.status()
   return res.status(200).send({ isActive })
 })
 
@@ -17,9 +17,11 @@ router.post('/', async (req, res) => {
     return res.status(400).send()
   }
 
-  const execute = body.setActive ? emergency.start : emergency.stop
+  const execute = body.setActive
+    ? emergencyService.start
+    : emergencyService.stop
   execute()
-  const { isActive } = emergency.status()
+  const { isActive } = emergencyService.status()
 
   return res.status(200).send({ isActive })
 })

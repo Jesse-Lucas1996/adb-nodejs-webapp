@@ -1,5 +1,5 @@
 import NeDB from 'nedb-promises'
-import { LogLevel } from '../logger/types'
+import { LogLevel } from '../../logger/types'
 
 export type LogFilter = {
   page?: number
@@ -47,6 +47,7 @@ export function createLogsRepo(path?: string) {
   const getPaginated = async (filter?: LogFilter): Promise<PaginatedLogs> => {
     filter ??= {}
     const query = {}
+
     if (filter?.level) {
       query['level'] = filter.level
     }

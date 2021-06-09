@@ -11,7 +11,7 @@
     "test": "mocha -t 20000 --reporter spec --exit 'build/**/*.spec.js'",
     "testonly": "mocha -t 20000 --exit 'build/**/*.spec.js'",
     "build-start": "yarn build && yarn start",
-    "copy-files": "cp ./src/view"
+    "copy-static": "cp -r src/website/routes/views build/website/routes && cp -r src/website/images build/website"
   },
   "repository": {
     "type": "git",
