@@ -4,6 +4,7 @@ import { createScannerSettingsRepo as createScannerSettingsRepo } from './repo/s
 import { createLogsRepo } from './repo/logs'
 import { createUserCredentialsRepo } from './repo/user-credentials'
 import { createScreenStateStore } from './store/screen-state'
+import { createUsageStateStore } from './store/usage-state'
 
 export const repo = {
   credentials: createUserCredentialsRepo(),
@@ -15,4 +16,5 @@ export const repo = {
 
 export const store = {
   screenState: createScreenStateStore(),
+  usageState: createUsageStateStore(),
 }

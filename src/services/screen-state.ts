@@ -1,6 +1,7 @@
 import { pool } from '../adb'
 import { executeShellCommand } from '../adb/connection-pool'
 import { repo, store } from '../database'
+import { PersistedEvent } from '../database/store/types'
 import { createLogger } from '../logger'
 import { DeserializationError } from '../types'
 
@@ -35,17 +36,19 @@ export function createScreenStateService() {
       const event = {
         serial,
         timestamp: new Date().toISOString(),
-      } as ScreenStateEvent
+      } as PersistedScreenStateEvent
+
+      let rawOutput: string = undefined as any
 
       try {
         const client = pool.getDeviceClient(serial)
         if (client) {
-          const raw = await executeShellCommand(
+          rawOutput = await executeShellCommand(
             client,
             'dumpsys display | grep -e "mState="'
           )
-          const state = deserializeScreenState(raw)
-          event['state'] = state
+          const evt = deserializeScreenState(rawOutput)
+          event['event'] = evt
         } else {
           throw new Error('Device client does not exist')
         }
@@ -53,6 +56,12 @@ export function createScreenStateService() {
         event['errorMessage'] = ex.message
         event['error'] =
           ex instanceof DeserializationError ? 'deserialization' : 'connection'
+        event['metadata'] =
+          ex instanceof DeserializationError
+            ? {
+                rawOutput,
+              }
+            : undefined
       } finally {
         await store.screenState.append(event)
       }
@@ -68,7 +77,7 @@ export function createScreenStateService() {
   return { start, stop }
 }
 
-function deserializeScreenState(raw: string): ScreenState {
+function deserializeScreenState(raw: string): ScreenStateEvent {
   if (typeof raw !== 'string') {
     throw new DeserializationError('Invalid type of data')
   }
@@ -88,21 +97,9 @@ function deserializeScreenState(raw: string): ScreenState {
     throw new DeserializationError('Invalid value')
   }
 
-  return value.toLowerCase() as ScreenState
+  return value.toLowerCase() as ScreenStateEvent
 }
 
-type ScreenState = 'on' | 'off'
+type ScreenStateEvent = 'on' | 'off'
 
-export type ScreenStateEvent = {
-  serial: string
-  timestamp: string
-  metadata?: any
-} & (
-  | {
-      state: ScreenState
-    }
-  | {
-      error: 'deserialization' | 'connection'
-      errorMessage: string
-    }
-)
+export type PersistedScreenStateEvent = PersistedEvent<ScreenStateEvent>

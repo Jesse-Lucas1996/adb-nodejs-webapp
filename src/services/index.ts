@@ -1,7 +1,16 @@
+import { createCandidateScannerService } from './candidate-scanner'
 import { createEmergencyService } from './emergency'
 import { createScreenStateService } from './screen-state'
+import { createUsageStateService } from './usage-state'
 
-const screenStateService = createScreenStateService()
-const emergencyService = createEmergencyService()
+const screenState = createScreenStateService()
+const usageState = createUsageStateService()
+const candidateScanner = createCandidateScannerService()
+const emergency = createEmergencyService()
 
-export { screenStateService, emergencyService }
+export const services = {
+  screenState,
+  usageState,
+  candidateScanner,
+  emergency,
+}

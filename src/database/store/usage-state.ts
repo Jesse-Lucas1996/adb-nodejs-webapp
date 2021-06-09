@@ -1,17 +1,17 @@
 import NeDB from 'nedb-promises'
-import { PersistedScreenStateEvent } from '../../services/screen-state'
+import { PersistedUsageStateEvent } from '../../services/usage-state'
 import { EventFilter, PaginatedEvents } from './types'
 
-export function createScreenStateStore(path?: string) {
-  const datastore = NeDB.create(path ?? './screen-state-es.db')
+export function createUsageStateStore(path?: string) {
+  const datastore = NeDB.create(path ?? './usage-state-es.db')
 
-  const append = async (event: PersistedScreenStateEvent) => {
+  const append = async (event: PersistedUsageStateEvent) => {
     await datastore.insert(event)
   }
 
   const getPaginated = async (
     filter?: EventFilter
-  ): Promise<PaginatedEvents<PersistedScreenStateEvent>> => {
+  ): Promise<PaginatedEvents<PersistedUsageStateEvent>> => {
     filter ??= {}
     const query = {}
 
@@ -26,7 +26,7 @@ export function createScreenStateStore(path?: string) {
     const pages = Math.ceil(count / size)
 
     const documents = await datastore
-      .find<PersistedScreenStateEvent>(query, { _id: 0 })
+      .find<PersistedUsageStateEvent>(query, { _id: 0 })
       .sort({ timestamp: -1 })
       .skip(page - 1)
       .limit(size)
