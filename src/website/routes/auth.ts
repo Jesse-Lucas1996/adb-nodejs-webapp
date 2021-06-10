@@ -15,7 +15,8 @@ router.post('/', async (req, res) => {
   const authentication = await repo.credentials.validate(username, password)
 
   if (!authentication.isValid) {
-    return res.status(401).send()
+    const errorMessage = 'Wrong Username or Password'
+    return res.render('auth.pug', { errorMessage })
   }
 
   res.cookie('user', username, {
