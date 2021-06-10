@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-src": "tsc && cp -r src/website/views build/src/website && cp -r src/website/images build/src/website",
-    "build": "tsc && cp -r src/website/views build/website && cp -r src/website/images build/website",
-    "start-src": "tsc && node build/src/index.js",
-    "start": "tsc && node build/index.js",
+    "build": "tsc && yarn copy-assets && yarn build-sass",
+    "start": "node build/index.js",
     "test": "mocha -t 20000 --reporter spec --exit 'build/**/*.spec.js'",
     "testonly": "mocha -t 20000 --exit 'build/**/*.spec.js'",
     "build-start": "yarn build && yarn start",
-    "copy-static": "cp -r src/website/routes/views build/website/routes && cp -r src/website/images build/website"
+    "copy-assets": "rsync -rv --exclude=*.scss src/website/views build/website/",
+    "build-sass": "node-sass ./src/website/views -o ./build/website/views"
   },
   "repository": {
     "type": "git",
