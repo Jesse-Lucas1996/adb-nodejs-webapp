@@ -2,9 +2,13 @@ html
   title Candidates
   style 
     include style.css
-  head
-    include navbar.pug
-  body(class='background')
-    h1(class='title') Candidates
-    each candidate in candidates
-      div(class='table-items')= candidate
+  body.atv-background
+    include components/navbar.pug
+    p.atv-title Candidates
+    table.atv-table
+      tr.atv-table-title
+        th.atv-table-title Candidate
+      each candidate in candidates
+        tr.atv-table-title
+          th.atv-table-item= candidate
+    include components/footer.pug

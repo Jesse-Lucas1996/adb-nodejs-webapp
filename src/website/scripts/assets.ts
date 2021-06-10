@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const addButton = document.getElementById('add-btn')
   addButton?.addEventListener('click', () => {
     const innerContainer = document.createElement('div')
-    innerContainer.setAttribute('class', 'input-div')
+    innerContainer.setAttribute('class', 'asset__columns')
 
     const serialContainer = document.createElement('div')
 
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createInput(name: string) {
       const input = document.createElement('input')
-      input.setAttribute('class', 'label')
+      input.setAttribute('class', 'atv-input-field')
       input.setAttribute('type', 'text')
       input.setAttribute('name', name)
       return input
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     nameContainer.appendChild(nameInput)
 
     const deleteButton = document.createElement('button')
-    deleteButton.setAttribute('class', 'delete-btn')
+    deleteButton.setAttribute('class', 'atv-button')
     deleteButton.setAttribute('type', 'button')
     deleteButton.innerHTML = 'Delete'
     deleteButton.addEventListener('click', () => {
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     entries?.appendChild(innerContainer)
   })
 
-  const deleteButtons = document.getElementsByClassName('delete-btn')
+  const deleteButtons = document.getElementsByName('delete-button')
   for (const button of deleteButtons) {
     button.addEventListener('click', () => {
       const outterContainer = button.parentElement

@@ -1,0 +1,19 @@
+div.navbar
+  div
+    a(href='/')
+      img.navbar-login__logo(src='/images/corpcloud-logo.png')
+  a.navbar__link(href='/') Home              
+  a.navbar__link(href='/emergency') Emergency
+  a.navbar__link(href='/jobpage') Jobs           
+  div.navbar__dropdown
+    button.navbar__dropbtn Settings
+    div.navbar__dropdown-content
+      a.navbar__dropdown-link(href='/scanner') Scanner Settings
+      a.navbar__dropdown-link(href='/password') Change Password
+      a.navbar__dropdown-link(href='/assets') Asset Page
+  div.navbar__dropdown
+    button.navbar__dropbtn Monitoring
+    div.navbar__dropdown-content
+      a.navbar__dropdown-link(href='/candidates') Candidates
+      a.navbar__dropdown-link(href='/logs') System Logs
+      a.navbar__dropdown-link(href='/healthcheckpage') Health Check
