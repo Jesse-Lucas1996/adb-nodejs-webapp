@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import healthCheckRouter from './healthcheck'
-import jobPageRouter from './jobpage'
+import jobPageRouter from './jobs'
 import homePageRouter from './homepage'
 import authRouter from './auth'
 import scannerSettingsRouter from './scanner-settings'
@@ -10,7 +10,7 @@ import { asyncHandler } from '../../api/middleware'
 import passwordRouter from './password'
 import emergencyRouter from './emergency'
 import candidateScannerRouter from './candidate-scanner'
-import assetRouter from './asset-page'
+import assetRouter from './assets'
 import eventsRouter from './events'
 import userguideRouter from './user-guide'
 
@@ -21,7 +21,6 @@ router.use('/', asyncHandler(homePageRouter))
 router.use('/auth', asyncHandler(authRouter))
 router.use(asyncHandler(cookieAuth))
 router.use('/password', asyncHandler(passwordRouter))
-router.use('/jobpage', asyncHandler(jobPageRouter))
 router.use('/homepage', asyncHandler(homePageRouter))
 router.use('/jobs', asyncHandler(jobPageRouter))
 router.use('/healthcheckpage', asyncHandler(healthCheckRouter))

@@ -26,8 +26,6 @@ router.post('/', async (req, res) => {
   }
 })
 
-export default router
-
 function toDeviceAssets({ serial, name }: DeviceAssetsBody): DeviceAsset[] {
   if (serial.length !== name.length) {
     throw new Error('Invalid data, cannot proceed')
@@ -39,3 +37,5 @@ function toDeviceAssets({ serial, name }: DeviceAssetsBody): DeviceAsset[] {
     }
   })
 }
+
+export default router

@@ -1,5 +1,6 @@
 import express from 'express'
 import { api } from '.././utils'
+
 const router = express.Router()
 
 router.get('/', async (_req, res) => {

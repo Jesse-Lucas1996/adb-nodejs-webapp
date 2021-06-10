@@ -3,7 +3,8 @@ import { isValidIp, isValidNetmask } from '../../adb/utils'
 import { repo } from '../../database'
 import { ScannerSettings } from '../../database/repo/scanner-settings'
 import { IPNetwork, IPRange } from '../../types'
-const router = express.Router({})
+
+const router = express.Router()
 
 type InvalidIP = {
   ip: string

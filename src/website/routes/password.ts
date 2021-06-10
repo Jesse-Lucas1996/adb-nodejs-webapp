@@ -2,7 +2,8 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import { repo } from '../../database/index'
 
-const router = express.Router({})
+const router = express.Router()
+
 router.use(cookieParser('user'))
 
 router.get('/', async (_req, res) => {

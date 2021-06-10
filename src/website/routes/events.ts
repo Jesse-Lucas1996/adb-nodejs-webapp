@@ -24,7 +24,7 @@ router.get('/screen-state', async (req, res) => {
 
   const data = resp.data
 
-  res.render('./events/screen-state.pug', {
+  res.render('events/screen-state.pug', {
     events: data.events,
     page: data.page,
     size: data.size,
@@ -52,7 +52,7 @@ router.get('/usage-state', async (req, res) => {
 
   const data = resp.data
 
-  res.render('./events/usage-state.pug', {
+  res.render('events/usage-state.pug', {
     events: data.events,
     page: data.page,
     size: data.size,

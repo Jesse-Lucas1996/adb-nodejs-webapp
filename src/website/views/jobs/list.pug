@@ -1,0 +1,21 @@
+html
+  title Jobs
+  style 
+    include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Jobs
+    div
+      table.atv-table
+        tr.atv-table-title
+          th.atv-table-title Id
+          th.atv-table-title Name 
+          th.atv-table-title Started 
+          th.atv-table-title Finished 
+        each job in jobs
+          tr.atv-table-title
+            th.atv-table-item=job.jobId
+            th.atv-table-item=job.name
+            th.atv-table-item=job.started
+            th.atv-table-item=job.finished
+    include ../components/footer.pug
