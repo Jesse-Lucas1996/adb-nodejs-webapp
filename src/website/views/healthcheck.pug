@@ -2,17 +2,17 @@ html
   title Health Check
   style 
     include style.css
-  head
-    include navbar.pug
-  body(class='background-health-check')
-      h1(class='title') Health Check
-      table(class='table')
-        tr(class='thead')
-          th(class='table-titles') Uptime
-          th(class='table-titles') Status
-          th(class='table-titles') Time
-        each check in healthcheck
-          tr
-            th(class='table-items') #{check.uptime}
-            th(class='table-items') #{check.message}
-            th(class='table-items') #{check.timestamp}
+  body.atv-background
+    include components/navbar.pug
+    p.atv-title Health Check
+    table.atv-table
+      tr.atv-table-title
+        th.atv-table-title Uptime
+        th.atv-table-title Status
+        th.atv-table-title Time
+      each check in healthcheck
+        tr.atv-table-title
+          th.atv-table-item #{check.uptime}
+          th.atv-table-item #{check.message}
+          th.atv-table-item #{check.timestamp}
+    include components/footer.pug

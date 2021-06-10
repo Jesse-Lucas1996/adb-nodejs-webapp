@@ -2,17 +2,17 @@ html
   title Home
   style 
     include style.css
-  head
-    include navbar.pug
-  body(class='background')
-    h1(class='title') Devices
-    table(class='table')
-      tr(class='thead')
-        th(class='table-titles') Serial 
-        th(class='table-titles') Name
-        th(class='table-titles') Status 
+  body.atv-background
+    include components/navbar.pug
+    p.atv-title Devices
+    table.atv-table
+      tr.atv-table-title
+        th.atv-table-title Serial 
+        th.atv-table-title Name
+        th.atv-table-title Status 
       each key in Object.keys(status)
-        tr(class='table-tr') 
-          th(class='table-items')= key
-          th(class='table-items')= status[key].name
-          th(class= status[key].state === 'online' ? 'table-items' : 'table-items table-items__highlight-red')= status[key].state
+        tr.atv-table-title 
+          th.atv-table-item= key
+          th.atv-table-item= status[key].name
+          th(class= status[key].state === 'online' ? 'atv-table-item' : 'atv-table-item atv-table-item__highlight-red')= status[key].state
+    include components/footer.pug

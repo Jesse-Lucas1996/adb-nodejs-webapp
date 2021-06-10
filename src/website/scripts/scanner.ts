@@ -5,7 +5,7 @@ function addTextbox(id: string, name: string, placeholder: string) {
   txtNewInputBox.setAttribute('id', `${newElementId}`)
 
   // Then add the content (a new input box) of the element.
-  txtNewInputBox.innerHTML = `<input placeholder=${placeholder} class='input-field' name=${name}[] type='text'/><button class='scanner-buttons' onclick=deleteTextbox(${newElementId})>Delete</button>`
+  txtNewInputBox.innerHTML = `<input placeholder=${placeholder} class='atv-input-field' name=${name}[] type='text'/><button class='atv-button' onclick=deleteTextbox(${newElementId})>Delete</button>`
 
   // Finally put it where it is supposed to appear.
   document.getElementById(`${id}`)?.appendChild(txtNewInputBox)
