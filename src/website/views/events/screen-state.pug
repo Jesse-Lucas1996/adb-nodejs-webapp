@@ -1,0 +1,43 @@
+html
+  head
+    title Screen State Events
+    style 
+      include ../style.css
+  body(class='background')
+    include ../navbar.pug
+    h1(class='title') Screen State Events
+    div(class='log-div')
+      form(action='/events/screen-state' method='GET')
+        label Page Size:
+        div
+          select(type='text' id='size' name='size')
+            option(value='' disabled selected hidden)='Select Page Size'
+            option(value=5 selected= size===5)=5
+            option(value=10 selected= size===10)=10
+            option(value=20 selected= size===20)=20
+            option(value=30 selected= size===30)=30
+            option(value=40 selected= size===40)=40
+            option(value=50)=50
+            option(value=100 selected= size===100)=100
+        label Filter by Serial:
+        div
+          input(value=serial type='text' name='serial')
+        button(type='submit' ) Submit
+    div
+      div
+        each pageNum in pagesRange
+          a(href=`/events/screen-state?page=${pageNum}&size=${size}&serial=${serial}`)= pageNum
+      table(class='table')
+        tr(class='thead')
+          th(class='table-titles') Serial
+          th(class='table-titles') Screen State
+          th(class='table-titles') Error 
+          th(class='table-titles') Error Message 
+          th(class='table-titles') Timestamp
+        each e in events
+          tr(class='table-tr') 
+            th(class='table-items')= e.serial
+            th(class='table-items')= e.event
+            th(class='table-items')= e.error
+            th(class='table-items')= e.errorMessage
+            th(class='table-items')= e.timestamp

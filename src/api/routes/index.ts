@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { createApiKeyMiddleware } from '../middleware/auth-middleware'
-import { asyncHandler } from '../middleware/async'
+import { createApiKeyAuthMiddleware } from '../middleware/api-key-auth-middleware'
+import { asyncHandler } from '../middleware/async-handler'
 
 import healthcheckRouter from './health-check'
 import emergencyRouter from './emergency'
@@ -11,8 +11,10 @@ import jobsRouter from './jobs'
 import logsRouter from './logs'
 import candidateScannerRouter from './candidate-scanner'
 import assetsRouter from './device-assets'
+import eventRouter from './events'
+
 const router = Router()
-const apiKeyMiddleware = createApiKeyMiddleware('API_KEY_HERE')
+const apiKeyMiddleware = createApiKeyAuthMiddleware('API_KEY_HERE')
 
 router.use('/healthcheck', healthcheckRouter)
 
@@ -25,5 +27,6 @@ router.use('/jobs', asyncHandler(jobsRouter))
 router.use('/logs', asyncHandler(logsRouter))
 router.use('/candidates', asyncHandler(candidateScannerRouter))
 router.use('/assets', asyncHandler(assetsRouter))
+router.use('/events', asyncHandler(eventRouter))
 
 export default router

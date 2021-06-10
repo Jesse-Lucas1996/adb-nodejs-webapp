@@ -1,6 +1,6 @@
 import * as express from 'express'
 
-export async function errorMiddleware(
+export async function errorHandler(
   ex: any,
   _req: express.Request,
   res: express.Response,

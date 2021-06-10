@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser'
 import path from 'path'
 
 import cors from 'cors'
-import { errorMiddleware } from './api/middleware/error'
+import { errorHandler } from './api/middleware/error-handler'
 import websiteRouter from './website/routes'
 
 const app = express()
@@ -25,5 +25,5 @@ app.use('/images', express.static(realPath))
 app.use(cookieParser('SECRET_CHANGE_IT'))
 
 app.use('/', websiteRouter)
-app.use(errorMiddleware)
+app.use(errorHandler)
 export default app
