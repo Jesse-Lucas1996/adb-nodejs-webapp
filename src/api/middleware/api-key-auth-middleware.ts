@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express'
 
-export function createApiKeyMiddleware(apiKey: string): RequestHandler {
+export function createApiKeyAuthMiddleware(apiKey: string): RequestHandler {
   return (req: Request, res: Response, next: NextFunction) => {
     const reqApiKey = req.header('x-api-key')
 

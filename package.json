@@ -9,7 +9,7 @@
     "test": "mocha -t 20000 --reporter spec --exit 'build/**/*.spec.js'",
     "testonly": "mocha -t 20000 --exit 'build/**/*.spec.js'",
     "build-start": "yarn build && yarn start",
-    "copy-assets": "rsync -rv --exclude=*.scss src/website/views build/website/",
+    "copy-assets": "rsync -rv --exclude=*.scss src/website/views build/website/ && rsync -rv src/website/images build/website/",
     "build-sass": "node-sass ./src/website/views -o ./build/website/views"
   },
   "repository": {

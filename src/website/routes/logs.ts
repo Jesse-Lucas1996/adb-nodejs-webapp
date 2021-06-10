@@ -1,6 +1,6 @@
 import express from 'express'
 import { LogEntry } from '../../logger/types'
-import { api } from '../utils'
+import { api, makeRange } from '../utils'
 
 const router = express.Router()
 
@@ -34,13 +34,5 @@ router.get('/', async (req, res) => {
     pagesRange: makeRange(data.pages),
   })
 })
-
-function makeRange(n: number) {
-  const range = []
-  for (let i = 0; i < n; i++) {
-    range.push(i + 1)
-  }
-  return range
-}
 
 export default router

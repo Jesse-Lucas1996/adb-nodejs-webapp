@@ -5,15 +5,16 @@ import homePageRouter from './homepage'
 import authRouter from './auth'
 import scannerSettingsRouter from './scanner-settings'
 import logsRouter from './logs'
-import { createCookieAuth } from '../../api/middleware/cookie-auth'
+import { createCookieAuthMiddleware } from '../../api/middleware/cookie-auth-middleware'
 import { asyncHandler } from '../../api/middleware'
 import passwordRouter from './password'
 import emergencyRouter from './emergency'
 import candidateScannerRouter from './candidate-scanner'
 import assetRouter from './asset-page'
+import eventsRouter from './events'
 
 const router = Router()
-const cookieAuth = createCookieAuth('admin')
+const cookieAuth = createCookieAuthMiddleware('admin')
 
 router.use('/', asyncHandler(homePageRouter))
 router.use('/auth', asyncHandler(authRouter))
@@ -28,5 +29,6 @@ router.use('/emergency', asyncHandler(emergencyRouter))
 router.use('/logs', asyncHandler(logsRouter))
 router.use('/candidates', asyncHandler(candidateScannerRouter))
 router.use('/assets', asyncHandler(assetRouter))
+router.use('/events', asyncHandler(eventsRouter))
 
 export default router
