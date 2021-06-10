@@ -1,7 +1,8 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import { repo } from '../../database/index'
-const router = express.Router({})
+
+const router = express.Router()
 
 router.use(cookieParser('user'))
 
@@ -27,4 +28,5 @@ router.post('/', async (req, res) => {
   })
   return res.status(200).redirect('/')
 })
+
 export default router

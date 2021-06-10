@@ -19,11 +19,21 @@ export type JobConnectionPool = Omit<ConnectionPool, 'start' | 'stop'>
 export type Job = {
   id: string
   start: (pool: JobConnectionPool) => void
-  status: () => { status: JobStatus; hasFinished: boolean }
+  status: () => {
+    status: JobStatus
+    hasFinished: boolean
+    name: string
+    timestamp: string
+  }
 }
 
 export type Jobs = {
-  [K in string]?: { status: JobStatus; hasFinished: boolean }
+  [K in string]: {
+    status: JobStatus
+    hasFinished: boolean
+    name: string
+    timestamp: string
+  }
 }
 
 export type JobStatus = {

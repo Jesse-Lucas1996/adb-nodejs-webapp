@@ -26,7 +26,7 @@ export function getJob(id: string):
 export function getJobs(): Jobs {
   const jobs = {} as Jobs
   for (const key of jobsDb.keys()) {
-    jobs[key] = jobsDb.get(key)?.status()
+    jobs[key] = jobsDb.get(key)?.status()!
   }
   return jobs
 }

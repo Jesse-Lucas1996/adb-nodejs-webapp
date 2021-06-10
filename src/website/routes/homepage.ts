@@ -1,6 +1,7 @@
 import express from 'express'
 import { api } from '.././utils'
-const router = express.Router({})
+
+const router = express.Router()
 
 router.get('/', async (_req, res) => {
   const resp = await api.get('pool/status')
