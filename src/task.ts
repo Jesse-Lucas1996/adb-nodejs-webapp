@@ -11,6 +11,7 @@ export function createTask(type: TaskType): Task {
     ],
     stopEmergency: [{ cmd: 'am force-stop com.emergencyreactnativeapp' }],
     reset: [{ cmd: 'wipe data' }],
+    setWifiSleepPolicy: [{ cmd: 'settings put global wifi_sleep_policy 1' }],
     uptime: [
       {
         cmd: 'uptime',

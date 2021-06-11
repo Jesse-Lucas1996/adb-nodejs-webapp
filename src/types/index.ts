@@ -1,6 +1,11 @@
 import { ConnectionPool } from '../adb/connection-pool'
 
-export type TaskType = 'sendEmergency' | 'stopEmergency' | 'reset' | 'uptime'
+export type TaskType =
+  | 'sendEmergency'
+  | 'stopEmergency'
+  | 'reset'
+  | 'uptime'
+  | 'setWifiSleepPolicy'
 
 export type CommandValidator = (cmdOutput: string) => {
   error: boolean
