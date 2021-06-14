@@ -2,34 +2,33 @@ html
   head  
     title User Guide 
     style
-      include style.scss 
-  body(class='background-userguide')
-    include navbar.pug
-    div
-      h1(class='title-user') User Guide: 
-      p.paragraph-footer-title Welcome to the User Guide page
-    div 
-      h1(class='title-user') Homepage:
-      p.paragraph-footer-title On the home page we show you what devices are connected and what devices are not. It is a list of devices taken from assets
-    div 
-      h1(class='title-user') Emergency:
-      p.paragraph-footer-title On the Emergency page, you can select start and press submit to transform all TVS into emergency mode and you can select stop to transform the tv's back to normal mode
-    div 
-      h1(class='title-user') Jobs:
-      p.paragraph-footer-title On the jobs page, whenever you perfom a job e.g. Emergency you can see the success output of each device 
-    div 
-      h1(class='title-user') Health Check:
-      p.paragraph-footer-title On the health check page, you can monitor the server that connects to your TV's
-    div 
-      h1(class='title-user') Settings:
-      p.paragraph-footer-title In settings we currently have two settings, you can add IP addresses, specify your IP Range and Netmask. The other setting is that you can change your password to access the web application
-    div 
-      h1(class='title-user') System Logs: 
-      p.paragraph-footer-title In the system logs page, you can see all the logs of everything that has happened, you can also filter by what you need to know very useful for debugging
-    div 
-      h1(class='title-user') Candidates:
-      p.paragraph-footer-title In the candidates page it is a list of discovered TVs in the initial search for TVS
-    div 
-      h1(class='title-user') Asset Page:
-      p.paragraph-footer-title On the Assets page, here you can manually add the serial number and names for each TV for tracking purposes
+      include style.css 
+  body.atv-background
+    include components/navbar.pug
+    div.guide__container
+      div
+        p.guide__title Homepage:
+        p On the home page we show you what devices are connected and what devices are not. It is a list of devices taken from assets
+      div
+        p.guide__title Emergency:
+        p On the Emergency page, you can select start and press submit to transform all TVS into emergency mode and you can select stop to transform the tv's back to normal mode
+      div
+        p.guide__title Jobs:
+        p On the jobs page, whenever you perfom a job e.g. Emergency you can see the success output of each device 
+      div 
+        p.guide__title Health Check:
+        p On the health check page, you can monitor the server that connects to your TV's
+      div
+        p.guide__title Settings:
+      p In settings we currently have two settings, you can add IP addresses, specify your IP Range and Netmask. The other setting is that you can change your password to access the web application
+      div
+        p.guide__title System Logs: 
+        p In the system logs page, you can see all the logs of everything that has happened, you can also filter by what you need to know very useful for debugging
+      div
+        p.guide__title Candidates:
+        p In the candidates page it is a list of discovered TVs in the initial search for TVS
+      div
+        p.guide__title Asset Page:
+        p On the Assets page, here you can manually add the serial number and names for each TV for tracking purposes
+      include components/footer.pug
 

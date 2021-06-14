@@ -9,7 +9,7 @@ html
         label() Page Size:
         div.logs__dropdown-div
           select.atv-input-field(type='text' id='size' name='size')
-            option(value='' disabled selected hidden)='Select Page Size'
+            option(value='' disabled selected hidden)='Select Page Size' 
             option(value=5 selected= size===5)=5
             option(value=10 selected= size===10)=10
             option(value=20 selected= size===20)=20
@@ -20,34 +20,35 @@ html
         label Filter by Name:
         div.logs__dropdown-div
           select.atv-input-field(type='text' id='name' name='name')
-            option(value='' disabled selected hidden)='Select Name'
-            option(value='' selected= name==='')='None'
-            option(value='connection-pool' selected= name==='connection-pool')='connection-pool'
-            option(value='application' selected= name==='application')='application'
-            option(value='candidate-scanner' selected= name==='candidate-scanner')='candidate-scanner'
+            option(value='' disabled selected hidden)='Select Name' 
+            option(value='' selected= name==='')='None' 
+            option(value='connection-pool' selected= name==='connection-pool')='connection-pool' 
+            option(value='application' selected= name==='application')='application' 
+            option(value='candidate-scanner' selected= name==='candidate-scanner')='candidate-scanner' 
         label Filter by Level:
         div.logs__dropdown-div
           select.atv-input-field(type='text' id='level' name='level')
-            option(value='' disabled selected hidden)='Select Level'
-            option(value='' selected= level==='')='None'
-            option(value='info' selected= level==='info')='info'
-            option(value='error' selected= level==='error')='error'
-            option(value='warn' selected= level==='warn')='warn'
-            option(value='debug' selected= level==='debug')='debug'
+            option(value='' disabled selected hidden)='Select Level' 
+            option(value='' selected= level==='')='None' 
+            option(value='info' selected= level==='info')='info' 
+            option(value='error' selected= level==='error')='error' 
+            option(value='warn' selected= level==='warn')='warn' 
+            option(value='debug' selected= level==='debug')='debug' 
         button.atv-button( type='submit' ) Submit
-      div.log__div
+      div.atv-list-container
         each pageNum in pagesRange
-          a.log__a(href=`/logs?page=${pageNum}&size=${size}&name=${name}&level=${level}`, )= pageNum
-    table.atv-table
-      tr.atv-table-title
-        th.atv-table-title Name
-        th.atv-table-title Level
-        th.atv-table-title Time
-        th.atv-table-title Message
-      each log in logs
-        tr.atv-table-title 
-          th.atv-table-item= log.name
-          th.atv-table-item= log.level
-          th.atv-table-item= log.timestamp
-          th.atv-table-item= log.message
+          a.atv-list(href=`/logs?page=${pageNum}&size=${size}&name=${name}&level=${level}`, )= pageNum
+      div.atv-table-container
+        table.atv-table
+          tr.atv-table-title
+            th.atv-table-title Name
+            th.atv-table-title Level
+            th.atv-table-title Time
+            th.atv-table-title Message
+          each log in logs
+            tr.atv-table-title 
+              th.atv-table-item= log.name
+              th.atv-table-item= log.level
+              th.atv-table-item= log.timestamp
+              th.atv-table-item= log.message
     include components/footer.pug

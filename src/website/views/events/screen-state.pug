@@ -3,41 +3,42 @@ html
     title Screen State Events
     style 
       include ../style.css
-  body(class='background')
+  body.atv-background
     include ../components/navbar.pug
-    h1(class='title') Screen State Events
-    div(class='log-div')
-      form(action='/events/screen-state' method='GET')
-        label Page Size:
-        div
-          select(type='text' id='size' name='size')
-            option(value='' disabled selected hidden)='Select Page Size'
-            option(value=5 selected= size===5)=5
-            option(value=10 selected= size===10)=10
-            option(value=20 selected= size===20)=20
-            option(value=30 selected= size===30)=30
-            option(value=40 selected= size===40)=40
-            option(value=50)=50
-            option(value=100 selected= size===100)=100
-        label Filter by Serial:
-        div
-          input(value=serial type='text' name='serial')
-        button(type='submit' ) Submit
-    div
+    p.atv-title Screen State Events
+    form.atv-form(action='/events/screen-state' method='GET')
+      label Page Size:
       div
+        select.atv-input-field(type='text' id='size' name='size')
+          option(value='' disabled selected hidden)='Select Page Size' 
+          option(value=5 selected= size===5)=5
+          option(value=10 selected= size===10)=10
+          option(value=20 selected= size===20)=20
+          option(value=30 selected= size===30)=30
+          option(value=40 selected= size===40)=40
+          option(value=50)=50
+          option(value=100 selected= size===100)=100
+      label Filter by Serial:
+      div
+        input.atv-input-field(value=serial type='text' name='serial')
+      button.atv-button(type='submit' ) Submit
+    div
+      div.atv-list-container
         each pageNum in pagesRange
-          a(href=`/events/screen-state?page=${pageNum}&size=${size}&serial=${serial}`)= pageNum
-      table(class='table')
-        tr(class='thead')
-          th(class='table-titles') Serial
-          th(class='table-titles') Screen State
-          th(class='table-titles') Error 
-          th(class='table-titles') Error Message 
-          th(class='table-titles') Timestamp
+          a.atv-list(href=`/events/screen-state?page=${pageNum}&size=${size}&serial=${serial}`)= pageNum
+    div.atv-table-container
+      table.atv-table
+        tr.atv-table-title
+          th.atv-table-title Serial
+          th.atv-table-title Screen State
+          th.atv-table-title Error 
+          th.atv-table-title Error Message 
+          th.atv-table-title Timestamp
         each e in events
-          tr(class='table-tr') 
-            th(class='table-items')= e.serial
-            th(class='table-items')= e.event
-            th(class='table-items')= e.error
-            th(class='table-items')= e.errorMessage
-            th(class='table-items')= e.timestamp
+          tr.atv-table-title 
+            th.atv-table-item= e.serial
+            th.atv-table-item= e.event
+            th.atv-table-item= e.error
+            th.atv-table-item= e.errorMessage
+            th.atv-table-item= e.timestamp
+    include ../components/footer.pug
