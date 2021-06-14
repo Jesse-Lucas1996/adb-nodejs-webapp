@@ -1,0 +1,23 @@
+html
+  head
+    title Tasks
+    style 
+      include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Tasks
+    form.atv-form(action="/tasks/create" method="POST") 
+      button.atv-button(type='submit') Create
+    div
+      table.atv-table
+        tr.atv-table-title
+          th.atv-table-title Id
+          th.atv-table-title Description 
+          th.atv-table-title UOW 
+        each task in tasks
+          tr.atv-table-title
+            th.atv-table-item 
+              a(href=`/tasks/${task.taskId}`)=task.taskId
+            th.atv-table-item=task.description
+            th.atv-table-item=task.unitsOfWork.length
+    include ../components/footer.pug

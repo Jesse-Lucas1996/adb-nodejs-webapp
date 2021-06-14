@@ -347,3 +347,31 @@ $standard-font: 'Roboto', sans-serif;
   text-decoration: none;
   color: black;
 }
+
+/* Tasks */
+.tasks {
+  &__button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__task-input {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+
+    label {
+      min-width: 100px;
+    }
+
+    input {
+      min-width: 520px;
+    }
+  }
+
+  &__command-input {
+    input {
+      min-width: 500px;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+html
+  head
+    title Task
+    style 
+      include ../style.css
+    script 
+      include ../../scripts/tasks.js
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Task
+    form.atv-form(action="/tasks" method="POST") 
+      div.tasks
+        div.tasks__task-input
+          label Task Id 
+          input.atv-input-field(value=task.taskId type='text' name='taskId')
+        div.tasks__task-input
+          label Description
+          input.atv-input-field(value=task.description type='text' name='description')
+        div(id='container')
+          p.atv-title Units of work
+          div.tasks__button-container
+            button.atv-button(id='add-btn' type='button') Add
+          each uow in task.unitsOfWork 
+            div.tasks__command-input
+              input.atv-input-field(value=uow.cmd type='text' name='unitsOfWork[]')  
+              button.atv-button(type='button' name='delete-btn') Delete               
+        div.tasks__button-container
+          button.atv-button(type='submit') Save
+    include ../components/footer.pug

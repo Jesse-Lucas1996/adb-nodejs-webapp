@@ -20,9 +20,6 @@ export function createEmergencyService() {
   }
 
   function stop() {
-    if (!shouldRun) {
-      return
-    }
     shouldRun = false
     Promise.resolve(stopCycle())
     logger.info('Service has stopped')

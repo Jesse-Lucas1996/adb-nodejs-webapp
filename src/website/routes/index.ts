@@ -13,6 +13,7 @@ import candidateScannerRouter from './candidate-scanner'
 import assetRouter from './assets'
 import eventsRouter from './events'
 import userguideRouter from './user-guide'
+import tasksRouter from './tasks'
 
 const router = Router()
 const cookieAuth = createCookieAuthMiddleware('admin')
@@ -31,5 +32,6 @@ router.use('/candidates', asyncHandler(candidateScannerRouter))
 router.use('/assets', asyncHandler(assetRouter))
 router.use('/events', asyncHandler(eventsRouter))
 router.use('/user-guide', asyncHandler(userguideRouter))
+router.use('/tasks', asyncHandler(tasksRouter))
 
 export default router
