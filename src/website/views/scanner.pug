@@ -7,38 +7,39 @@ html
     body.atv-background
         include components/navbar.pug
         p.atv-title Scanner Settings
-        form.atv-form(action="/scanner" method="POST")
-            div.scanner__div
-                div.scanner__columns(id='IPS')
-                    p() IP Addresses
-                    div
-                        button.atv-button(type="button" onclick="addTextbox('IPS', 'ipAddresses', 'x.x.x.x')") Add
-                    each ip in scannerSettings.addresses
-                        div(id='ips-div')
-                            input.atv-input-field(value= ip placeholder='x.x.x.x' type='text' name='ipAddresses[]')
-                            button.atv-button(onclick="deleteTextbox('ips-div')") Delete
-                    each invalidIp in invalidData && invalidData.invalidIps ? invalidData.invalidIps : []
-                        p()= invalidIp
-                div.scanner__columns(id='Ranges')
-                    p() IP Ranges
-                    div
-                        button.atv-button(type="button" onclick="addTextbox('Ranges', 'ipRanges', 'x.x.x.x-x.x.x.x')") Add
-                    each range in scannerSettings.ranges
-                        div(id='ranges-div')
-                            input.atv-input-field(value= range placeholder='x.x.x.x-x.x.x.x' type='text' name='ipRanges[]')
-                            button.atv-button(onclick="deleteTextbox('ranges-div')") Delete
-                    each invalidRange in invalidData && invalidData.invalidRanges ? invalidData.invalidRanges : []
-                        p()= invalidRange
-                div.scanner__columns(id='Netmask')
-                    p() IP Netmask
-                    div
-                        button.atv-button(type="button" onclick="addTextbox('Netmask', 'ipNetmasks', 'x.x.x.x/x')") Add
-                    each network in scannerSettings.networks
-                        div(id='netmask-div')
-                            input.atv-input-field(value= network placeholder='x.x.x.x/x' type='text' name='ipNetmasks[]')
-                            button.atv-button(onclick="deleteTextbox('netmask-div')") Delete
-                    each invalidMask in invalidData && invalidData.invalidNetmasks ? invalidData.invalidNetmasks : []
-                        p()= invalidMask
-            div.scanner__save
-                button.atv-button(type='submit') Save
+        div.atv-setting-container
+            form.atv-form(action="/scanner" method="POST")
+                div.scanner__div
+                    div.scanner__columns(id='IPS')
+                        p() IP Addresses
+                        div
+                            button.atv-button(type="button" onclick="addTextbox('IPS', 'ipAddresses', 'x.x.x.x')") Add
+                        each ip in scannerSettings.addresses
+                            div(id='ips-div')
+                                input.atv-input-field(value= ip placeholder='x.x.x.x' type='text' name='ipAddresses[]')
+                                button.atv-button(onclick="deleteTextbox('ips-div')") Delete
+                        each invalidIp in invalidData && invalidData.invalidIps ? invalidData.invalidIps : []
+                            p()= invalidIp
+                    div.scanner__columns(id='Ranges')
+                        p() IP Ranges
+                        div
+                            button.atv-button(type="button" onclick="addTextbox('Ranges', 'ipRanges', 'x.x.x.x-x.x.x.x')") Add
+                        each range in scannerSettings.ranges
+                            div(id='ranges-div')
+                                input.atv-input-field(value= range placeholder='x.x.x.x-x.x.x.x' type='text' name='ipRanges[]')
+                                button.atv-button(onclick="deleteTextbox('ranges-div')") Delete
+                        each invalidRange in invalidData && invalidData.invalidRanges ? invalidData.invalidRanges : []
+                            p()= invalidRange
+                    div.scanner__columns(id='Netmask')
+                        p() IP Netmask
+                        div
+                            button.atv-button(type="button" onclick="addTextbox('Netmask', 'ipNetmasks', 'x.x.x.x/x')") Add
+                        each network in scannerSettings.networks
+                            div(id='netmask-div')
+                                input.atv-input-field(value= network placeholder='x.x.x.x/x' type='text' name='ipNetmasks[]')
+                                button.atv-button(onclick="deleteTextbox('netmask-div')") Delete
+                        each invalidMask in invalidData && invalidData.invalidNetmasks ? invalidData.invalidNetmasks : []
+                            p()= invalidMask
+                div.scanner__save
+                    button.atv-button(type='submit') Save
         include components/footer.pug

@@ -6,6 +6,7 @@ div.navbar
   a.navbar__link(href='/emergency') Emergency
   a.navbar__link(href='/jobs') Jobs
   a.navbar__link(href='/tasks') Tasks
+  a.navbar__link(href='/user-guide') User Guide           
   div.navbar__dropdown
     button.navbar__dropbtn Settings
     div.navbar__dropdown-content
@@ -18,3 +19,8 @@ div.navbar
       a.navbar__dropdown-link(href='/candidates') Candidates
       a.navbar__dropdown-link(href='/logs') System Logs
       a.navbar__dropdown-link(href='/healthcheckpage') Health Check
+  div.navbar__dropdown
+    button.navbar__dropbtn Events
+    div.navbar__dropdown-content
+      a.navbar__dropdown-link(href='/events/screen-state') Screen State
+      a.navbar__dropdown-link(href='/events/usage-state') Usage State
