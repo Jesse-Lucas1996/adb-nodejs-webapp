@@ -1,7 +1,7 @@
 import express from 'express'
 import { api } from '../utils'
 
-type TaskResponse = {
+export type TaskResponse = {
   taskId: string
   description: string
   unitsOfWork: { cmd: string }[]

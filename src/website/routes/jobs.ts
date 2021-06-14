@@ -1,64 +1,55 @@
 import express from 'express'
-import { Jobs } from '../../types'
 import { api } from '../utils'
-import { getJob } from '../../job'
+import { TaskResponse } from './tasks'
 
 const router = express.Router()
 
-type JobDto = {
-  jobId: string
-  name: string
-  started: string
-  finished: string
-}
-
 router.get('/', async (_req, res) => {
-  const resp = await api.get('/jobs')
-  const jobs = resp.data.jobs as Jobs
+  const resp = await api.get('/jobs'),
+    jobs = resp.data.jobs
 
-  const jobDtos = Object.entries(jobs).reduce((acc, [jobId, job]) => {
-    acc = [
-      ...acc,
-      {
-        jobId,
-        name: job.name,
-        started: job.timestamp,
-        finished: job.hasFinished as any as string,
-      },
-    ]
+  res.render('jobs/list.pug', { jobs })
+})
 
-    return acc
-  }, new Array<JobDto>())
+router.post('/', async (req, res) => {
+  const body = req.body as {
+    name: string
+    task: string
+    onSuccess: string
+    onError: string
+  }
 
-  res.render('jobs/list.pug', { jobs: jobDtos })
+  try {
+    const job = {
+      name: body.name,
+      taskId: body.task,
+      onSuccessTaskId: body.onSuccess,
+      onErrorTaskId: body.onError,
+    }
+    const resp = await api.post<{ jobId: string }>('/jobs', job)
+
+    if (resp.status !== 201) {
+      throw new Error('Invalid API response')
+    }
+    return res.status(201).redirect(`/jobs/${resp.data.jobId}`)
+  } catch (ex) {
+    return res.status(400).send()
+  }
+})
+
+router.post('/create', async (_req, res) => {
+  const resp = await api.get<{ tasks: TaskResponse[] }>('/tasks'),
+    tasks = resp.data.tasks.map(t => t.taskId)
+
+  res.render('jobs/create.pug', { tasks })
 })
 
 router.get('/:jobId', async (req, res) => {
-  const jobId = req.params['jobId']
-  const status = getJob(jobId)
-  if (!status) {
-    return res.status(404).send()
-  }
-  const jobsDto = []
-  for (const jobId of Object.keys(status)) {
-    const job = status[jobId]
-    const jobDto = {
-      jobId,
-      hasFinished: job?.hasFinished,
-      details: new Array(),
-    }
-    for (const ip of Object.keys(job?.status ?? {})) {
-      const jobIpStatus = {
-        ip,
-        success: job?.status?.ip?.success ?? false,
-        message: job?.status?.ip?.message ?? '',
-        output: job?.status?.ip?.output ?? '',
-      }
-      jobDto.details.push(jobIpStatus)
-    }
-    jobsDto.push(jobDto)
-  }
-  return res.render('jobdetails.pug', { jobs: jobsDto })
+  const jobId = req.params['jobId'],
+    resp = await api.get(`/jobs/${jobId}`),
+    job = resp.data.job
+
+  return res.render('jobs/job.pug', { job })
 })
 
 export default router
