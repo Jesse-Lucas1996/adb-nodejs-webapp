@@ -5,6 +5,7 @@ import { createLogsRepo } from './repo/logs'
 import { createUserCredentialsRepo } from './repo/user-credentials'
 import { createScreenStateStore } from './store/screen-state'
 import { createUsageStateStore } from './store/usage-state'
+import { createTasksRepo } from './repo/tasks'
 
 export const repo = {
   credentials: createUserCredentialsRepo(),
@@ -12,6 +13,7 @@ export const repo = {
   connectionCandidates: createConnectionCandidatesRepo(),
   scannerSettings: createScannerSettingsRepo(),
   logs: createLogsRepo(),
+  tasks: createTasksRepo(),
 }
 
 export const store = {

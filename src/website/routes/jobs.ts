@@ -17,12 +17,15 @@ router.get('/', async (_req, res) => {
   const jobs = resp.data.jobs as Jobs
 
   const jobDtos = Object.entries(jobs).reduce((acc, [jobId, job]) => {
-    acc.push({
-      jobId,
-      name: job.name,
-      started: job.timestamp,
-      finished: job.hasFinished as any as string,
-    })
+    acc = [
+      ...acc,
+      {
+        jobId,
+        name: job.name,
+        started: job.timestamp,
+        finished: job.hasFinished as any as string,
+      },
+    ]
 
     return acc
   }, new Array<JobDto>())
