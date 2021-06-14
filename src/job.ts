@@ -14,12 +14,7 @@ function registerJob(job: Job) {
   jobsDb.set(job.id, job)
 }
 
-export function getJob(id: string):
-  | {
-      status: JobStatus
-      hasFinished: boolean
-    }
-  | undefined {
+export function getJob(id: string) {
   return jobsDb.get(id)?.status()
 }
 
@@ -45,7 +40,7 @@ export function createJob(
   const targetSerials = serials
   for (const serial of targetSerials) {
     jobStatus[serial] = {
-      success: false,
+      success: undefined as any,
     }
   }
 
@@ -66,15 +61,19 @@ export function createJob(
       try {
         const client = pool.getDeviceClient(serial)
         if (!client) {
-          logger.warning(
-            `JobId: ${jobId} skipped device: ${serial} as it's offline`
-          )
+          const message = `JobId: ${jobId} skipped device: ${serial} as it's offline`
+          logger.warning(message)
+          jobStatus[serial] = {
+            ...jobStatus[serial],
+            success: false,
+            message: 'Device is offline',
+          }
           continue
         }
 
         for (const { cmd, validate } of task) {
           const output = await executeShellCommand(client, cmd)
-
+          // TODO: output and error message per command
           if (validate) {
             const { error, message } = validate(output)
             jobStatus[serial] = {

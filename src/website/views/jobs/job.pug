@@ -1,0 +1,35 @@
+html
+  head
+    title Job
+    style 
+      include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Job
+    div
+      table.atv-table
+        tr.atv-table-title
+          th.atv-table-title Id
+          th.atv-table-title Name
+          th.atv-table-title Started
+          th.atv-table-title Finished
+        tr.atv-table-title
+          th.atv-table-item=job.jobId
+          th.atv-table-item=job.name
+          th.atv-table-item=job.started
+          th.atv-table-item=job.finished
+    p.atv-title Status
+    div
+      table.atv-table
+        tr.atv-table-title
+          th.atv-table-title Serial
+          th.atv-table-title Success 
+          th.atv-table-title Output 
+          th.atv-table-title Extra message 
+        each entry in job.status
+          tr.atv-table-title
+            th.atv-table-item=entry.serial
+            th.atv-table-item=entry.success
+            th.atv-table-item=entry.output
+            th.atv-table-item=entry.message
+    include ../components/footer.pug

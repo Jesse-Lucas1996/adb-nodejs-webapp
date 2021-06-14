@@ -389,3 +389,21 @@ $standard-font: 'Roboto', sans-serif;
     }
   }
 }
+
+/* Jobs */
+.create-job {
+  &__button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__input {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+
+    label {
+      min-width: 100px;
+    }
+  }
+}

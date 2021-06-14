@@ -1,0 +1,34 @@
+html
+  head
+    title Create Job
+    style 
+      include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Create Job
+    form.atv-form(action="/jobs" method="POST") 
+      div.create-job
+        div.create-job__input
+          label Name 
+          input.atv-input-field(type='text' name='name')
+        div.create-job__input
+          label Task
+          select.atv-input-field(type='text' name='task')
+            option(value='' disabled selected hidden)='Select main task' 
+            each task in tasks 
+              option(value= task)=task
+        div.create-job__input
+          label On success?
+          select.atv-input-field(type='text' name='onSuccess')
+            option(value='' disabled selected hidden)='Optional on success handler' 
+            each task in tasks 
+              option(value= task)=task
+        div.create-job__input
+          label On error?
+          select.atv-input-field(type='text' name='onError')
+            option(value='' disabled selected hidden)='Optional on error handler' 
+            each task in tasks 
+              option(value= task)=task
+        div.create-job__button-container
+          button.atv-button(type='submit') Create & Run
+    include ../components/footer.pug

@@ -1,6 +1,5 @@
 import { repo } from '../database'
 import { createLogger } from '../logger'
-import { createTask } from '../task'
 import { v4 as uuid } from 'uuid'
 import { createJob } from '../job'
 import { pool } from '../adb'
@@ -33,26 +32,54 @@ export function createEmergencyService() {
 
   async function startCycle() {
     if (shouldRun) {
-      const assets = await repo.assets.get(),
-        serials = assets.map(a => a.serial),
-        task = createTask('sendEmergency'),
-        jobId = uuid(),
-        job = createJob(jobId, task, serials, 'emergency-start-cycle')
+      try {
+        const assets = await repo.assets.get(),
+          serials = assets.map(a => a.serial),
+          task = await repo.tasks.get('sendEmergency')
 
-      job.start(pool)
+        if (!task) {
+          throw new Error('Send emergency task does not exist')
+        }
 
-      setTimeout(async () => await startCycle(), CYCLE_TIMEOUT_MSEC)
+        const jobId = uuid(),
+          job = createJob(
+            jobId,
+            task.unitsOfWork,
+            serials,
+            'emergency-start-cycle'
+          )
+
+        job.start(pool)
+      } catch (ex) {
+        logger.error(`${ex.message ?? ex}`)
+      } finally {
+        setTimeout(async () => await startCycle(), CYCLE_TIMEOUT_MSEC)
+      }
     }
   }
 
   async function stopCycle() {
-    const assets = await repo.assets.get(),
-      serials = assets.map(a => a.serial),
-      task = createTask('stopEmergency'),
-      jobId = uuid(),
-      job = createJob(jobId, task, serials, 'emergency-stop-cycle')
+    try {
+      const assets = await repo.assets.get(),
+        serials = assets.map(a => a.serial),
+        task = await repo.tasks.get('stopEmergency')
 
-    job.start(pool)
+      if (!task) {
+        throw new Error('Stop emergency task does not exist')
+      }
+
+      const jobId = uuid(),
+        job = createJob(
+          jobId,
+          task.unitsOfWork,
+          serials,
+          'emergency-stop-cycle'
+        )
+
+      job.start(pool)
+    } catch (ex) {
+      logger.error(`${ex.message ?? ex}`)
+    }
   }
 
   return {

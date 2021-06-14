@@ -6,6 +6,8 @@ html
   body.atv-background
     include ../components/navbar.pug
     p.atv-title Jobs
+    form.atv-form(action="/jobs/create" method="POST") 
+      button.atv-button(type='submit') Create
     div
       table.atv-table
         tr.atv-table-title
@@ -15,7 +17,8 @@ html
           th.atv-table-title Finished 
         each job in jobs
           tr.atv-table-title
-            th.atv-table-item=job.jobId
+            th.atv-table-item
+              a(href=`/jobs/${job.jobId}`)=job.jobId
             th.atv-table-item=job.name
             th.atv-table-item=job.started
             th.atv-table-item=job.finished
