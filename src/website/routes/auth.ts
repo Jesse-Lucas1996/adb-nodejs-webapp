@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
     domain: 'localhost',
     expires: new Date(new Date().setHours(new Date().getHours() + 1)),
   })
-  return res.status(200).redirect('/')
+  return res.status(200).redirect('/devices')
 })
 
 export default router

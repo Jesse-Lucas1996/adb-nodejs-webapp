@@ -1,0 +1,22 @@
+html
+  head
+  title Devices
+  style 
+    include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Devices
+    table.atv-table
+      tr.atv-table-title
+        th.atv-table-title Mac Address
+        th.atv-table-title IP Address
+        th.atv-table-title Uptime
+        th.atv-table-title Version of Android 
+        th.atv-table-title Provisioned 
+        tr.atv-table-title
+          th.atv-table-item #{macAddress}
+          th.atv-table-item #{ipAddress}
+          th.atv-table-item #{upTime}
+          th.atv-table-item #{versionOfAndroid}
+          th.atv-table-item #{hasProvisioned}
+    include ../components/footer.pug
