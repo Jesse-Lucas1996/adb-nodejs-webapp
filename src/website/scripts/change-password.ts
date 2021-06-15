@@ -1,22 +1,34 @@
-function validate() {
-  const passwordMatchingWarning = document.getElementById(
-    'password-match-warning'
-  )
-  const passwordLength = document.getElementById('password-length-warning')
-  const password = (<HTMLInputElement>document.getElementById('password')).value
-  const confirmPassword = (<HTMLInputElement>(
-    document.getElementById('confirmPassword')
-  )).value
+document.addEventListener('DOMContentLoaded', () => {
+  const regex = /^([a-zA-Z0-9]{8,})*$/
 
-  if (password !== confirmPassword) {
-    passwordMatchingWarning?.removeAttribute('hidden')
-    document.getElementById('myButton')?.setAttribute('disabled', 'true')
-  } else {
-    document.getElementById('myButton')?.removeAttribute('disabled')
-    passwordMatchingWarning?.setAttribute('hidden', 'true')
-    passwordLength?.setAttribute('hidden', 'true')
+  const submitButton = document.getElementById('submitButton')
+  const passwordWarning = document.getElementById('password-match-warning')
+  const passwordInput = document.getElementById('password') as HTMLInputElement
+  const confirmPasswordInput = document.getElementById(
+    'confirmPassword'
+  ) as HTMLInputElement
+
+  passwordInput.onchange = () => {
+    const password = passwordInput.value
+
+    if (regex.test(password) && confirmPasswordInput.value === password) {
+      submitButton?.removeAttribute('disabled')
+      passwordWarning?.setAttribute('hidden', '')
+    } else {
+      submitButton?.setAttribute('disabled', '')
+      passwordWarning?.removeAttribute('hidden')
+    }
   }
-  if (password.length < 8) {
-    passwordLength?.removeAttribute('hidden')
+
+  confirmPasswordInput.onchange = () => {
+    const password = passwordInput.value
+
+    if (regex.test(password) && confirmPasswordInput.value === password) {
+      submitButton?.removeAttribute('disabled')
+      passwordWarning?.setAttribute('hidden', '')
+    } else {
+      submitButton?.setAttribute('disabled', '')
+      passwordWarning?.removeAttribute('hidden')
+    }
   }
-}
+})

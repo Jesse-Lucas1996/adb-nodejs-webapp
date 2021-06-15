@@ -1,6 +1,7 @@
 import express from 'express'
 import { repo } from '../../database'
 import { DeviceAsset } from '../../database/repo/device-assets'
+import { api } from '../utils'
 
 type DeviceAssetsBody = {
   serial: string[]
@@ -19,10 +20,15 @@ router.post('/', async (req, res) => {
 
   try {
     const assets = toDeviceAssets(body)
-    const stored = await repo.assets.update(assets)
-    return res.render('assets.pug', { assets: stored })
+    const resp = await api.post('/assets', { assets })
+
+    if (resp.status !== 201) {
+      return res.status(resp.status).send({ message: resp.data?.message })
+    }
+
+    return res.status(resp.status).redirect('/assets')
   } catch (ex) {
-    return res.status(400).send({ message: JSON.stringify(ex) })
+    return res.status(400).send({ message: 'Invalid Serial or Name' })
   }
 })
 

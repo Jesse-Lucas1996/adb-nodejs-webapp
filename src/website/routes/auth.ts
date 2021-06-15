@@ -19,7 +19,6 @@ router.post('/', async (req, res) => {
     const errorMessage = 'Wrong Username or Password'
     return res.render('auth.pug', { errorMessage })
   }
-
   res.cookie('user', username, {
     signed: true,
     httpOnly: true,

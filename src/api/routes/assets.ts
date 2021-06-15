@@ -11,12 +11,17 @@ router.get('/', async (_req, res) => {
 
 router.post('/', async (req, res) => {
   const body = req.body as { assets: DeviceAsset[] }
-  const assets = body?.assets ?? []
+  const assets = body.assets
 
-  for (const asset of assets) {
-    if (!(typeof asset.serial === 'string' && typeof asset.name === 'string')) {
-      return res.status(400).send()
-    }
+  if (!(assets && Array.isArray(assets))) {
+    return res.status(400).send({ message: 'Invalid property assets' })
+  }
+
+  const invalidAssets = assets.filter(a => !(a.serial && a.name))
+  if (invalidAssets.length) {
+    return res
+      .status(400)
+      .send({ message: 'Invalid assets', assets: invalidAssets })
   }
 
   const stored = await repo.assets.update(assets)
