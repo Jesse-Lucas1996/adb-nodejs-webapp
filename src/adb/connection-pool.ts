@@ -66,9 +66,7 @@ export function createConnectionPool(): ConnectionPool {
           connection: connectionString,
         })
       } catch (ex) {
-        logger.error(
-          `Failed to connect to ${ip} Details: ${JSON.stringify(ex)}`
-        )
+        logger.error(`Failed to connect to ${ip} Details: ${ex.message}`)
       }
     }
 
