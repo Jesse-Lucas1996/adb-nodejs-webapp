@@ -1,5 +1,5 @@
 import { JobConnectionPool, Jobs, JobStatus, Job, Task } from './types'
-import { executeShellCommand } from './adb/connection-pool'
+import { getDispatcher } from './adb/connection-pool'
 import { createLogger } from './logger'
 
 type JobId = string
@@ -73,7 +73,9 @@ export function createJob(
         }
 
         for (const { cmd } of task) {
-          const output = await executeShellCommand(client, cmd)
+          const { dispatch, args } = getDispatcher(cmd)
+
+          const output = await dispatch(client, args)
 
           jobStatus[serial] = {
             ...jobStatus[serial],

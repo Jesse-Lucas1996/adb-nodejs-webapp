@@ -1,4 +1,5 @@
 import adb, { Client, Device, DeviceClient } from '@devicefarmer/adbkit'
+import path from 'path'
 import { repo } from '../database'
 import { createLogger } from '../logger'
 
@@ -143,6 +144,33 @@ export async function executeShellCommand(client: DeviceClient, cmd: string) {
   return buffer.toString().trim()
 }
 
+export async function installApk(client: DeviceClient, apkPath: string) {
+  const result = await client.install(apkPath)
+  return `Installed: ${result}` // TODO Make dispatcher
+}
+
 export async function getSerialNumber(client: DeviceClient) {
   return executeShellCommand(client, 'getprop ro.boot.serialno')
+}
+
+function isInstallCmd(cmd: string) {
+  const [prefix, _] = cmd.split(' ')
+  return prefix === 'install'
+}
+
+export function getDispatcher(cmd: string) {
+  if (isInstallCmd(cmd)) {
+    const apkPath = `./${cmd.split(' ')[1]}`
+    const fullPath = path.join(__dirname.replace('/adb', ''), apkPath) // TODO: Get away from this horrible hack
+
+    return {
+      dispatch: installApk,
+      args: fullPath,
+    }
+  }
+
+  return {
+    dispatch: executeShellCommand,
+    args: cmd,
+  }
 }
