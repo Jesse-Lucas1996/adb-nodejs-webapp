@@ -1,9 +1,9 @@
 html
   title Home
   style 
-    include style.css
+    include ../style.css
   body.atv-background
-    include components/navbar.pug
+    include ../components/navbar.pug
     p.atv-title Devices
     div.atv-table-container
       table.atv-table
@@ -13,7 +13,16 @@ html
           th.atv-table-title Status 
         each key in Object.keys(status)
           tr.atv-table-title 
-            th.atv-table-item= key
+          if status[key].state === 'offline'
+            th.atv-table-item=key
             th.atv-table-item= status[key].name
             th(class= status[key].state === 'online' ? 'atv-table-item' : 'atv-table-item atv-table-item__highlight-red')= status[key].state
-    include components/footer.pug
+          else if status[key].state === 'online'
+            th.atv-table-item
+              a(href=`/devices/${key}`)=key
+            th.atv-table-item= status[key].name
+            th(class= status[key].state === 'online' ? 'atv-table-item' : 'atv-table-item atv-table-item__highlight-red')= status[key].state    
+    include ../components/footer.pug
+       
+
+    

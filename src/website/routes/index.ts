@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import healthCheckRouter from './healthcheck'
 import jobPageRouter from './jobs'
-import homePageRouter from './homepage'
+import deviceRouter from './devices'
 import authRouter from './auth'
 import scannerSettingsRouter from './scanner-settings'
 import logsRouter from './logs'
@@ -18,11 +18,12 @@ import tasksRouter from './tasks'
 const router = Router()
 const cookieAuth = createCookieAuthMiddleware('admin')
 
-router.use('/', asyncHandler(homePageRouter))
+router.use('/', asyncHandler(userguideRouter))
+router.use('/user-guide', asyncHandler(userguideRouter))
 router.use('/auth', asyncHandler(authRouter))
 router.use(asyncHandler(cookieAuth))
 router.use('/password', asyncHandler(passwordRouter))
-router.use('/homepage', asyncHandler(homePageRouter))
+router.use('/devices', asyncHandler(deviceRouter))
 router.use('/jobs', asyncHandler(jobPageRouter))
 router.use('/healthcheckpage', asyncHandler(healthCheckRouter))
 router.use('/scanner', asyncHandler(scannerSettingsRouter))
@@ -31,7 +32,6 @@ router.use('/logs', asyncHandler(logsRouter))
 router.use('/candidates', asyncHandler(candidateScannerRouter))
 router.use('/assets', asyncHandler(assetRouter))
 router.use('/events', asyncHandler(eventsRouter))
-router.use('/user-guide', asyncHandler(userguideRouter))
 router.use('/tasks', asyncHandler(tasksRouter))
 
 export default router

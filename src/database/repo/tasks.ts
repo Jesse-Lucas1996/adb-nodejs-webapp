@@ -9,7 +9,7 @@ const seededTasks: StoredTask[] = [
       {
         cmd: 'am start -n com.emergencyreactnativeapp/com.emergencyreactnativeapp.MainActivity',
       },
-      { cmd: 'service call audio 7 i32 3 i32 0 i32 i' },
+      { cmd: 'service call audio 7 i32 3 i32 100 i32 i' },
     ],
   },
   {
@@ -33,8 +33,8 @@ const seededTasks: StoredTask[] = [
   },
   {
     taskId: 'setWifiSleepPolicy',
-    description: 'Set WiFi sleep policy to 1',
-    unitsOfWork: [{ cmd: 'settings put global wifi_sleep_policy 1' }],
+    description: 'Set WiFi sleep policy to  (Always on)',
+    unitsOfWork: [{ cmd: 'settings put global wifi_sleep_policy 2' }],
   },
 ]
 
