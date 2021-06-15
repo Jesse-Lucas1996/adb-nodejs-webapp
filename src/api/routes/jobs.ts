@@ -24,8 +24,11 @@ type JobDetailsDto = JobDto & {
   status: {
     serial: string
     success: boolean
-    output?: string
     message?: string
+    task: {
+      cmd: string
+      output?: string
+    }[]
   }[]
 }
 
@@ -72,8 +75,8 @@ router.get('/:jobId', async (req, res) => {
           {
             serial,
             success: status.success,
-            output: status.output,
             message: status.message,
+            task: status.task,
           },
         ]
         return acc
@@ -83,6 +86,10 @@ router.get('/:jobId', async (req, res) => {
         success: boolean
         output?: string
         message?: string
+        task: {
+          cmd: string
+          output?: string
+        }[]
       }>()
     ),
   }

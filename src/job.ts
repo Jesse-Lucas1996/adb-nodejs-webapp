@@ -41,6 +41,7 @@ export function createJob(
   for (const serial of targetSerials) {
     jobStatus[serial] = {
       success: undefined as any,
+      task: [],
     }
   }
 
@@ -71,23 +72,13 @@ export function createJob(
           continue
         }
 
-        for (const { cmd, validate } of task) {
+        for (const { cmd } of task) {
           const output = await executeShellCommand(client, cmd)
-          // TODO: output and error message per command
-          if (validate) {
-            const { error, message } = validate(output)
-            jobStatus[serial] = {
-              ...jobStatus[serial],
-              success: !error,
-              output,
-              message,
-            }
-          } else {
-            jobStatus[serial] = {
-              ...jobStatus[serial],
-              success: true,
-              output,
-            }
+
+          jobStatus[serial] = {
+            ...jobStatus[serial],
+            success: true,
+            task: [...jobStatus[serial].task, { cmd, output }],
           }
         }
       } catch (ex) {
