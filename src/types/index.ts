@@ -44,8 +44,11 @@ export type Jobs = {
 export type JobStatus = {
   [K in string]: {
     success: boolean
-    output?: string
     message?: string
+    task: {
+      cmd: string
+      output?: string
+    }[]
   }
 }
 

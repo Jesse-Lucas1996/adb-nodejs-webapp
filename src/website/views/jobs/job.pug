@@ -24,12 +24,18 @@ html
         tr.atv-table-title
           th.atv-table-title Serial
           th.atv-table-title Success 
-          th.atv-table-title Output 
-          th.atv-table-title Extra message 
-        each entry in job.status
+          th.atv-table-title Error
+          th.atv-table-title Details
+        each statusEntry in job.status
           tr.atv-table-title
-            th.atv-table-item=entry.serial
-            th.atv-table-item=entry.success
-            th.atv-table-item=entry.output
-            th.atv-table-item=entry.message
+            th.atv-table-item=statusEntry.serial
+            th(class= statusEntry.success ? 'atv-table-item' : 'atv-table-item atv-table-item__highlight-red')= statusEntry.success
+            th.atv-table-item=statusEntry.message
+            th.atv-table-item
+              if statusEntry.task.length
+                table.atv-subtable
+                  each taskEntry in statusEntry.task 
+                    tr
+                      th=taskEntry.cmd 
+                      th=taskEntry.output
     include ../components/footer.pug

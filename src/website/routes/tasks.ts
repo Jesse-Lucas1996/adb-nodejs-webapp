@@ -12,7 +12,7 @@ const router = express.Router()
 router.get('/', async (_req, res) => {
   const resp = await api.get<{ tasks: TaskResponse[] }>('/tasks')
 
-  const tasks = resp.data?.tasks
+  const tasks = resp.data.tasks.reverse()
 
   res.render('tasks/list.pug', {
     tasks,

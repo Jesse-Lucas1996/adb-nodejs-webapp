@@ -5,8 +5,8 @@ import { TaskResponse } from './tasks'
 const router = express.Router()
 
 router.get('/', async (_req, res) => {
-  const resp = await api.get('/jobs'),
-    jobs = resp.data.jobs
+  const resp = await api.get<{ jobs: [] }>('/jobs'),
+    jobs = resp.data.jobs.reverse()
 
   res.render('jobs/list.pug', { jobs })
 })
@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
 
 router.post('/create', async (_req, res) => {
   const resp = await api.get<{ tasks: TaskResponse[] }>('/tasks'),
-    tasks = resp.data.tasks.map(t => t.taskId)
+    tasks = resp.data.tasks.map(t => t.taskId).reverse()
 
   res.render('jobs/create.pug', { tasks })
 })
