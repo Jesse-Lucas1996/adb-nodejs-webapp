@@ -3,6 +3,8 @@ html
     title Create Job
     style 
       include ../style.css
+    script 
+      include ../../scripts/jobs.js
   body.atv-background
     include ../components/navbar.pug
     p.atv-title Create Job
@@ -30,5 +32,21 @@ html
             each task in tasks 
               option(value= task)=task
         div.create-job__button-container
-          button.atv-button(type='submit') Create & Run
+          button.atv-button(type='submit' id='submit-btn') Create & Run
+        p.atv-title Devices
+        div.atv-table-container
+          table.atv-table
+            tr.atv-table-title
+              th.atv-table-title Serial 
+              th.atv-table-title Name
+              th.atv-table-title Status
+              th.atv-table-title
+                input(type='checkbox' id='select-all')
+            each device in devices
+              tr.atv-table-title 
+                th.atv-table-item=device.serial
+                th.atv-table-item=device.name
+                th(class= device.state === 'online' ? 'atv-table-item' : 'atv-table-item atv-table-item__highlight-red')= device.state
+                th.atv-table-item
+                  input(type='checkbox' name=`serial-${device.serial}` class='select-device')
     include ../components/footer.pug
