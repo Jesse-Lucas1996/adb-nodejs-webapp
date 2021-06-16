@@ -1,0 +1,25 @@
+html
+  head
+    title Applications
+    style 
+      include style.css
+  body.atv-background
+    include components/navbar.pug
+    p.atv-title Applications
+    form.atv-form(action='/applications' method='POST' encType='multipart/form-data')
+      input(type='file' name='apk')
+      button.atv-button(type='submit') Upload
+    div
+      table.atv-table
+        tr.atv-table-title
+          th.atv-table-title Application
+          th.atv-table-title Size
+          th.atv-table-title Created 
+          th.atv-table-title Modified
+        each apk in apks
+          tr.atv-table-title
+            th.atv-table-item=apk.filename
+            th.atv-table-item=apk.size
+            th.atv-table-item=apk.created
+            th.atv-table-item=apk.modified
+    include components/footer.pug
