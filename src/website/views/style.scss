@@ -451,6 +451,7 @@ $standard-font: 'Roboto', sans-serif;
 
 /* Jobs */
 .create-job {
+  width: 80%;
   &__button-container {
     display: flex;
     justify-content: center;
@@ -460,6 +461,7 @@ $standard-font: 'Roboto', sans-serif;
     display: flex;
     flex-direction: row;
     align-items: baseline;
+    justify-content: center;
 
     label {
       min-width: 100px;

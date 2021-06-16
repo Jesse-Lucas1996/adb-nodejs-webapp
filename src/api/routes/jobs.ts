@@ -11,6 +11,7 @@ type CreateJobBody = {
   taskId: string
   onSuccessTaskId: string // For future use
   onErrorTaskId: string // For future use
+  serials: string[]
 }
 
 type JobDto = {
@@ -97,6 +98,11 @@ router.get('/:jobId', async (req, res) => {
   return res.status(200).send({ job: jobDto })
 })
 
+router.get('/', async (_req, res) => {
+  const status = await pool.getState()
+  res.status(200).send({ status })
+})
+
 router.post('/', async (req, res) => {
   const body = req.body as CreateJobBody
 
@@ -108,16 +114,18 @@ router.post('/', async (req, res) => {
     return res.status(400).send('Invalid property taskId')
   }
 
-  const assets = await repo.assets.get(),
-    serials = assets.map(a => a.serial),
-    task = await repo.tasks.get(body.taskId)
+  if (!(body.serials && Array.isArray(body.serials))) {
+    return res.status(400).send('Invalid property serials')
+  }
+
+  const task = await repo.tasks.get(body.taskId)
 
   if (!task) {
     return res.status(400).send('Task does not exist')
   }
 
   const jobId = uuid(),
-    job = createJob(jobId, task.unitsOfWork, serials, body.name)
+    job = createJob(jobId, task.unitsOfWork, body.serials, body.name)
 
   job.start(pool)
 
