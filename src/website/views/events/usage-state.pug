@@ -1,8 +1,8 @@
 html
   head
     title Usage State Events
-    style 
-      include ../style.css
+  style 
+    include ../style.css
   body.atv-background
     include ../components/navbar.pug
     p.atv-title(class='title') Usage State Events
@@ -22,8 +22,8 @@ html
       div
         input.atv-input-field(value=serial type='text' name='serial')
       button.atv-button(type='submit' ) Submit
-    div
-      div.atv-list-container
+    div.usage-state-container
+      div.atv-list-container-inner
         each pageNum in pagesRange
           a.atv-list(href=`/events/usage-state?page=${pageNum}&size=${size}&serial=${serial}`)= pageNum
     div.atv-table-container

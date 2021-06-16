@@ -50,7 +50,7 @@ $standard-font: 'Roboto', sans-serif;
 .atv-table {
   border-collapse: collapse;
   overflow: hidden;
-  width: 40%;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
@@ -129,8 +129,13 @@ $standard-font: 'Roboto', sans-serif;
 }
 
 .atv-list-container {
-  display: flex;
-  justify-content: center;
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.atv-list-container-inner {
+  overflow-y: auto;
 }
 
 .atv-list {
@@ -399,6 +404,22 @@ $standard-font: 'Roboto', sans-serif;
 
 .guide__container {
   padding-bottom: 100px;
+}
+
+/* Screen State */
+
+.screen-state-container-inner {
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Usage State */
+
+.usage-state-container {
+  width: 95%;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 /* Tasks */

@@ -38,8 +38,9 @@ html
             option(value='debug' selected= level==='debug')='debug' 
         button.atv-button( type='submit' ) Submit
       div.atv-list-container
-        each pageNum in pagesRange
-          a.atv-list(href=`/logs?page=${pageNum}&size=${size}&name=${name}&level=${level}`, )= pageNum
+        div.atv-list-container-inner
+          each pageNum in pagesRange
+            a.atv-list(href=`/logs?page=${pageNum}&size=${size}&name=${name}&level=${level}`, )= pageNum
       div.atv-table-container
         table.atv-table
           tr.atv-table-title

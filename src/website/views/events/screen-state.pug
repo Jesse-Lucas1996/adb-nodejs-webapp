@@ -22,8 +22,8 @@ html
       div
         input.atv-input-field(value=serial type='text' name='serial')
       button.atv-button(type='submit' ) Submit
-    div
-      div.atv-list-container
+    div.atv-list-container
+      div.screen-state-container-inner
         each pageNum in pagesRange
           a.atv-list(href=`/events/screen-state?page=${pageNum}&size=${size}&serial=${serial}`)= pageNum
     div.atv-table-container
