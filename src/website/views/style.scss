@@ -199,6 +199,8 @@ $standard-font: 'Roboto', sans-serif;
     min-width: 160px;
     z-index: 1;
     background-color: white;
+    border: 1px solid $standard-color;
+    border-radius: 3px;
   }
 
   &__dropdown-link {
