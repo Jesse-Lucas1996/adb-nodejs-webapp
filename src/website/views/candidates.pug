@@ -1,13 +1,13 @@
 html
-  title Candidates
+  title Discovered Devices
   style 
     include style.css
   body.atv-background
     include components/navbar.pug
-    p.atv-title Candidates
+    p.atv-title Discovered Devices
     table.atv-table
       tr.atv-table-title
-        th.atv-table-title Candidate
+        th.atv-table-title Device
       each candidate in candidates
         tr.atv-table-title
           th.atv-table-item= candidate

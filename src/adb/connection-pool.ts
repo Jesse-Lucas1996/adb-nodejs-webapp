@@ -137,14 +137,14 @@ export type ConnectionPool = {
 }
 
 export async function executeShellCommand(client: DeviceClient, cmd: string) {
-  const stream = await client.shell(cmd)
-  const buffer = await adb.util.readAll(stream)
-  return buffer.toString().trim()
+  return client
+    .shell(cmd)
+    .then(s => adb.util.readAll(s))
+    .then(b => b.toString().trim())
 }
 
 export async function installApk(client: DeviceClient, apkPath: string) {
-  const result = await client.install(apkPath)
-  return `Installed: ${result}` // TODO Make dispatcher
+  return client.install(apkPath).then(r => `Installed: ${r}`)
 }
 
 export async function getSerialNumber(client: DeviceClient) {
