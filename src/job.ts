@@ -1,6 +1,6 @@
 import { JobConnectionPool, Jobs, JobStatus, Job, Task } from './types'
 import { getDispatcher } from './adb/connection-pool'
-import { createLogger } from './logger'
+import { createLogger } from './shared/logger'
 
 type JobId = string
 const jobsDb = new Map<JobId, Job>()

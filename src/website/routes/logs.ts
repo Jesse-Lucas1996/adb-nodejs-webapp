@@ -1,5 +1,5 @@
 import express from 'express'
-import { LogEntry } from '../../logger/types'
+import { LogEntry } from '../../shared/logger/types'
 import { api, makeRange } from '../utils'
 
 const router = express.Router()

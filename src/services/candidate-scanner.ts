@@ -1,4 +1,4 @@
-import { createLogger } from '../logger'
+import { createLogger } from '../shared/logger'
 import { fromNetmask, fromRange } from '../adb/utils'
 import { createConnection } from 'net'
 import { repo } from '../database'

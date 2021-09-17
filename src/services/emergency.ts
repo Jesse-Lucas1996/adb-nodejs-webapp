@@ -1,5 +1,5 @@
 import { repo } from '../database'
-import { createLogger } from '../logger'
+import { createLogger } from '../shared/logger'
 import { v4 as uuid } from 'uuid'
 import { createJob } from '../job'
 import { pool } from '../adb'

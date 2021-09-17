@@ -1,5 +1,5 @@
 import NeDB from 'nedb-promises'
-import { LogLevel } from '../../logger/types'
+import { LogLevel } from '../../shared/logger/types'
 
 export type LogFilter = {
   page?: number
@@ -26,21 +26,34 @@ export function createLogsRepo(path?: string) {
   const datastore = NeDB.create(path ?? './logs.db')
   const namestore = NeDB.create(path ? `${path}-names.db` : './log-names.db')
 
-  const append = async (entry: LogEntry): Promise<LogEntry> => {
-    const document = await datastore.insert<LogEntry>({
-      name: entry.name,
-      level: entry.level,
-      timestamp: entry.timestamp,
-      message: entry.message,
-    })
-    const { name, level, timestamp, message } = document
-    await namestore.update({ name }, { name }, { upsert: true })
+  const append = async (entry: LogEntry | LogEntry[]) => {
+    if (Array.isArray(entry)) {
+      for (const e of entry) {
+        const document = await datastore.insert<LogEntry>({
+          name: e.name,
+          level: e.level,
+          timestamp: e.timestamp,
+          message: e.message,
+        })
+        const { name } = document
+        await namestore.update({ name }, { name }, { upsert: true })
+      }
+    } else {
+      await datastore.insert<LogEntry>({
+        name: entry.name,
+        level: entry.level,
+        timestamp: entry.timestamp,
+        message: entry.message,
+      })
 
-    return {
-      name,
-      level,
-      timestamp,
-      message,
+      const document = await datastore.insert<LogEntry>({
+        name: entry.name,
+        level: entry.level,
+        timestamp: entry.timestamp,
+        message: entry.message,
+      })
+      const { name } = document
+      await namestore.update({ name }, { name }, { upsert: true })
     }
   }
 

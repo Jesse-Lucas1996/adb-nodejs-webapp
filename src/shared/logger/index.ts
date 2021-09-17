@@ -1,29 +1,47 @@
-import { repo } from '../database'
+import { repo } from '../../database'
 import { LogEntry, LogLevel } from './types'
 
+const DRAIN_TIMEOUT = 10 * 1000
+
+const entries = new Array<LogEntry>()
+
+const drain = () => {
+  const spliced = entries.splice(0, entries.length)
+  repo.logs
+    .append(spliced)
+    .then()
+    .catch(ex => console.error('Write log error', ex))
+
+  setTimeout(() => {
+    drain()
+  }, DRAIN_TIMEOUT)
+}
+
+drain()
+
 export function createLogger(name: string) {
-  const error = (msg: any) => {
+  const error = (...msg: any) => {
     const entry = toLogEntry(name, 'error', msg)
     console.error(toConsoleEntry(entry))
-    Promise.resolve(repo.logs.append(entry))
+    entries.push(entry)
   }
 
-  const info = (msg: any) => {
+  const info = (...msg: any) => {
     const entry = toLogEntry(name, 'info', msg)
     console.info(toConsoleEntry(entry))
-    Promise.resolve(repo.logs.append(entry))
+    entries.push(entry)
   }
 
-  const debug = (msg: any) => {
+  const debug = (...msg: any) => {
     const entry = toLogEntry(name, 'debug', msg)
     console.debug(toConsoleEntry(entry))
-    Promise.resolve(repo.logs.append(entry))
+    entries.push(entry)
   }
 
-  const warning = (msg: any) => {
+  const warning = (...msg: any) => {
     const entry = toLogEntry(name, 'warning', msg)
     console.warn(toConsoleEntry(entry))
-    Promise.resolve(repo.logs.append(entry))
+    entries.push(entry)
   }
 
   return { error, info, debug, warning }
