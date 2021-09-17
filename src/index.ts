@@ -1,7 +1,7 @@
 import { pool } from './adb'
 import app from './create-server'
 import path from 'path'
-import { createLogger } from './logger'
+import { createLogger } from './shared/logger'
 import { services } from './services'
 
 const [host, port] = ['localhost', 3000]

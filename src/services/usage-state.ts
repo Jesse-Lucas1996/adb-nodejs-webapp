@@ -2,7 +2,7 @@ import { pool } from '../adb'
 import { executeShellCommand } from '../adb/connection-pool'
 import { repo, store } from '../database'
 import { PersistedEvent } from '../database/store/types'
-import { createLogger } from '../logger'
+import { createLogger } from '../shared/logger'
 import { DeserializationError } from '../types'
 
 const CYCLE_TIMEOUT_MSEC = 5 * 60 * 1000

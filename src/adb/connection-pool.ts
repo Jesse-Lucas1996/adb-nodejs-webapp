@@ -1,7 +1,7 @@
 import adb, { Client, Device, DeviceClient } from '@devicefarmer/adbkit'
 import path from 'path'
 import { repo } from '../database'
-import { createLogger } from '../logger'
+import { createLogger } from '../shared/logger'
 
 const CYCLE_TIMEOUT_MSEC = 10 * 1000
 const PORT = 5555
