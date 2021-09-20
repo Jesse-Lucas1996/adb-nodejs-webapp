@@ -2,6 +2,7 @@ import { createLogger } from '../shared/logger'
 import { fromNetmask, fromRange } from '../adb/utils'
 import { createConnection } from 'net'
 import { repo } from '../database'
+import { dispatcher } from '../shared/broker'
 
 const CYCLE_TIMEOUT_MSEC = 60 * 1000
 const TCP_PROBE_TIMEOUT_MSEC = 1 * 1000
@@ -20,7 +21,7 @@ export function createCandidateScannerService() {
   }
 
   function startOnce() {
-    Promise.resolve(startCycle())
+    startCycle().catch(ex => logger.error(ex))
   }
 
   async function startCycle() {
@@ -75,14 +76,16 @@ export function createCandidateScannerService() {
       try {
         const success = await probeTcp(ip, PORT)
         if (success) {
+          await dispatcher.dispatch('CandidateDiscovered', { ip })
           ipCandidates.add(ip)
         }
       } catch (ex) {
-        logger.error(`Could not connect to ${ip}`)
+        logger.warning(`Could not connect to ${ip}`)
+      } finally {
+        await repo.connectionCandidates.update([...ipCandidates])
       }
     }
 
-    await repo.connectionCandidates.update([...ipCandidates])
     isRunning = false
 
     if (shouldRun) {

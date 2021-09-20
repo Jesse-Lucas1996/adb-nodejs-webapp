@@ -46,7 +46,7 @@ export function createJob(
   }
 
   function start(pool: JobConnectionPool) {
-    Promise.resolve(runJob(pool))
+    runJob(pool).catch(ex => logger.error(ex))
   }
 
   async function runJob(pool: JobConnectionPool) {
@@ -83,7 +83,7 @@ export function createJob(
             task: [...jobStatus[serial].task, { cmd, output }],
           }
         }
-      } catch (ex) {
+      } catch (ex: any) {
         jobStatus[serial] = {
           ...jobStatus[serial],
           success: false,

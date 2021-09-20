@@ -1,6 +1,7 @@
 import adb, { Client, Device, DeviceClient } from '@devicefarmer/adbkit'
 import path from 'path'
 import { repo } from '../database'
+import { subscriber } from '../shared/broker'
 import { createLogger } from '../shared/logger'
 
 const CYCLE_TIMEOUT_MSEC = 10 * 1000
@@ -17,10 +18,9 @@ type DeviceSerial = string
 
 export function createConnectionPool(): ConnectionPool {
   let ips: string[] = []
-
   const deviceState = new Map<DeviceSerial, DeviceState>()
-
   const client = adb.createClient()
+
   client.trackDevices().then(tracker => {
     tracker.on('remove', async (device: Device) => {
       for (const [serial, { connection }] of [...deviceState]) {
@@ -29,6 +29,10 @@ export function createConnectionPool(): ConnectionPool {
         }
       }
     })
+  })
+
+  subscriber.subscribe('CandidateDiscovered', async ({ ip }) => {
+    await tryConnect(ip)
   })
 
   let isRunning = false
@@ -56,18 +60,7 @@ export function createConnectionPool(): ConnectionPool {
     ips = await repo.connectionCandidates.get()
 
     for (const ip of ips) {
-      try {
-        const connectionString = await client.connect(`${ip}:${PORT}`),
-          deviceClient = client.getDevice(connectionString),
-          serial = await getSerialNumber(deviceClient)
-
-        deviceState.set(serial, {
-          state: 'online',
-          connection: connectionString,
-        })
-      } catch (ex) {
-        logger.error(`Failed to connect to ${ip} Details: ${ex.message}`)
-      }
+      await tryConnect(ip)
     }
 
     isRunning = false
@@ -79,8 +72,23 @@ export function createConnectionPool(): ConnectionPool {
     }
   }
 
+  async function tryConnect(ip: string) {
+    try {
+      const connectionString = await client.connect(`${ip}:${PORT}`),
+        deviceClient = client.getDevice(connectionString),
+        serial = await getSerialNumber(deviceClient)
+
+      deviceState.set(serial, {
+        state: 'online',
+        connection: connectionString,
+      })
+    } catch (ex: any) {
+      logger.warning(`Failed to connect to ${ip} Details: ${ex.message}`)
+    }
+  }
+
   function startOnce() {
-    Promise.resolve(startCycle())
+    startCycle().catch(ex => logger.error(ex))
   }
 
   async function getState() {
@@ -112,7 +120,7 @@ export function createConnectionPool(): ConnectionPool {
   }
 
   function stop() {
-    Promise.resolve(stopCycle())
+    stopCycle().catch(ex => logger.error(ex))
   }
 
   function getDeviceClient(serial: string) {
