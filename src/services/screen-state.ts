@@ -15,7 +15,7 @@ export function createScreenStateService() {
       return
     }
     shouldRun = true
-    Promise.resolve(startCycle())
+    startCycle().catch(ex => logger.error(ex))
     logger.info('Service has started')
   }
 
@@ -52,8 +52,8 @@ export function createScreenStateService() {
         } else {
           throw new Error('Device client does not exist')
         }
-      } catch (ex) {
-        event['errorMessage'] = ex.message
+      } catch (ex: any) {
+        event['errorMessage'] = ex?.message ?? ''
         event['error'] =
           ex instanceof DeserializationError ? 'deserialization' : 'connection'
         event['metadata'] =

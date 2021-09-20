@@ -14,13 +14,13 @@ export function createEmergencyService() {
       return
     }
     shouldRun = true
-    Promise.resolve(startCycle())
+    startCycle().catch(ex => logger.error(ex))
     logger.info('Service has started')
   }
 
   function stop() {
     shouldRun = false
-    Promise.resolve(stopCycle())
+    stopCycle().catch(ex => logger.error(ex))
     logger.info('Service has stopped')
   }
 
@@ -50,7 +50,7 @@ export function createEmergencyService() {
           )
 
         job.start(pool)
-      } catch (ex) {
+      } catch (ex: any) {
         logger.error(`${ex.message ?? ex}`)
       } finally {
         setTimeout(async () => await startCycle(), CYCLE_TIMEOUT_MSEC)
@@ -77,7 +77,7 @@ export function createEmergencyService() {
         )
 
       job.start(pool)
-    } catch (ex) {
+    } catch (ex: any) {
       logger.error(`${ex.message ?? ex}`)
     }
   }
