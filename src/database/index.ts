@@ -6,6 +6,7 @@ import { createUserCredentialsRepo } from './repo/user-credentials'
 import { createScreenStateStore } from './store/screen-state'
 import { createUsageStateStore } from './store/usage-state'
 import { createTasksRepo } from './repo/tasks'
+import { createDynamicContentRepo } from './repo/dynamic-content'
 
 export const repo = {
   credentials: createUserCredentialsRepo(),
@@ -14,6 +15,7 @@ export const repo = {
   scannerSettings: createScannerSettingsRepo(),
   logs: createLogsRepo(),
   tasks: createTasksRepo(),
+  dynamicContent: createDynamicContentRepo(),
 }
 
 export const store = {

@@ -7,6 +7,7 @@ type StoredCandidates = {
 
 export function createConnectionCandidatesRepo(path?: string) {
   const datastore = NeDB.create(path ?? './connection-candidates.db')
+  datastore.ensureIndex({ fieldName: 'version', unique: true })
   const version = 'current'
 
   const update = async (candidates: string[]): Promise<string[]> => {

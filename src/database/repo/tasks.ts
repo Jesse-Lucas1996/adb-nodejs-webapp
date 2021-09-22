@@ -46,6 +46,8 @@ type StoredTask = {
 
 export function createTasksRepo(path?: string) {
   const datastore = NeDB.create(path ?? './tasks.db')
+  datastore.ensureIndex({ fieldName: 'taskId', unique: true })
+
   for (const task of seededTasks) {
     datastore.findOne<StoredTask>({ taskId: task.taskId }).then(t => {
       if (!t) {

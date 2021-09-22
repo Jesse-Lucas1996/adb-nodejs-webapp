@@ -8,6 +8,8 @@ type StoredCredentials = {
 
 export function createUserCredentialsRepo(path?: string) {
   const datastore = NeDB.create(path ?? './user-credentials.db')
+  datastore.ensureIndex({ fieldName: 'username', unique: true })
+
   const defaultUsername = 'admin'
   const defaultHash = crypto
     .createHash('sha256')

@@ -13,6 +13,7 @@ type StoredScannerSettings = {
 
 export function createScannerSettingsRepo(path?: string) {
   const datastore = NeDB.create(path ?? './scanner-settings.db')
+  datastore.ensureIndex({ fieldName: 'version', unique: true })
   const version = 'current'
 
   const update = async (
