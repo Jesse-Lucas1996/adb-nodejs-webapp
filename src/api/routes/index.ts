@@ -13,6 +13,7 @@ import assetsRouter from './assets'
 import eventRouter from './events'
 import tasksRouter from './tasks'
 import devicesRouter from './devices'
+import packagesRouter from './packages'
 
 const router = Router()
 const apiKeyMiddleware = createApiKeyAuthMiddleware('API_KEY_HERE')
@@ -30,5 +31,5 @@ router.use('/assets', asyncHandler(assetsRouter))
 router.use('/events', asyncHandler(eventRouter))
 router.use('/tasks', asyncHandler(tasksRouter))
 router.use('/devices', asyncHandler(devicesRouter))
-
+router.use('/packages', asyncHandler(packagesRouter))
 export default router

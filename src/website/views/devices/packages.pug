@@ -1,0 +1,17 @@
+html
+head
+  title Device Package Details
+  style 
+    include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Device Package Details
+    table.atv-table
+      tr.atv-table-title
+        th.atv-table-title IP Address
+        th.atv-table-title PackageList
+        tr.atv-table-title
+          th.atv-table-item #{ipAddress}
+          th.atv-table-item #{packageList}
+
+    include ../components/footer.pug
