@@ -36,6 +36,15 @@ const seededTasks: StoredTask[] = [
     description: 'Set WiFi sleep policy to  (Always on)',
     unitsOfWork: [{ cmd: 'settings put global wifi_sleep_policy 2' }],
   },
+  {
+    taskId: 'wipeUserData',
+    description: 'Wipe user data from all apps',
+    unitsOfWork: [
+      {
+        cmd: 'cmd package list packages|cut -d":" -f2|while read package ;do pm clear $package;done',
+      },
+    ],
+  },
 ]
 
 type StoredTask = {
