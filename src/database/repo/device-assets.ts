@@ -12,6 +12,7 @@ type StoredAssets = {
 
 export function createDeviceAssetsRepo(path?: string) {
   const datastore = NeDB.create(path ?? './assets.db')
+  datastore.ensureIndex({ fieldName: 'version', unique: true })
   const version = 'current'
 
   const update = async (assets: DeviceAsset[]): Promise<DeviceAsset[]> => {

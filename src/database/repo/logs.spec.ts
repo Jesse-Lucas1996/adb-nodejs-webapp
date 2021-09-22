@@ -13,11 +13,9 @@ describe('Logs repo test', () => {
 
   const db = createLogsRepo(path.join(__dirname, 'logs-test.db'))
 
-  it('Attempt to make empty db and write to', async () => {
-    const actual = await db.append(entry)
-    expect(actual).to.be.deep.equal(entry)
-  })
   it('Atttempt to get from current database', async () => {
+    await db.append(entry)
+
     const actual = await db.getPaginated()
     expect(actual.logs).to.be.deep.equal([entry])
   })

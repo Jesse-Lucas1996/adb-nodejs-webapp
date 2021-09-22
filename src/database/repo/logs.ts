@@ -39,13 +39,6 @@ export function createLogsRepo(path?: string) {
         await namestore.update({ name }, { name }, { upsert: true })
       }
     } else {
-      await datastore.insert<LogEntry>({
-        name: entry.name,
-        level: entry.level,
-        timestamp: entry.timestamp,
-        message: entry.message,
-      })
-
       const document = await datastore.insert<LogEntry>({
         name: entry.name,
         level: entry.level,
