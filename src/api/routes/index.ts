@@ -14,9 +14,10 @@ import eventRouter from './events'
 import tasksRouter from './tasks'
 import devicesRouter from './devices'
 import packagesRouter from './packages'
+import { config } from '../../config'
 
 const router = Router()
-const apiKeyMiddleware = createApiKeyAuthMiddleware('API_KEY_HERE')
+const apiKeyMiddleware = createApiKeyAuthMiddleware(config.apiKey)
 
 router.use('/healthcheck', healthcheckRouter)
 
