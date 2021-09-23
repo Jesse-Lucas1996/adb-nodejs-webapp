@@ -1,0 +1,20 @@
+html
+  head
+    title Info Channels
+    style 
+      include ../style.css
+
+  body.atv-background
+    p.atv-title Info Channels
+    table.atv-table
+      tr.atv-table-title
+        th.atv-table-title Topics
+      each item in content
+        tr.atv-table-title
+          th.atv-table-item
+            if item.type === 'redirect'
+              a(href= item.url)=item.title
+            if item.type === 'embedded'
+              a(href= `info-channel/embedded-topic/${item.id}`)=item.title
+
+

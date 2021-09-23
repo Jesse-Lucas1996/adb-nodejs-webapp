@@ -2,6 +2,7 @@ import NeDB from 'nedb-promises'
 
 export type DynamicContent = {
   id: string
+  type: 'redirect' | 'embedded'
   title: string
   url: string
 }
@@ -20,49 +21,33 @@ export function createDynamicContentRepo(path?: string) {
     return documents
   }
 
-  const update = async ({
-    id,
-    title,
-    url,
-  }: DynamicContent): Promise<DynamicContent> => {
+  const update = async (content: DynamicContent): Promise<DynamicContent> => {
     const updated = await datastore.update<DynamicContent>(
       {
-        id,
+        id: content.id,
       },
       {
-        id,
-        title,
-        url,
+        id: content.id,
+        type: content.type,
+        title: content.title,
+        url: content.url,
       },
       {
+        upsert: true,
         returnUpdatedDocs: true,
       }
     )
     return updated
   }
 
-  const append = async ({
-    id,
-    title,
-    url,
-  }: DynamicContent): Promise<DynamicContent> => {
-    const document = await datastore.insert<DynamicContent>({
-      id,
-      title,
-      url,
-    })
-    return document
-  }
-
   const remove = async (id: string): Promise<void> => {
-    await datastore.remove({ id }, { multi: true })
+    await datastore.remove({ id }, {})
   }
 
   return {
     get,
     getAll,
     update,
-    append,
     remove,
   }
 }

@@ -1,0 +1,35 @@
+html
+  head
+    title Dynamic Content
+    style 
+      include ../style.css
+
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Dynamic Content
+    form.atv-form(action="/dynamic-content" method="POST") 
+
+      div
+        input.atv-input-field(value=content.id type='text' name='id' hidden)
+        div.tasks__task-input
+          label Type
+          select.atv-input-field(type='text' name='type')
+            each selection in ['redirect', 'embedded'] 
+              option(selected= selection==content.type )=selection
+        div.tasks__task-input
+          label Title
+          input.atv-input-field(value=content.title type='text' name='title')
+        div.tasks__task-input
+          label URL
+          input.atv-input-field(value=content.url type='text' name='url')
+        div.tasks__button-container
+          button.atv-button(type='submit') Save
+
+    if deletable
+      form.atv-form(action="/dynamic-content/delete" method="POST") 
+        input.atv-input-field(value=content.id type='text' name='id' hidden)
+        div.tasks__button-container
+          button.atv-button(type='submit') Delete
+
+
+    include ../components/footer.pug
