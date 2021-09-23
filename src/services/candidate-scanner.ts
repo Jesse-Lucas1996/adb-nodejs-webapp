@@ -4,7 +4,7 @@ import { createConnection } from 'net'
 import { repo } from '../database'
 import { dispatcher } from '../shared/broker'
 
-const CYCLE_TIMEOUT_MSEC = 60 * 1000
+const CYCLE_TIMEOUT_MSEC = 600 * 1000
 const TCP_PROBE_TIMEOUT_MSEC = 1 * 1000
 const PORT = 5555
 

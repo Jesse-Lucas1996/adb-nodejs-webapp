@@ -15,6 +15,7 @@ import tasksRouter from './tasks'
 import devicesRouter from './devices'
 import packagesRouter from './packages'
 import { config } from '../../config'
+import dynamicContentRouter from './dynamic-content'
 
 const router = Router()
 const apiKeyMiddleware = createApiKeyAuthMiddleware(config.apiKey)
@@ -33,4 +34,6 @@ router.use('/events', asyncHandler(eventRouter))
 router.use('/tasks', asyncHandler(tasksRouter))
 router.use('/devices', asyncHandler(devicesRouter))
 router.use('/packages', asyncHandler(packagesRouter))
+router.use('/dynamic-content', asyncHandler(dynamicContentRouter))
+
 export default router

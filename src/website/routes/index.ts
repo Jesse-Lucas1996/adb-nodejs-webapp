@@ -16,6 +16,8 @@ import userguideRouter from './user-guide'
 import tasksRouter from './tasks'
 import applicationsRouter from './applications'
 import packageRouter from './packages'
+import dynamicContentRouter from './dynamic-content'
+import publicRouter from './public'
 
 const router = Router()
 const cookieAuth = createCookieAuthMiddleware('admin')
@@ -23,6 +25,8 @@ const cookieAuth = createCookieAuthMiddleware('admin')
 router.use('/', asyncHandler(userguideRouter))
 router.use('/user-guide', asyncHandler(userguideRouter))
 router.use('/auth', asyncHandler(authRouter))
+router.use('/public', asyncHandler(publicRouter))
+
 router.use(asyncHandler(cookieAuth))
 router.use('/password', asyncHandler(passwordRouter))
 router.use('/devices', asyncHandler(deviceRouter))
@@ -37,5 +41,6 @@ router.use('/events', asyncHandler(eventsRouter))
 router.use('/tasks', asyncHandler(tasksRouter))
 router.use('/applications', asyncHandler(applicationsRouter))
 router.use('/packages', asyncHandler(packageRouter))
+router.use('/dynamic-content', asyncHandler(dynamicContentRouter))
 
 export default router

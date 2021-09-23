@@ -1,0 +1,22 @@
+html
+  title Dynamic Content
+  style 
+    include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Dynamic Content
+    form.atv-form(action="/dynamic-content/create" method="GET") 
+      button.atv-button(type='submit') Create
+    form.atv-form(action="/public/info-channel" method="GET") 
+      button.atv-button(type='submit') Test
+    div.atv-table-container
+      table.atv-table
+        tr.atv-table-title
+          th.atv-table-title Title 
+          th.atv-table-title Type
+        each item in content
+          tr.atv-table-title 
+            th.atv-table-item
+              a(href=`/dynamic-content/${item.id}`)=item.title
+            th.atv-table-item=item.type
+    include ../components/footer.pug
