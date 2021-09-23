@@ -7,6 +7,7 @@ import fileUpload from 'express-fileupload'
 import cors from 'cors'
 import { errorHandler } from './api/middleware/error-handler'
 import websiteRouter from './website/routes'
+import { config } from './config'
 
 const app = express()
 
@@ -28,7 +29,7 @@ const realPath = path.join(__dirname, './website/images')
 
 app.use('/images', express.static(realPath))
 
-app.use(cookieParser('SECRET_CHANGE_IT'))
+app.use(cookieParser(config.cookieSecret))
 
 app.use('/', websiteRouter)
 app.use(errorHandler)

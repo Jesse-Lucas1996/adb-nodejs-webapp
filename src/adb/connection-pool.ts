@@ -46,7 +46,7 @@ export function createConnectionPool(): ConnectionPool {
 
   async function startCycle() {
     if (isRunning) {
-      return logger.warning('An active cycle is still running. Ignoring.')
+      return logger.warn('An active cycle is still running. Ignoring.')
     }
     isRunning = true
 
@@ -83,7 +83,7 @@ export function createConnectionPool(): ConnectionPool {
         connection: connectionString,
       })
     } catch (ex: any) {
-      logger.warning(`Failed to connect to ${ip} Details: ${ex.message}`)
+      logger.warn('Failed to connect to', ip, 'Details', ex.message)
     }
   }
 
@@ -111,9 +111,7 @@ export function createConnectionPool(): ConnectionPool {
       try {
         await client.disconnect(`${ip}:${PORT}`)
       } catch (ex) {
-        logger.error(
-          `Disconnection error for device ${ip} Details: ${JSON.stringify(ex)}`
-        )
+        logger.error('Disconnection error for device', ip, 'Details', ex)
       }
     }
     logger.info('Pool has stopped')

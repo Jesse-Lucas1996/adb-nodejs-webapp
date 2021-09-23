@@ -1,9 +1,12 @@
 import express from 'express'
-import { systemHealthCheck } from '../../healthcheck'
 const router = express.Router({})
 
 router.get('/', async (_req, res) => {
-  const healthCheck = systemHealthCheck()
+  const healthCheck = {
+    uptime: process.uptime(),
+    message: 'OK',
+    timestamp: new Date().toISOString(),
+  }
 
   return res.send({ healthCheck })
 })

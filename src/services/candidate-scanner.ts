@@ -26,7 +26,7 @@ export function createCandidateScannerService() {
 
   async function startCycle() {
     if (isRunning) {
-      return logger.warning('An active cycle is still running. Ignoring.')
+      return logger.warn('An active cycle is still running. Ignoring.')
     }
     isRunning = true
 
@@ -38,11 +38,7 @@ export function createCandidateScannerService() {
       try {
         acc = [...acc, ...fromRange(curr)]
       } catch (ex) {
-        logger.error(
-          `Failed to convert range ${JSON.stringify(
-            curr
-          )} Details: ${JSON.stringify(ex)}`
-        )
+        logger.error('Failed to convert range', curr, 'Details', ex)
       } finally {
         return acc
       }
@@ -51,11 +47,7 @@ export function createCandidateScannerService() {
       try {
         acc = [...acc, ...fromNetmask(curr)]
       } catch (ex) {
-        logger.error(
-          `Failed to convert netmask ${JSON.stringify(
-            curr
-          )} Details: ${JSON.stringify(ex)}`
-        )
+        logger.error('Failed to convert netmask', curr, 'Details', ex)
       } finally {
         return acc
       }
@@ -80,7 +72,7 @@ export function createCandidateScannerService() {
           ipCandidates.add(ip)
         }
       } catch (ex) {
-        logger.warning(`Could not connect to ${ip}`)
+        logger.trace(`Could not connect to ${ip}`)
       } finally {
         await repo.connectionCandidates.update([...ipCandidates])
       }

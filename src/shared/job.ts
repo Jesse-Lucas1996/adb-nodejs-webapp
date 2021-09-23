@@ -1,6 +1,6 @@
-import { JobConnectionPool, Jobs, JobStatus, Job, Task } from './types'
-import { getDispatcher } from './adb/connection-pool'
-import { createLogger } from './shared/logger'
+import { JobConnectionPool, Jobs, JobStatus, Job, Task } from '../types'
+import { getDispatcher } from '../adb/connection-pool'
+import { createLogger } from './logger'
 
 type JobId = string
 const jobsDb = new Map<JobId, Job>()
@@ -63,7 +63,7 @@ export function createJob(
         const client = pool.getDeviceClient(serial)
         if (!client) {
           const message = `JobId: ${jobId} skipped device: ${serial} as it's offline`
-          logger.warning(message)
+          logger.trace(message)
           jobStatus[serial] = {
             ...jobStatus[serial],
             success: false,

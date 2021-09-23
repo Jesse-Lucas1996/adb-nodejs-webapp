@@ -28,7 +28,7 @@ export function createScreenStateService() {
   }
 
   async function startCycle() {
-    logger.debug('Started cycle')
+    logger.trace('Started cycle')
     const assets = await repo.assets.get(),
       serials = assets.map(a => a.serial)
 
@@ -66,10 +66,10 @@ export function createScreenStateService() {
         await store.screenState.append(event)
       }
     }
-    logger.debug('Stopped cycle')
+    logger.trace('Stopped cycle')
 
     if (shouldRun) {
-      logger.debug('Scheduled next cycle')
+      logger.trace('Scheduled next cycle')
       setTimeout(async () => await startCycle(), CYCLE_TIMEOUT_MSEC)
     }
   }

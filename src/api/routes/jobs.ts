@@ -1,6 +1,6 @@
 import express from 'express'
 import { repo } from '../../database'
-import { createJob, getJob, getJobs } from '../../job'
+import { createJob, getJob, getJobs } from '../../shared/job'
 import { v4 as uuid } from 'uuid'
 import { pool } from '../../adb'
 
