@@ -20,9 +20,10 @@ export function getEnvVariable<T extends any = string>(variable: string): T {
   return v
 }
 
-type Config = {
+export type Config = {
   appEnv: string
   apiKey: string
+  cookieSecret: string
   installId: string
   buildId: string
 }
@@ -30,6 +31,7 @@ type Config = {
 export const config: Readonly<Config> = {
   appEnv: getEnvVariable('appEnv'),
   apiKey: getEnvVariable('apiKey'),
+  cookieSecret: getEnvVariable('cookieSecret'),
   installId: getEnvVariable('installId'),
   buildId: execSync('git rev-parse --short HEAD').toString().replace('\n', ''),
 }

@@ -1,7 +1,7 @@
 import { repo } from '../database'
 import { createLogger } from '../shared/logger'
 import { v4 as uuid } from 'uuid'
-import { createJob } from '../job'
+import { createJob } from '../shared/job'
 import { pool } from '../adb'
 
 const CYCLE_TIMEOUT_MSEC = 10 * 1000

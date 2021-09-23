@@ -1,4 +1,6 @@
-export type LogLevel = 'error' | 'info' | 'debug' | 'warning'
+import * as bunyan from 'bunyan'
+
+export type LogLevel = bunyan.LogLevel
 
 export type LogEntry = {
   name: string

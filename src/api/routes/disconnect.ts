@@ -13,12 +13,7 @@ router.post('/disconnect', async (req, res) => {
         client
           .disconnect(`${ip}:${PORT}`)
           .catch(ex =>
-            console.warn(
-              'Disconnection error for device',
-              ip,
-              'Details',
-              JSON.stringify(ex)
-            )
+            console.warn('Disconnection error for device', ip, 'Details', ex)
           )
       }
       return res.status(100).send('ok')
@@ -29,12 +24,7 @@ router.post('/disconnect', async (req, res) => {
         client
           .disconnect(`${ip}:${PORT}`)
           .catch(ex =>
-            console.warn(
-              'Disconnection error for device',
-              ip,
-              'Details',
-              JSON.stringify(ex)
-            )
+            console.warn('Disconnection error for device', ip, 'Details', ex)
           )
       }
       return res.status(200).send('ok')
