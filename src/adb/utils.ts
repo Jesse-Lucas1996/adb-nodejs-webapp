@@ -1,4 +1,6 @@
 import { IPRange, IPNetwork } from '../types'
+import os from 'os'
+import { execSync } from 'child_process'
 
 export function fromRange({ from, to }: IPRange): string[] {
   if (!(isValidIp(from) && isValidIp(to))) {
@@ -96,4 +98,68 @@ export function isValidNetmask(mask: string) {
     /^((128|192|224|240|248|252|254)\.0\.0\.0)|(255\.(((0|128|192|224|240|248|252|254)\.0\.0)|(255\.(((0|128|192|224|240|248|252|254)\.0)|255\.(0|128|192|224|240|248|252|254)))))$/
 
   return regex.test(mask)
+}
+
+export function getIPv4Interfaces() {
+  const interfaces = os.networkInterfaces(),
+    values = Object.values(interfaces),
+    res = values.reduce((acc, curr) => {
+      if (curr) {
+        for (const e of curr) {
+          if (e.family === 'IPv4' && !e.internal) {
+            acc.push(e)
+          }
+        }
+      }
+      return acc
+    }, new Array())
+
+  return res as os.NetworkInterfaceInfoIPv4[]
+}
+
+export function getDefaultGateway() {
+  const routingTable = execSync('ip route').toString().trim()
+  const regex =
+    /^default\svia\s(([01]?\d\d?|2[0-4]\d|25[0-5]).){3}([01]?\d\d?|2[0-4]\d|25[0-5])/
+  const parsed = routingTable.match(regex)
+  if (!(parsed && parsed.length)) {
+    throw new Error('No default gateway found')
+  }
+  const dgw = parsed[0].replace('default via ', '')
+
+  return dgw
+}
+
+export function floorIpAddress(ip: number[], netmask: number[]) {
+  const numberOfOctets = 4
+  if (!(ip.length === numberOfOctets && netmask.length === numberOfOctets)) {
+    throw new Error('Either IP or netmask is invalid')
+  }
+
+  const result: number[] = []
+  for (let i = 0; i < numberOfOctets; i++) {
+    result.push(ip[i] & netmask[i])
+  }
+
+  return result.join('.')
+}
+
+export function getDefaultIp() {
+  const dgw = getDefaultGateway()
+    .split('.')
+    .map(o => +o)
+
+  const interfaces = getIPv4Interfaces()
+  for (const iface of interfaces) {
+    const ip = iface.address.split('.').map(o => +o),
+      netmask = iface.netmask.split('.').map(o => +o),
+      flooredIp = floorIpAddress(ip, netmask),
+      flooredDgw = floorIpAddress(dgw, netmask)
+
+    if (flooredIp === flooredDgw) {
+      return iface.address
+    }
+  }
+
+  return undefined
 }
