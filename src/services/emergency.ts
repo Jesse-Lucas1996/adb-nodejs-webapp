@@ -7,19 +7,27 @@ import { pool } from '../adb'
 const CYCLE_TIMEOUT_MSEC = 10 * 1000
 const logger = createLogger('emergency-service')
 let shouldRun = false
-
 export function createEmergencyService() {
-  function start() {
+  let storedMessage: string | undefined = undefined
+
+  function start(message?: string) {
     if (shouldRun) {
       return
     }
     shouldRun = true
+    storedMessage = message
     startCycle().catch(ex => logger.error(ex))
+
     logger.info('Service has started')
+  }
+
+  function getMessage() {
+    return storedMessage
   }
 
   function stop() {
     shouldRun = false
+    storedMessage = undefined
     stopCycle().catch(ex => logger.error(ex))
     logger.info('Service has stopped')
   }
@@ -86,5 +94,6 @@ export function createEmergencyService() {
     start,
     stop,
     status,
+    getMessage,
   }
 }

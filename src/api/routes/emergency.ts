@@ -16,11 +16,13 @@ router.post('/', async (req, res) => {
   ) {
     return res.status(400).send()
   }
+  const message = body.message
+  if (body.setActive) {
+    services.emergency.start(message)
+  } else {
+    services.emergency.stop()
+  }
 
-  const execute = body.setActive
-    ? services.emergency.start
-    : services.emergency.stop
-  execute()
   const { isActive } = services.emergency.status()
 
   return res.status(200).send({ isActive })
@@ -28,6 +30,7 @@ router.post('/', async (req, res) => {
 
 type EmergencyBody = {
   setActive: boolean
+  message?: string
 }
 
 export default router
