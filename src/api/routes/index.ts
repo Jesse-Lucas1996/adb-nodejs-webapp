@@ -16,12 +16,13 @@ import devicesRouter from './devices'
 import packagesRouter from './packages'
 import { config } from '../../config'
 import dynamicContentRouter from './dynamic-content'
+import emergencyMessage from './emergency-message'
 
 const router = Router()
 const apiKeyMiddleware = createApiKeyAuthMiddleware(config.apiKey)
 
 router.use('/healthcheck', healthcheckRouter)
-
+router.use('/emergency/message', asyncHandler(emergencyMessage))
 router.use(apiKeyMiddleware)
 
 router.use('/emergency', asyncHandler(emergencyRouter))

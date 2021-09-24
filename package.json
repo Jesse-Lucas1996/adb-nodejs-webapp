@@ -64,6 +64,7 @@
     "mocha": "^8.3.2",
     "nedb-promises": "^4.1.5",
     "node-sass": "^6.0.1",
+    "nodemon": "^2.0.7",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pug": "^3.0.2",
