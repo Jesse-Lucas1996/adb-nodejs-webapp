@@ -18,6 +18,7 @@ import applicationsRouter from './applications'
 import packageRouter from './packages'
 import dynamicContentRouter from './dynamic-content'
 import publicRouter from './public'
+import setupWizard from './setup-wizard'
 
 const router = Router()
 const cookieAuth = createCookieAuthMiddleware('admin')
@@ -42,5 +43,5 @@ router.use('/tasks', asyncHandler(tasksRouter))
 router.use('/applications', asyncHandler(applicationsRouter))
 router.use('/packages', asyncHandler(packageRouter))
 router.use('/dynamic-content', asyncHandler(dynamicContentRouter))
-
+router.use('/setup-wizard', asyncHandler(setupWizard))
 export default router

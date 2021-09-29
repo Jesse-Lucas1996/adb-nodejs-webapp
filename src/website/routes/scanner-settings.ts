@@ -19,14 +19,7 @@ type InvalidNetmask = IPNetwork & {
   reason: string
 }
 
-router.get('/', async (_req, res) => {
-  const savedSettings = await repo.scannerSettings.get()
-  const savedSettingsDto = toScannerSettingsDto(savedSettings)
-
-  res.render('scanner.pug', {
-    scannerSettings: savedSettingsDto,
-  })
-})
+router.get('/', getScannerSettings)
 
 router.post('/', async (req, res) => {
   const data = req.body as {
@@ -109,7 +102,7 @@ router.post('/', async (req, res) => {
   })
 })
 
-function toScannerSettingsDto(settings: ScannerSettings) {
+export function toScannerSettingsDto(settings: ScannerSettings) {
   return {
     addresses: settings.addresses,
     networks: settings.networks.map(n => `${n.ip}/${n.mask}`),
@@ -127,6 +120,18 @@ function isFromLowerThanTo(from: string, to: string) {
     }
   }
   return true
+}
+
+export async function getScannerSettings(
+  _req: express.Request,
+  res: express.Response
+) {
+  const savedSettings = await repo.scannerSettings.get()
+  const savedSettingsDto = toScannerSettingsDto(savedSettings)
+
+  res.render('scanner.pug', {
+    scannerSettings: savedSettingsDto,
+  })
 }
 
 export default router

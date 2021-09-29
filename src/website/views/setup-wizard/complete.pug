@@ -1,0 +1,16 @@
+html
+  head  
+    title Setup Wizard Complete
+    style
+      include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Setup Wizard Complete
+    div.wizard
+      div
+        a(href=`/setup-wizard/4`)
+          button.atv-button(id='add-btn' type='button') Back
+        a(href=`/devices`)
+          button.atv-button(id='add-btn' type='button') Finish
+      include ../components/footer.pug
+

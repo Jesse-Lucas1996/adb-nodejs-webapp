@@ -1,0 +1,21 @@
+html
+  head 
+    title Setup Wizard Step 4
+    style
+      include ../style.css
+  body.atv-background
+    p.atv-title Setup Wizard
+    div.wizard
+      div
+        p Welcome To the Setup Wizard Step 4
+        p 1. Rename a TV by adding to the field "Name".
+        p Note: You can manually add the serial number and names for each TV, as the displayed internal number may be different to the external serial number.
+        p 2. Then click Save
+        p 3. Note: This can be completed later under Settings->Assets 
+        a(href=`/setup-wizard/3`)
+          button.atv-button(id='add-btn' type='button') Back
+        a(href=`/setup-wizard/complete`)
+          button.atv-button(id='add-btn' type='button') Next
+      include ../components/footer.pug
+    include ../assets.pug
+
