@@ -1,7 +1,7 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { pool } from '../../adb/index'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/status', async (_req, res) => {
   const status = await pool.getState()

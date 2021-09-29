@@ -1,9 +1,9 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { PersistedScreenStateEvent } from '../../services/screen-state'
 import { PersistedUsageStateEvent } from '../../services/usage-state'
 import { api, makeRange } from '../utils'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/screen-state', async (req, res) => {
   const query = req.query as {

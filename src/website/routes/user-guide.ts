@@ -1,6 +1,6 @@
-import express from 'express'
+import Router from 'express-promise-router'
 
-const router = express.Router({})
+const router = Router()
 
 router.get('/', async (_req, res) => {
   res.render('user-guide.pug')

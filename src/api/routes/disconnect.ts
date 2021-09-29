@@ -1,6 +1,6 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import adb from '@devicefarmer/adbkit'
-const router = express.Router()
+const router = Router()
 const client = adb.createClient()
 
 router.post('/disconnect', async (req, res) => {

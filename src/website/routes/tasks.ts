@@ -1,4 +1,5 @@
-import express from 'express'
+import Router from 'express-promise-router'
+import { ApplicationError } from '../../types'
 import { api } from '../utils'
 
 export type TaskResponse = {
@@ -7,7 +8,7 @@ export type TaskResponse = {
   unitsOfWork: { cmd: string }[]
 }
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', async (_req, res) => {
   const resp = await api.get<{ tasks: TaskResponse[] }>('/tasks')
@@ -48,7 +49,7 @@ router.post('/', async (req, res) => {
     const resp = await api.post('/tasks', task)
 
     if (resp.status !== 201) {
-      throw new Error('Invalid API response')
+      throw new ApplicationError('Invalid API response')
     }
     return res.status(201).redirect('/tasks')
   } catch (ex) {

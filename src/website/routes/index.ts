@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import Router from 'express-promise-router'
 import healthCheckRouter from './healthcheck'
 import jobPageRouter from './jobs'
 import deviceRouter from './devices'
@@ -27,7 +27,7 @@ router.use('/user-guide', asyncHandler(userguideRouter))
 router.use('/auth', asyncHandler(authRouter))
 router.use('/public', asyncHandler(publicRouter))
 
-router.use(asyncHandler(cookieAuth))
+router.use(cookieAuth)
 router.use('/password', asyncHandler(passwordRouter))
 router.use('/devices', asyncHandler(deviceRouter))
 router.use('/jobs', asyncHandler(jobPageRouter))

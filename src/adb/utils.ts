@@ -1,16 +1,18 @@
-import { IPRange, IPNetwork } from '../types'
+import { IPRange, IPNetwork, ApplicationError, RuntimeError } from '../types'
 import os from 'os'
 import { execSync } from 'child_process'
 
 export function fromRange({ from, to }: IPRange): string[] {
   if (!(isValidIp(from) && isValidIp(to))) {
-    throw new Error(`From ${from} or to ${to} is not a valid IP address`)
+    throw new ApplicationError(
+      `From ${from} or to ${to} is not a valid IP address`
+    )
   }
   const fromOctets = from.split('.').map(f => tryParseInt(f))
   const toOctets = to.split('.').map(f => tryParseInt(f))
 
   if (!(fromOctets.length == 4 && toOctets.length == 4)) {
-    throw new Error('Failed to parse from to to input')
+    throw new ApplicationError('Failed to parse from to to input')
   }
 
   const [fa, fb, fc, fd] = fromOctets
@@ -39,7 +41,7 @@ export function fromRange({ from, to }: IPRange): string[] {
   }
 
   if (!result.length) {
-    throw new Error('Incorrect range')
+    throw new ApplicationError('Incorrect range')
   }
 
   return result
@@ -47,14 +49,16 @@ export function fromRange({ from, to }: IPRange): string[] {
 
 export function fromNetmask({ ip, mask }: IPNetwork): string[] {
   if (!(isValidIp(ip) && isValidNetmask(mask))) {
-    throw new Error(`${ip} is not a valid IP or ${mask} is not a valid netmask`)
+    throw new ApplicationError(
+      `${ip} is not a valid IP or ${mask} is not a valid netmask`
+    )
   }
 
   const ipOctets = ip.split('.').map(f => tryParseInt(f))
   const maskOctets = mask.split('.').map(f => tryParseInt(f))
 
   if (!(ipOctets.length == 4 && maskOctets.length == 4)) {
-    throw new Error('Failed to parse IP or netmask')
+    throw new ApplicationError('Failed to parse IP or netmask')
   }
 
   const lowestIp = ipOctets
@@ -81,7 +85,7 @@ export function fromNetmask({ ip, mask }: IPNetwork): string[] {
 function tryParseInt(input: string) {
   const res = parseInt(input)
   if (typeof res !== 'number') {
-    throw new Error(`${input} is not a number`)
+    throw new ApplicationError(`${input} is not a number`)
   }
   return res
 }
@@ -123,7 +127,7 @@ export function getDefaultGateway() {
     /^default\svia\s(([01]?\d\d?|2[0-4]\d|25[0-5]).){3}([01]?\d\d?|2[0-4]\d|25[0-5])/
   const parsed = routingTable.match(regex)
   if (!(parsed && parsed.length)) {
-    throw new Error('No default gateway found')
+    throw new RuntimeError('No default gateway found')
   }
   const dgw = parsed[0].replace('default via ', '')
 
@@ -133,7 +137,7 @@ export function getDefaultGateway() {
 export function floorIpAddress(ip: number[], netmask: number[]) {
   const numberOfOctets = 4
   if (!(ip.length === numberOfOctets && netmask.length === numberOfOctets)) {
-    throw new Error('Either IP or netmask is invalid')
+    throw new ApplicationError('Either IP or netmask is invalid')
   }
 
   const result: number[] = []

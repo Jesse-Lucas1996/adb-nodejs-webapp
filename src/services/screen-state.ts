@@ -3,7 +3,7 @@ import { executeShellCommand } from '../adb/connection-pool'
 import { repo, store } from '../database'
 import { PersistedEvent } from '../database/store/types'
 import { createLogger } from '../shared/logger'
-import { DeserializationError } from '../types'
+import { ApplicationError, DeserializationError } from '../types'
 
 const CYCLE_TIMEOUT_MSEC = 60 * 1000
 const logger = createLogger('screen-state-service')
@@ -50,7 +50,7 @@ export function createScreenStateService() {
           const evt = deserializeScreenState(rawOutput)
           event['event'] = evt
         } else {
-          throw new Error('Device client does not exist')
+          throw new ApplicationError('Device client does not exist')
         }
       } catch (ex: any) {
         event['errorMessage'] = ex?.message ?? ''

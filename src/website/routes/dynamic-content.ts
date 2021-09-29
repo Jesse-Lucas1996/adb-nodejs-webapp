@@ -1,9 +1,9 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { DynamicContent } from '../../database/repo/dynamic-content'
 import { api } from '../utils'
 import { v4 as uuid } from 'uuid'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', async (_req, res) => {
   const resp = await api.get<{ content: DynamicContent[] }>('dynamic-content'),

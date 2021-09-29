@@ -1,6 +1,6 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { services } from '../../services'
-const router = express.Router()
+const router = Router()
 
 router.get('/', async (_req, res) => {
   const message = services.emergency.getMessage()

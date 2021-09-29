@@ -62,4 +62,6 @@ export type IPNetwork = {
   mask: string
 }
 
-export class DeserializationError extends Error {}
+export class ApplicationError extends Error {}
+export class DeserializationError extends ApplicationError {}
+export class RuntimeError extends ApplicationError {}
