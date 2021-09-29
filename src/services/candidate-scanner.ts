@@ -3,6 +3,7 @@ import { fromNetmask, fromRange } from '../adb/utils'
 import { createConnection } from 'net'
 import { repo } from '../database'
 import { dispatcher } from '../shared/broker'
+import { cidrToNetmask } from '../adb/utils'
 
 const CYCLE_TIMEOUT_MSEC = 600 * 1000
 const TCP_PROBE_TIMEOUT_MSEC = 1 * 1000
@@ -45,7 +46,10 @@ export function createCandidateScannerService() {
     }, new Array<string>())
     const ipsFromNetmasks = ipSettings.networks.reduce((acc, curr) => {
       try {
-        acc = [...acc, ...fromNetmask(curr)]
+        acc = [
+          ...acc,
+          ...fromNetmask({ ip: curr.ip, mask: cidrToNetmask(+curr.mask) }),
+        ]
       } catch (ex) {
         logger.error('Failed to convert netmask', curr, 'Details', ex)
       } finally {

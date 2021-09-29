@@ -22,7 +22,6 @@ router.post('/', async (req, res) => {
   res.cookie('user', username, {
     signed: true,
     httpOnly: true,
-    domain: 'localhost',
     expires: new Date(new Date().setHours(new Date().getHours() + 1)),
   })
   return res.status(200).redirect('/devices')

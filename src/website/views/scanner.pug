@@ -40,6 +40,7 @@ html
                                 button.atv-button(onclick="deleteTextbox('netmask-div')") Delete
                         each invalidMask in invalidData && invalidData.invalidNetmasks ? invalidData.invalidNetmasks : []
                             p()= invalidMask
+                    div.scanner_columns(id='Netmask')
                 div.scanner__save
                     button.atv-button(type='submit') Save
         include components/footer.pug
