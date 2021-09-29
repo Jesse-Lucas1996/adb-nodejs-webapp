@@ -99,7 +99,7 @@ export function isValidIp(ip: string) {
 
 export function isValidNetmask(mask: string) {
   const regex =
-    /^((128|192|224|240|248|252|254)\.0\.0\.0)|(255\.(((0|128|192|224|240|248|252|254)\.0\.0)|(255\.(((0|128|192|224|240|248|252|254)\.0)|255\.(0|128|192|224|240|248|252|254)))))$/
+    /^((128|192|224|240|248|252|254|255)\.0\.0\.0)|(255\.(((0|128|192|224|240|248|252|254|255)\.0\.0)|(255\.(((0|128|192|224|240|248|252|254|255)\.0)|255\.(0|128|192|224|240|248|252|254|255)))))$/
 
   return regex.test(mask)
 }
@@ -166,4 +166,22 @@ export function getDefaultIp() {
   }
 
   return undefined
+}
+
+export function cidrToNetmask(cidr: number) {
+  const amountOfOctets = 4
+  const bitsInOctet = 8
+  const maxOctetValue = Math.pow(2, bitsInOctet) - 1
+  if (!(cidr >= 0 && cidr <= amountOfOctets * bitsInOctet)) {
+    throw new Error('CIDR is invalid')
+  }
+  const result: number[] = []
+
+  for (let i = 0; i < amountOfOctets; i++) {
+    const bits = cidr < bitsInOctet ? cidr : bitsInOctet
+    result.push(maxOctetValue - (maxOctetValue >> bits))
+    cidr -= bits
+  }
+
+  return result.join('.')
 }

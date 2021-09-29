@@ -1,5 +1,6 @@
+import express from 'express'
 import Router from 'express-promise-router'
-import { isValidIp, isValidNetmask } from '../../adb/utils'
+import { isValidIp } from '../../adb/utils'
 import { repo } from '../../database'
 import { ScannerSettings } from '../../database/repo/scanner-settings'
 import { IPNetwork, IPRange } from '../../types'
@@ -64,20 +65,19 @@ router.post('/', async (req, res) => {
   }
 
   const validNetmasks: IPNetwork[] = []
+
   const invalidNetmasks: InvalidNetmask[] = []
 
   for (const netmask of data?.ipNetmasks ?? []) {
     const [ip, mask] = netmask.split('/')
-
-    if (!(isValidIp(ip) && isValidNetmask(mask))) {
+    if (!(isValidIp(ip) && isValidCidr(mask))) {
       invalidNetmasks.push({
         ip,
         mask,
-        reason: 'Either IP or Netmask is not valid',
+        reason: 'Either IP or CIDR is not valid',
       })
       continue
     }
-
     validNetmasks.push({ ip, mask })
   }
 
@@ -132,6 +132,10 @@ export async function getScannerSettings(
   res.render('scanner.pug', {
     scannerSettings: savedSettingsDto,
   })
+}
+export function isValidCidr(cidr: number | string) {
+  const casted = Number.isInteger(cidr) ? cidr : +cidr
+  return casted >= 0 && casted <= 32
 }
 
 export default router
