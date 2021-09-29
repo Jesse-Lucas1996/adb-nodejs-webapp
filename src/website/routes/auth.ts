@@ -1,8 +1,8 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import cookieParser from 'cookie-parser'
 import { repo } from '../../database/index'
 
-const router = express.Router()
+const router = Router()
 
 router.use(cookieParser('user'))
 

@@ -1,10 +1,10 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { repo } from '../../database'
 import { createJob, getJob, getJobs } from '../../shared/job'
 import { v4 as uuid } from 'uuid'
 import { pool } from '../../adb'
 
-const router = express.Router()
+const router = Router()
 
 type CreateJobBody = {
   name: string

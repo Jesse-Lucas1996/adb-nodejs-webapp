@@ -1,10 +1,10 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { isValidIp, isValidNetmask } from '../../adb/utils'
 import { repo } from '../../database'
 import { ScannerSettings } from '../../database/repo/scanner-settings'
 import { IPNetwork, IPRange } from '../../types'
 
-const router = express.Router()
+const router = Router()
 
 type InvalidIP = {
   ip: string

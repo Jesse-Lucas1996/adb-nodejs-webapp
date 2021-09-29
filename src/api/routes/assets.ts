@@ -1,8 +1,8 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { repo } from '../../database'
 import { DeviceAsset } from '../../database/repo/device-assets'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', async (_req, res) => {
   const assets = await repo.assets.get()

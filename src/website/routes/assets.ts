@@ -1,6 +1,7 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { repo } from '../../database'
 import { DeviceAsset } from '../../database/repo/device-assets'
+import { ApplicationError } from '../../types'
 import { api } from '../utils'
 
 type DeviceAssetsBody = {
@@ -8,7 +9,7 @@ type DeviceAssetsBody = {
   name: string[]
 }
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', async (_req, res) => {
   const assets = await repo.assets.get()
@@ -34,7 +35,7 @@ router.post('/', async (req, res) => {
 
 function toDeviceAssets({ serial, name }: DeviceAssetsBody): DeviceAsset[] {
   if (serial.length !== name.length) {
-    throw new Error('Invalid data, cannot proceed')
+    throw new ApplicationError('Invalid data, cannot proceed')
   }
   return serial.map((s, i) => {
     return {

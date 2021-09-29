@@ -3,6 +3,7 @@ import { createLogger } from '../shared/logger'
 import { v4 as uuid } from 'uuid'
 import { createJob } from '../shared/job'
 import { pool } from '../adb'
+import { ApplicationError } from '../types'
 
 const CYCLE_TIMEOUT_MSEC = 10 * 1000
 const logger = createLogger('emergency-service')
@@ -46,7 +47,7 @@ export function createEmergencyService() {
           task = await repo.tasks.get('sendEmergency')
 
         if (!task) {
-          throw new Error('Send emergency task does not exist')
+          throw new ApplicationError('Send emergency task does not exist')
         }
 
         const jobId = uuid(),
@@ -73,7 +74,7 @@ export function createEmergencyService() {
         task = await repo.tasks.get('stopEmergency')
 
       if (!task) {
-        throw new Error('Stop emergency task does not exist')
+        throw new ApplicationError('Stop emergency task does not exist')
       }
 
       const jobId = uuid(),

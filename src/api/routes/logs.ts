@@ -1,6 +1,6 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { repo } from '../../database'
-const router = express.Router({})
+const router = Router()
 
 router.get('/', async (req, res) => {
   const query = req.query as {

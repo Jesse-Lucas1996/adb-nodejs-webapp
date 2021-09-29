@@ -1,7 +1,8 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import path from 'path'
 import fs from 'fs'
 import { UploadedFile } from 'express-fileupload'
+import { ApplicationError } from '../../types'
 
 const asyncFs = fs.promises,
   rootPath = __dirname.replace('/website/routes', ''),
@@ -9,7 +10,7 @@ const asyncFs = fs.promises,
 
 // TODO: Corresponding API handler
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', async (_req, res) => {
   const files = await asyncFs.readdir(fullApksPath)
@@ -34,16 +35,11 @@ router.post('/', async (req, res) => {
   const apk = req.files?.apk as UploadedFile
 
   if (!apk) {
-    return res.status(400).send()
+    throw new ApplicationError('File does not exist')
   }
 
   const uploadPath = path.join(fullApksPath, `./${apk.name}`)
-
-  try {
-    await apk.mv(uploadPath)
-  } catch (ex) {
-    return res.status(500).send(ex.message)
-  }
+  await apk.mv(uploadPath)
 
   return res.redirect('/applications')
 })

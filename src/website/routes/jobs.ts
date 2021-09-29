@@ -1,8 +1,9 @@
-import express from 'express'
+import Router from 'express-promise-router'
+import { ApplicationError } from '../../types'
 import { api } from '../utils'
 import { TaskResponse } from './tasks'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', async (_req, res) => {
   const resp = await api.get<{ jobs: [] }>('/jobs'),
@@ -45,7 +46,7 @@ router.post('/', async (req, res) => {
     const resp = await api.post<{ jobId: string }>('/jobs', job)
 
     if (resp.status !== 201) {
-      throw new Error('Invalid API response')
+      throw new ApplicationError('Invalid API response')
     }
     return res.status(201).redirect(`/jobs/${resp.data.jobId}`)
   } catch (ex) {
@@ -54,18 +55,17 @@ router.post('/', async (req, res) => {
 })
 
 router.post('/create', async (_req, res) => {
-  const tasksRes = await api.get<{ tasks: TaskResponse[] }>('/tasks'),
-    tasks = tasksRes.data.tasks.map(t => t.taskId).reverse()
+  const tRes = await api.get<{ tasks: TaskResponse[] }>('/tasks'),
+    tasks = tRes.data.tasks.map(t => t.taskId).reverse()
 
-  const devicesRes = await api.get<{
+  const dRes = await api.get<{
     status: { [K in string]: { state: string; name: string } }
   }>('pool/status')
-  const { status } = devicesRes.data
+  const { status } = dRes.data
 
   const devices = Object.entries(status).reduce(
-    (acc, [serial, { state, name }]) => {
-      return (acc = [...acc, { serial, name, state }])
-    },
+    (acc, [serial, { state, name }]) =>
+      (acc = [...acc, { serial, name, state }]),
     new Array<{
       serial: string
       name: string

@@ -1,8 +1,8 @@
-import express from 'express'
+import Router from 'express-promise-router'
 import { repo } from '../../database'
 import { DynamicContent } from '../../database/repo/dynamic-content'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', async (_req, res) => {
   const content = await repo.dynamicContent.getAll()

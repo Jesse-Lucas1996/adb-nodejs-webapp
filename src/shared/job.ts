@@ -1,4 +1,11 @@
-import { JobConnectionPool, Jobs, JobStatus, Job, Task } from '../types'
+import {
+  JobConnectionPool,
+  Jobs,
+  JobStatus,
+  Job,
+  Task,
+  ApplicationError,
+} from '../types'
 import { getDispatcher } from '../adb/connection-pool'
 import { createLogger } from './logger'
 
@@ -9,7 +16,7 @@ const logger = createLogger('jobs')
 
 function registerJob(job: Job) {
   if (jobsDb.has(job.id)) {
-    throw new Error(`Job ${job.id} has been already registered`)
+    throw new ApplicationError(`Job ${job.id} has been already registered`)
   }
   jobsDb.set(job.id, job)
 }
@@ -51,10 +58,10 @@ export function createJob(
 
   async function runJob(pool: JobConnectionPool) {
     if (isRunning) {
-      throw new Error(`Job ${jobId} is already running`)
+      throw new ApplicationError(`Job ${jobId} is already running`)
     }
     if (hasFinished) {
-      throw new Error(`Job ${jobId} has already finished`)
+      throw new ApplicationError(`Job ${jobId} has already finished`)
     }
     isRunning = true
 
