@@ -17,6 +17,7 @@ router.get('/:serial', async (req, res) => {
     resp.data
 
   return res.render('devices/details.pug', {
+    serial,
     macAddress,
     ipAddress,
     upTime,

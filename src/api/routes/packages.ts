@@ -16,16 +16,11 @@ router.get('/:serial', async (req, res) => {
   if (!client) {
     return res.status(400).send('Client does not exist')
   }
-  const ipAddress = await executeShellCommand(
-    client,
-    'ip addr show wlan0 |grep inet'
-  )
   const packageList = await executeShellCommand(
     client,
     'pm list packages |cut -f 2 -d ":"'
   )
   return res.status(200).send({
-    ipAddress,
     packageList,
   })
 })

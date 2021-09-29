@@ -1,0 +1,19 @@
+html
+  head 
+    title Setup Wizard Step 1
+    style
+      include ../style.css
+  body.atv-background
+    p.atv-title Setup Wizard
+    div.wizard
+      div
+        p Welcome To the Setup Wizard Step 1
+        p Configure Scanner Settings
+        p 1. Add an individual IP Address, IP Range or IP Netmask
+        p 2. Click Save
+        a(href=`/setup-wizard`)
+          button.atv-button(id='add-btn' type='button') Back
+        a(href=`/setup-wizard/2`)
+          button.atv-button(id='add-btn' type='button') Next
+    include ../scanner.pug
+

@@ -1,0 +1,15 @@
+html
+  head  
+    title Setup Wizard Welcome
+    style
+      include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Setup Wizard
+    div.wizard
+      div
+        p Welcome To the Setup Wizard
+        a(href=`/setup-wizard/1`)
+          button.atv-button(id='add-btn' type='button') Next
+      include ../components/footer.pug
+

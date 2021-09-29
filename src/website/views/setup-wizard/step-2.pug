@@ -1,0 +1,23 @@
+html
+  head 
+    title Setup Wizard Step 2
+    style
+      include ../style.css
+  body.atv-background
+    include ../components/navbar.pug
+    p.atv-title Setup Wizard
+    div.wizard
+      div
+        p Welcome To the Setup Wizard Step 2
+        P This system requires 'trust' between 
+        p 1. Check TV for "trust this device" message
+        p 2. Click on the checkbox presented on screen 
+        img.wizard__img(src="/images/step4-1.png")
+        div
+          a(href=`/setup-wizard/1`)
+            button.atv-button(id='add-btn' type='button') Back
+          a(href=`/setup-wizard/3`)
+            button.atv-button(id='add-btn' type='button') Next
+      include ../components/footer.pug
+
+

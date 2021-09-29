@@ -1,0 +1,18 @@
+html
+  head 
+    title Setup Wizard Step 3
+    style
+      include ../style.css
+  body.atv-background
+    p.atv-title Setup Wizard
+    div.wizard
+      div
+        p Welcome To the Setup Wizard Step 3
+        p When TV trust has been approved check for device serial number here 
+        a(href=`/setup-wizard/2`)
+          button.atv-button(id='add-btn' type='button') Back
+        a(href=`/setup-wizard/4`)
+          button.atv-button(id='add-btn' type='button') Next
+      include ../components/footer.pug
+    include ../devices/list.pug
+

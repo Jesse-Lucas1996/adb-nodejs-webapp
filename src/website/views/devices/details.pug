@@ -13,10 +13,14 @@ html
         th.atv-table-title Uptime
         th.atv-table-title Version of Android 
         th.atv-table-title Provisioned 
+        th.atv-table-title Packages
         tr.atv-table-title
           th.atv-table-item #{macAddress}
           th.atv-table-item #{ipAddress}
           th.atv-table-item #{upTime}
           th.atv-table-item #{versionOfAndroid}
           th.atv-table-item #{hasProvisioned}
+          th.atv-table-item 
+              a(href=`/packages/${serial}`)
+                button.atv-button(id='add-btn' type='button') View
     include ../components/footer.pug

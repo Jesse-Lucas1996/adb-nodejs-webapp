@@ -470,3 +470,16 @@ $standard-font: 'Roboto', sans-serif;
     }
   }
 }
+
+/* Wizard */
+.wizard {
+  display: flex;
+  padding-bottom: 100px;
+  justify-content: center;
+
+  &__img {
+    width: 960px;
+    height: 540px;
+    justify-content: center;
+  }
+}

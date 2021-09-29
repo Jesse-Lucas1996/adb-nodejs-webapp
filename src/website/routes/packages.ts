@@ -13,14 +13,13 @@ router.get('/', async (_req, res) => {
 router.get('/:serial', async (req, res) => {
   const serial = req.params['serial']
   const resp = await api.get(`packages/${serial}`)
-  const { ipAddress, packageList } = resp.data
+  const { packageList } = resp.data
 
   if (resp.status !== 200) {
     return res.status(400).send()
   }
 
   return res.render('devices/packages.pug', {
-    ipAddress,
     packageList,
   })
 })
