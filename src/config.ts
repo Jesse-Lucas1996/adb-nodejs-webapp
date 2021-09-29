@@ -29,6 +29,7 @@ export type Config = {
   cookieSecret: string
   installId: string
   buildId: string
+  dnsBeaconUrl: string
 }
 
 export const config: Readonly<Config> = {
@@ -37,4 +38,5 @@ export const config: Readonly<Config> = {
   cookieSecret: getEnvVariable('cookieSecret'),
   installId: getEnvVariable('installId'),
   buildId: execSync('git rev-parse --short HEAD').toString().replace('\n', ''),
+  dnsBeaconUrl: getEnvVariable('dnsBeaconUrl'),
 }

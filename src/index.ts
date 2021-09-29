@@ -11,6 +11,7 @@ pool.start()
 services.candidateScanner.start()
 services.screenState.start()
 services.usageState.start()
+services.dnsBeacon.start()
 
 app.set('views', path.join(__dirname, './website/views'))
 app.set('view engine', 'pug')
