@@ -52,8 +52,12 @@ export function createJob(
     }
   }
 
-  function start(pool: JobConnectionPool) {
-    runJob(pool).catch(ex => logger.error(ex))
+  function start(pool: JobConnectionPool, onFinish?: () => void) {
+    runJob(pool)
+      .then(() => {
+        onFinish?.()
+      })
+      .catch(ex => logger.error(ex))
   }
 
   async function runJob(pool: JobConnectionPool) {

@@ -5,7 +5,7 @@ import { repo } from '../database'
 import { dispatcher } from '../shared/broker'
 import { cidrToNetmask } from '../adb/utils'
 
-const CYCLE_TIMEOUT_MSEC = 600 * 1000
+const CYCLE_TIMEOUT_MSEC = 10 * 60 * 1000
 const TCP_PROBE_TIMEOUT_MSEC = 1 * 1000
 const PORT = 5555
 
@@ -72,7 +72,7 @@ export function createCandidateScannerService() {
       try {
         const success = await probeTcp(ip, PORT)
         if (success) {
-          await dispatcher.dispatch('CandidateDiscovered', { ip })
+          dispatcher.dispatch('CandidateDiscovered', { ip })
           ipCandidates.add(ip)
         }
       } catch (ex) {

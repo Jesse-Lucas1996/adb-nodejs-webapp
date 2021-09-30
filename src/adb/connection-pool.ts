@@ -1,7 +1,7 @@
 import adb, { Client, Device, DeviceClient } from '@devicefarmer/adbkit'
 import path from 'path'
 import { repo } from '../database'
-import { subscriber } from '../shared/broker'
+import { dispatcher, subscriber } from '../shared/broker'
 import { createLogger } from '../shared/logger'
 
 const CYCLE_TIMEOUT_MSEC = 10 * 1000
@@ -11,6 +11,7 @@ const logger = createLogger('connection-pool')
 
 type DeviceState = {
   state: 'online' | 'offline'
+  provisioned?: boolean
   connection?: string
 }
 
@@ -25,7 +26,7 @@ export function createConnectionPool(): ConnectionPool {
     tracker.on('remove', async (device: Device) => {
       for (const [serial, { connection }] of [...deviceState]) {
         if (connection === device.id) {
-          deviceState.set(serial, { state: 'offline' })
+          deviceState.set(serial, { state: 'offline', provisioned: undefined })
         }
       }
     })
@@ -53,7 +54,10 @@ export function createConnectionPool(): ConnectionPool {
     const deviceAssests = await repo.assets.get()
     for (const asset of deviceAssests) {
       if (!deviceState.has(asset.serial)) {
-        deviceState.set(asset.serial, { state: 'offline' })
+        deviceState.set(asset.serial, {
+          state: 'offline',
+          provisioned: undefined,
+        })
       }
     }
 
@@ -76,11 +80,19 @@ export function createConnectionPool(): ConnectionPool {
     try {
       const connectionString = await client.connect(`${ip}:${PORT}`),
         deviceClient = client.getDevice(connectionString),
-        serial = await getSerialNumber(deviceClient)
+        serial = await getSerialNumber(deviceClient),
+        provisioned = await isDeviceProvisioned(deviceClient)
+
+      if (!provisioned) {
+        dispatcher.dispatch('ProvisionRequested', {
+          serial,
+        })
+      }
 
       deviceState.set(serial, {
         state: 'online',
         connection: connectionString,
+        provisioned,
       })
     } catch (ex: any) {
       logger.warn('Failed to connect to', ip, 'Details', ex.message)
@@ -136,9 +148,9 @@ export type ConnectionPool = {
   start: () => void
   stop: () => void
   client: Client
-  getState: () => Promise<
-    { [K in DeviceSerial]: DeviceState & { name: string } }
-  >
+  getState: () => Promise<{
+    [K in DeviceSerial]: DeviceState & { name: string }
+  }>
   getDeviceClient: (serial: string) => DeviceClient | undefined
 }
 
@@ -165,7 +177,7 @@ function isInstallCmd(cmd: string) {
 export function getDispatcher(cmd: string) {
   if (isInstallCmd(cmd)) {
     const apkPath = `./${cmd.split(' ')[1]}`
-    const fullPath = path.join(__dirname.replace('/adb', ''), apkPath) // TODO: Get away from this horrible hack
+    const fullPath = path.join(__dirname.replace('/adb', ''), apkPath)
 
     return {
       dispatch: installApk,
@@ -177,4 +189,27 @@ export function getDispatcher(cmd: string) {
     dispatch: executeShellCommand,
     args: cmd,
   }
+}
+
+async function isDeviceProvisioned(client: DeviceClient) {
+  const emergencyAppInstalled = executeShellCommand(
+    client,
+    'pm list packages -f com.emergencyreactnativeapp'
+  ).then(r => !!r?.length)
+
+  const dynamicContentAppInstalled = executeShellCommand(
+    client,
+    'pm list packages -f com.dynamiccontent'
+  ).then(r => !!r?.length)
+
+  const wifiSleepPolicySet = executeShellCommand(
+    client,
+    'settings list global | grep wifi | grep wifi_sleep_policy=2'
+  ).then(r => !!r?.length)
+
+  return (
+    (await emergencyAppInstalled) &&
+    (await dynamicContentAppInstalled) &&
+    (await wifiSleepPolicySet)
+  )
 }

@@ -9,10 +9,13 @@ router.get('/', async (_req, res) => {
   res.render('setup-wizard/welcome.pug')
 })
 
-router.get('/1', async (_req, res) => {
+router.get('/1', async (req, res) => {
   const savedSettings = await repo.scannerSettings.get()
   const savedSettingsDto = toScannerSettingsDto(savedSettings)
-  res.render('setup-wizard/step-1.pug', { scannerSettings: savedSettingsDto })
+  res.render('setup-wizard/step-1.pug', {
+    scannerSettings: savedSettingsDto,
+    originalUrl: req.originalUrl,
+  })
 })
 
 router.get('/2', async (_req, res) => {

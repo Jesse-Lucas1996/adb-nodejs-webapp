@@ -1,4 +1,3 @@
-import express from 'express'
 import Router from 'express-promise-router'
 import { isValidIp } from '../../adb/utils'
 import { repo } from '../../database'
@@ -20,13 +19,22 @@ type InvalidNetmask = IPNetwork & {
   reason: string
 }
 
-router.get('/', getScannerSettings)
+router.get('/', async (req, res) => {
+  const savedSettings = await repo.scannerSettings.get()
+  const savedSettingsDto = toScannerSettingsDto(savedSettings)
+
+  return res.render('scanner.pug', {
+    scannerSettings: savedSettingsDto,
+    originalUrl: req.originalUrl,
+  })
+})
 
 router.post('/', async (req, res) => {
   const data = req.body as {
     ipAddresses: string[]
     ipNetmasks: string[]
     ipRanges: string[]
+    originalUrl: string
   }
 
   const validIps = []
@@ -90,6 +98,10 @@ router.post('/', async (req, res) => {
   const savedSettings = await repo.scannerSettings.update(settings)
   const savedSettingsDto = toScannerSettingsDto(savedSettings)
 
+  if (data.originalUrl.includes('setup-wizard')) {
+    return res.redirect(data.originalUrl)
+  }
+
   return res.render('scanner.pug', {
     scannerSettings: savedSettingsDto,
     invalidData: {
@@ -122,18 +134,7 @@ function isFromLowerThanTo(from: string, to: string) {
   return true
 }
 
-export async function getScannerSettings(
-  _req: express.Request,
-  res: express.Response
-) {
-  const savedSettings = await repo.scannerSettings.get()
-  const savedSettingsDto = toScannerSettingsDto(savedSettings)
-
-  res.render('scanner.pug', {
-    scannerSettings: savedSettingsDto,
-  })
-}
-export function isValidCidr(cidr: number | string) {
+function isValidCidr(cidr: number | string) {
   const casted = Number.isInteger(cidr) ? cidr : +cidr
   return casted >= 0 && casted <= 32
 }
