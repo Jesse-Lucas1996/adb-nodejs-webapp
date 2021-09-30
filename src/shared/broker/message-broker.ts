@@ -4,58 +4,36 @@ type BrokerEvent = {
   type: string
 }
 
-type Dispatcher<TEvt extends BrokerEvent> = {
-  dispatch: (
-    event: TEvt['type'],
-    opts: Omit<ConcreteEvent<TEvt, TEvt['type']>, 'type'>
-  ) => Promise<any>
-}
-
-type Subscriber<TEvt extends BrokerEvent> = {
-  subscribe: (
-    event: TEvt['type'],
-    handle: (
-      event: Omit<ConcreteEvent<TEvt, TEvt['type']>, 'type'>
-    ) => Promise<void>
-  ) => void
-}
-
 type ConcreteEvent<TEvt extends BrokerEvent, T extends string> = Extract<
   TEvt,
   { type: T }
 >
 
-let lastInstanceId = 0
+let brokerId = 0
 
 export function createMessageBroker<TEvt extends BrokerEvent>() {
-  const logger = createLogger(`message-broker-${lastInstanceId++}`)
-  const subscribers = new Map<string, any[]>()
+  const logger = createLogger(`message-broker-${brokerId++}`)
+  const subscribers = new Map<string, ((opts: any) => Promise<any>)[]>()
 
-  async function dispatch(
-    event: TEvt['type'],
-    opts: Omit<ConcreteEvent<TEvt, TEvt['type']>, 'type'>
+  function dispatch<T extends TEvt['type']>(
+    event: T,
+    opts: Omit<ConcreteEvent<TEvt, T>, 'type'>
   ) {
     const handlers = subscribers.get(event)
     if (handlers) {
       for (const handler of handlers ?? []) {
-        try {
-          await handler(opts)
-        } catch (ex) {
-          logger.error('Dispatching error', ex)
-        }
+        handler(opts).catch(ex => logger.error('Dispatching error', ex))
       }
     }
   }
 
-  const dispatcher: Dispatcher<TEvt> = {
+  const dispatcher = {
     dispatch,
   }
 
-  function subscribe(
-    event: TEvt['type'],
-    handle: (
-      event: Omit<ConcreteEvent<TEvt, TEvt['type']>, 'type'>
-    ) => Promise<void>
+  function subscribe<T extends TEvt['type']>(
+    event: T,
+    handle: (event: Omit<ConcreteEvent<TEvt, T>, 'type'>) => Promise<void>
   ) {
     const handlers = subscribers.get(event) ?? []
 
@@ -66,7 +44,7 @@ export function createMessageBroker<TEvt extends BrokerEvent>() {
     }
   }
 
-  const subscriber: Subscriber<TEvt> = {
+  const subscriber = {
     subscribe,
   }
 

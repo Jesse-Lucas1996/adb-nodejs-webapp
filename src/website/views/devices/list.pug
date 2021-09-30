@@ -11,15 +11,19 @@ html
           th.atv-table-title Serial 
           th.atv-table-title Name
           th.atv-table-title Status 
+          th.atv-table-title Provisioned 
         each key in Object.keys(status)
           tr.atv-table-title 
           if status[key].state === 'offline'
             th.atv-table-item=key
             th.atv-table-item= status[key].name
             th(class= status[key].state === 'online' ? 'atv-table-item' : 'atv-table-item atv-table-item__highlight-red')= status[key].state
+            th.atv-table-item= status[key].provisioned
           else if status[key].state === 'online'
             th.atv-table-item
               a(href=`/devices/${key}`)=key
             th.atv-table-item= status[key].name
             th(class= status[key].state === 'online' ? 'atv-table-item' : 'atv-table-item atv-table-item__highlight-red')= status[key].state    
+            th.atv-table-item= status[key].provisioned
+
     include ../components/footer.pug

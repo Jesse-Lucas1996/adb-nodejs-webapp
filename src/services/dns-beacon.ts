@@ -3,7 +3,7 @@ import { createLogger } from '../shared/logger'
 import axios from 'axios'
 import { config } from '../config'
 
-const CYCLE_TIMEOUT_MSEC = 300 * 1000
+const CYCLE_TIMEOUT_MSEC = 5 * 60 * 1000
 const logger = createLogger('dns-beacon-service')
 let shouldRun = false
 

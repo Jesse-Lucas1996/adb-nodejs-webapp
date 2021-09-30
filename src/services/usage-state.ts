@@ -5,7 +5,7 @@ import { PersistedEvent } from '../database/store/types'
 import { createLogger } from '../shared/logger'
 import { ApplicationError, DeserializationError } from '../types'
 
-const CYCLE_TIMEOUT_MSEC = 5 * 60 * 1000
+const CYCLE_TIMEOUT_MSEC = 60 * 60 * 1000
 const logger = createLogger('usage-state-service')
 let shouldRun = false
 

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { createLogger } from '../../shared/logger'
 import { ApplicationError } from '../../types'
 
-const logger = createLogger('Express Error Handler')
+const logger = createLogger('express-error-handler')
 
 export async function errorHandler(
   ex: any,

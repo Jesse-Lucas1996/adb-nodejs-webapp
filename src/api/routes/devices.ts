@@ -31,10 +31,8 @@ router.get('/:serial', async (req, res) => {
     'getprop ro.build.version.release '
   )
 
-  const hasProvisioned = await executeShellCommand(
-    client,
-    'pm list packages -f com.emergencyreactnativeapp'
-  ).then(response => !!response?.length)
+  const state = await pool.getState()
+  const hasProvisioned = state[serial]?.provisioned
 
   return res.status(200).send({
     serial,

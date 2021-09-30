@@ -25,11 +25,7 @@ const seededTasks: StoredTask[] = [
   {
     taskId: 'uptime',
     description: 'Show system uptime',
-    unitsOfWork: [
-      {
-        cmd: 'uptime',
-      },
-    ],
+    unitsOfWork: [{ cmd: 'uptime' }],
   },
   {
     taskId: 'setWifiSleepPolicy',
@@ -41,8 +37,18 @@ const seededTasks: StoredTask[] = [
     description: 'Wipe user data from all apps',
     unitsOfWork: [
       {
-        cmd: 'cmd package list packages|cut -d":" -f2|while read package ;do pm clear $package;done',
+        cmd: 'cmd package list packages | cut -d":" -f2 | while read package; do pm clear $package; done',
       },
+    ],
+  },
+  {
+    taskId: 'provisionDevice',
+    description:
+      'Installs emergency and dynamic content apps and sets WiFi policy',
+    unitsOfWork: [
+      { cmd: 'install apks/com.emergencyreactnativeapp' },
+      { cmd: 'install apks/com.dynamiccontent' },
+      { cmd: 'settings put global wifi_sleep_policy 2' },
     ],
   },
 ]
