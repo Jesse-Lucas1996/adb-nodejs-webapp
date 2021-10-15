@@ -1,5 +1,5 @@
 import Router from 'express-promise-router'
-import { isValidIp } from '../../adb/utils'
+import { isValidIp, isValidNetmask } from '../../adb/utils'
 import { repo } from '../../database'
 import { ScannerSettings } from '../../database/repo/scanner-settings'
 import { IPNetwork, IPRange } from '../../types'
@@ -53,24 +53,45 @@ router.post('/', async (req, res) => {
   const invalidRanges: InvalidIPRange[] = []
 
   for (const range of data?.ipRanges ?? []) {
-    const [from, to] = range.split('-')
-
-    if (!(isValidIp(from) && isValidIp(to))) {
+    if (!range.includes("-")) {
       invalidRanges.push({
-        from,
-        to,
-        reason: 'Either from or to is not a valid IP',
+        from: range,
+        to: range,
+        reason: 'Range does not contain -',
       })
       continue
     }
 
-    if (!isFromLowerThanTo(from, to)) {
-      invalidRanges.push({ from, to, reason: 'From is larger than to' })
-      continue
+    const [from, to] = range.split('-')
+
+    if (!isValidIp(from)) {
+      invalidRanges.push({
+        from,
+        to,
+        reason: 'From is not a valid IP',
+      })
+
     }
 
-    validRanges.push({ from, to })
+    if (!isValidIp(to)) {
+      invalidRanges.push({
+        from,
+        to,
+        reason: 'To is not a valid IP',
+      })
+
+    }
+
+    if (!isFromLowerThanTo(from, to)) {
+      invalidRanges.push({ from, to, reason: 'From is larger than to' })
+
+    }
+    if (isValidIp(to) && isValidIp(from) && isFromLowerThanTo(from, to)) {
+      validRanges.push({ from, to })
+    }
+
   }
+
 
   const validNetmasks: IPNetwork[] = []
 
@@ -84,9 +105,17 @@ router.post('/', async (req, res) => {
         mask,
         reason: 'Either IP or CIDR is not valid',
       })
-      continue
     }
-    validNetmasks.push({ ip, mask })
+    if (!isValidIp(ip)) {
+      invalidNetmasks.push({
+        ip,
+        mask,
+        reason: 'IP is not valid',
+      })
+    }
+    if (isValidIp(ip) && isValidNetmask(mask)) {
+      validNetmasks.push({ ip, mask })
+    }
   }
 
   const settings: ScannerSettings = {
@@ -102,17 +131,26 @@ router.post('/', async (req, res) => {
     return res.redirect(data.originalUrl)
   }
 
-  return res.render('scanner.pug', {
-    scannerSettings: savedSettingsDto,
-    invalidData: {
-      invalidNetmasks: invalidNetmasks.map(
-        n => `${n.ip}/${n.mask}: ${n.reason}`
-      ),
-      invalidRanges: invalidRanges.map(n => `${n.from}/${n.to}: ${n.reason}`),
-      invalidIps: invalidIps.map(n => `${n.ip}: ${n.reason}`),
-    },
-  })
+  if (invalidIps.length || invalidRanges.length || invalidNetmasks.length) {
+    let detailList = [JSON.stringify(invalidIps)]
+    detailList.push(JSON.stringify(invalidNetmasks))
+    detailList.push(JSON.stringify(invalidRanges))
+    return res.render('scanner.pug', {
+      scannerSettings: savedSettingsDto,
+      error: {
+        message: 'One or more IP settings are invalid.',
+        details: detailList,
+      }
+    })
+  }
+  else {
+    return res.render('scanner.pug', {
+      scannerSettings: savedSettingsDto,
+    })
+  }
+  
 })
+
 
 export function toScannerSettingsDto(settings: ScannerSettings) {
   return {
