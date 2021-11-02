@@ -7,7 +7,7 @@ const seededTasks: StoredTask[] = [
     unitsOfWork: [
       { cmd: 'input keyevent 224' },
       {
-        cmd: 'am start -n com.emergencyreactnativeapp/com.emergencyreactnativeapp.MainActivity',
+        cmd: 'am start -n com.emergencyreactnativeapp/.MainActivity ',
       },
       { cmd: 'service call audio 7 i32 3 i32 100 i32 i' },
     ],
@@ -46,7 +46,7 @@ const seededTasks: StoredTask[] = [
     description:
       'Installs emergency and dynamic content apps and sets WiFi policy',
     unitsOfWork: [
-      { cmd: 'install apks/com.emergencyreactnativeapp' },
+      { cmd: 'install apks/emergency' },
       { cmd: 'install apks/com.dynamiccontent' },
       { cmd: 'settings put global wifi_sleep_policy 2' },
     ],
