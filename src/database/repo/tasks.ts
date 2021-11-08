@@ -7,9 +7,10 @@ const seededTasks: StoredTask[] = [
     unitsOfWork: [
       { cmd: 'input keyevent 224' },
       {
-        cmd: 'am start -n com.emergencyreactnativeapp/.MainActivity ',
+        cmd: 'am start -n cmp=com.emergencyreactnativeapp/.MainActivity ',
       },
-      { cmd: 'service call audio 7 i32 3 i32 100 i32 i' },
+      { cmd: 'service call audio 8 i32 1 i32 100' },
+      { cmd: 'service call audio 7 i32 1 i32 100' },
     ],
   },
   {
