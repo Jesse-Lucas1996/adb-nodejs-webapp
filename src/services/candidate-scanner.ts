@@ -5,7 +5,7 @@ import { repo } from '../database'
 import { dispatcher } from '../shared/broker'
 import { cidrToNetmask } from '../adb/utils'
 
-const CYCLE_TIMEOUT_MSEC = 10 * 60 * 1000
+const CYCLE_TIMEOUT_MSEC = 10 * 1000
 const TCP_PROBE_TIMEOUT_MSEC = 1 * 1000
 const PORT = 5555
 
