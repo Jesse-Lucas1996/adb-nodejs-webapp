@@ -73,6 +73,7 @@ export function createCandidateScannerService() {
         const success = await probeTcp(ip, PORT)
         if (success) {
           dispatcher.dispatch('CandidateDiscovered', { ip })
+          logger.trace(`Connected to ${ip}!`)
           ipCandidates.add(ip)
         }
       } catch (ex) {
