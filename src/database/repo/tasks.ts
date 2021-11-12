@@ -47,9 +47,11 @@ const seededTasks: StoredTask[] = [
     description:
       'Installs emergency and dynamic content apps and sets WiFi policy',
     unitsOfWork: [
-      { cmd: 'install apks/emergency' },
+      { cmd: 'install apks/emergency.apk' },
       { cmd: 'install apks/com.dynamiccontent' },
       { cmd: 'settings put global wifi_sleep_policy 2' },
+      { cmd: 'svc power stayon usb' },
+      { cmd: 'svc power stayon wireless' },
     ],
   },
 ]
